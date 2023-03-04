@@ -111,7 +111,10 @@
                                                  $badgeImages = json_decode($product?->badges);
                                                 @endphp
                                                 @if (!empty($badgeImages))
-                                                   {{ $badgeImages }}
+                                                @foreach ($badgeImages as $items)
+                                                    {{$items}}
+                                                @endforeach
+                                                   
                                                 @endif
                                             </div>
                                             
