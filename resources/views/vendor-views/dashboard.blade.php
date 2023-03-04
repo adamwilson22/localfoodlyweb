@@ -85,7 +85,7 @@
                         <div class="col-lg-6">
                             <div class="card  mb-4">
                                 <div class="card-body">
-                                    <h4 class="title">Total Visitors </h4>
+                                    <h4 class="title">Total Visitors</h4>
                                     
                                     <div id="barchart"></div>
                                 </div>

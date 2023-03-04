@@ -72,8 +72,8 @@
                 
                     @foreach ($products as $product)
                     
-                    <div class="col-lg-4 drophere">
-                        <div class="custom-control custom-checkbox product-checkbox draghere">
+                    <div class="col-lg-4">
+                        <div class="custom-control custom-checkbox product-checkbox">
                             <input type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">
                                 <div class="card">
@@ -83,6 +83,7 @@
                                             @if (!empty($product->feature_video))
                                                 <video src="{{$product->feature_video}}" controls></video>
                                             @elseif (!empty($product->feature_image))
+                                            dd($product->feature_image)
                                                 <img src="{{ $product->feature_image }}" alt="">
                                             @else
                                                 <img src="{{ $product->image }}" alt="">

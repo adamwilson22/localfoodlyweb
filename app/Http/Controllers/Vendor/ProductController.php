@@ -33,7 +33,7 @@ class ProductController extends Controller
                 //     # code...
                 //     $images[] = asset('images/'.$img);
                 // }
-                $product->image =  asset('images/' . $product->image[0]);
+                $product->image =  asset('public/images/' . $product->image[0]);
             }
         }
 
