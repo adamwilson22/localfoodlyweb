@@ -11,7 +11,8 @@ class AddOn extends Model
 {
     protected $casts = [
         'price' => 'float',
-        'restaurant_id' => 'integer',
+        'rating_count' => 'integer',
+        'resturaunt_id' => 'integer',
         'status' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'

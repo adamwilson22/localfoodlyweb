@@ -44,7 +44,8 @@ class Food extends Model
         "pre_order_end_time",
         "fulfillment_type",
         "pre_order_quantity_limit",
-        'featured_image'
+        'featured_image',
+        'position'
     ];
 
     protected $casts = [
@@ -59,7 +60,8 @@ class Food extends Model
         'reviews_count' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'veg' => 'integer'
+        'veg' => 'integer',
+        'position' => 'integer'
     ];
 
     // protected function related_tags(): Attribute
@@ -69,6 +71,11 @@ class Food extends Model
     //         set: fn ($value) => json_encode($value),
     //     );
     // } 
+    
+    public function addons()
+    {
+        return $this->hasMany(AddOn::class);
+    }
 
     public function translations()
     {

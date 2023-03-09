@@ -102,6 +102,6 @@ $('.product-big').slick({
     asNavFor: '.product-big',
     dots: false,
     arrows: false,
-    centerMode: true,
+    centerMode: false,
     focusOnSelect: true
   });

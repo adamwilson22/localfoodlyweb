@@ -2512,11 +2512,11 @@ select.form-control:focus::-ms-value {
 }
 
 .form-control-lg {
-    height: calc(2em + 1.875rem);
-    padding: .875rem 1.09375rem;
+    height: calc(1.5em + 1.6rem);
+    padding: 0.875rem 1.09375rem;
     font-size: 1rem;
     line-height: 1.5;
-    border-radius: .3125rem
+    border-radius: 0.3125rem;
 }
 
 
@@ -3229,7 +3229,7 @@ a.btn.disabled, fieldset:disabled a.btn {
 }
 
 .btn-outline-success:hover {
-    color: #fff;
+    color: #068972;
     background-color: #00c9a7;
     border-color: #00c9a7
 }
@@ -4140,11 +4140,12 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .custom-select-lg {
-    height: calc(2em + 1.875rem);
-    padding-top: .875rem;
-    padding-bottom: .875rem;
+    height: calc(1.5em + 1.6rem);
+    padding-top: .6rem;
+    padding-bottom: .6rem;
     padding-left: 1.09375rem;
     font-size: 1rem
+    
 }
 
 .custom-file {

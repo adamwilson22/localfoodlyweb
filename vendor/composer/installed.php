@@ -1,15 +1,24 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'eb09826bff03463d7bffd1a3db85019e44aa65ae',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '1d47c17a9e7e20927f6b2c9b2c1776658d252a76',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'asantibanez/laravel-blade-sortable' => array(
+            'pretty_version' => 'v1.3.0',
+            'version' => '1.3.0.0',
+            'reference' => 'b9550761d6da4773eb04b99d337605f6f3384b92',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../asantibanez/laravel-blade-sortable',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'asm89/stack-cors' => array(
             'pretty_version' => 'v2.1.1',
             'version' => '2.1.1.0',
@@ -602,9 +611,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'eb09826bff03463d7bffd1a3db85019e44aa65ae',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '1d47c17a9e7e20927f6b2c9b2c1776658d252a76',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

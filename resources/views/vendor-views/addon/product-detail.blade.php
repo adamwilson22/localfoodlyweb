@@ -75,28 +75,28 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <h1 class="title">
-                            Add-On
-                        </h1>
+                        <h4 class=""> Add-Ons</h4>
 
-                        <div class="product-cards">
-
+                        <div class="product-cards detail-pro">
+                            @foreach ($addon as $item)
                             <div class="card">
                                 <div class="card-body">
                                     <div class="product-img">
-                                        <img src="{{ asset('public/assets/admin/img/Untitled-1.png') }}" alt="">
+                                        {{-- <img src="{{ asset('public/assets/admin/img/Untitled-1.png') }}" alt=""> --}}
+                                        <img src="{{ $item->image }}" alt="">
                                     </div>
                                     <div class="content">
-                                        <h4>Italian Sausage</h4>
+                                        <h4>{{$item->name}}</h4>
                                         <div class="star">
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            (07)
+                                            @if ($item->rating_count != 0)
+                                            
+                                            @for ($i = 0 ; $i < $item->rating_count ; $i++)
+                                                <i class="icon-star_icon"></i>     
+                                            @endfor
+                                            {{ '(' . $item->rating_count . ')' }}
+                                            @endif
                                         </div>
-                                        <p>$35.24</p>
+                                        <p>{{ '$' . $item->price }}</p>
                                     </div>
                                     <div class="action">
                                         <a href="#">
@@ -105,34 +105,9 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="product-img">
-                                        <img src="{{ asset('public/assets/admin/img/Untitled-2.png') }}" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <h4>Meatballs</h4>
-                                        <div class="star">
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            <i class="icon-star_icon"></i>
-                                            (07)
-                                        </div>
-                                        <p>$35.24</p>
-                                    </div>
-                                    <div class="action">
-                                        <a href="#">
-                                            <i class="icon-edit_icon"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                            </div>
+                            @endforeach
                             <div class="">
-                                <a href="#" class="fs-20">Create More Add-On</a>
+                                <a href="#" class="">Create More Add-Ons</a>
                             </div>
                         </div>
                     </div>
@@ -143,9 +118,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-7">
-                                <h1 class="page-header-title">
+                                <h2 class="">
                                     {{$product->name}}
-                                </h1>
+                                </h2>
                             </div>
                             <div class="col-lg-5">
                                 <div class="sltoption justify-content-end">
@@ -155,14 +130,17 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="star">
-                            <i class="icon-star_icon"></i>
-                            <i class="icon-star_icon"></i>
-                            <i class="icon-star_icon"></i>
-                            <i class="icon-star_icon"></i>
-                            <i class="icon-star_icon"></i>
-                            (07)
+                            @for ($i = 0 ; $i  < $product->rating_count ; $i++)
+                            
+                                <i class="icon-star_icon"></i>    
+                            
+                            @endfor
+                            
+                            ({{ $product->rating_count }})
                         </div>
+
                         <p>{{$product->description}}</p>
                         <div class="btn-group sizing-btn btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-secondary active">
@@ -179,31 +157,29 @@
                             </label>
                         </div>
                         <div class=" form-group">
-                            <label class="input-label" for="">Serves</label>
-                            <select name="" id="" class="custom-select custom-select-lg">
+                            <label class="input-label" for="">{{'Serves: ' . $product->serves }}</label>
+                            {{-- <select name="" id="" class="custom-select custom-select-lg">
                                 <option value="">More than 4</option>
                                 <option value="">Item 1</option>
                                 <option value="">Item 1</option>
                                 <option value="">Item 1</option>
-                            </select>
+                            </select> --}}
                         </div>
+                        
+                        <h2 class="">
+                            Add-Ons
+                        </h2>
                         <div class="row">
+                            @foreach ($addon as $item)
                             <div class="col-lg-4">
                                 <div class="custom-control custom-checkbox mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="Veggie">
-                                    <label class="custom-control-label" for="Veggie">Veggie Pizza</label>
+                                    <input type="checkbox" class="custom-control-input" id="{{'addon[' . $item->id . ']'}}">
+                                    <label class="custom-control-label" for="Veggie">{{ $item->name }}</label>
                                 </div>
-                                <div class="custom-control custom-checkbox mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="Pepperoni">
-                                    <label class="custom-control-label" for="Pepperoni">Pepperoni Pizza</label>
-                                </div>
-                                <div class="custom-control custom-checkbox mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="Meat">
-                                    <label class="custom-control-label" for="Meat">Meat Pizza</label>
-                                </div>
-
                             </div>
-                            <div class="col-lg-4">
+                            @endforeach
+                            
+                            {{-- <div class="col-lg-4">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" class="custom-control-input" id="Margherita">
                                     <label class="custom-control-label" for="Margherita">Margherita Pizza</label>
@@ -216,17 +192,17 @@
                                     <input type="checkbox" class="custom-control-input" id="Hawaiian">
                                     <label class="custom-control-label" for="Hawaiian">Hawaiian Pizza</label>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="input-group quantity-add">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                <button id="minusBtn" type="button" class="btn btn-default btn-number"  data-type="minus" data-field="quant[1]">
                                     <i class="icon-minus_round_icon"></i>
                                 </button>
                             </span>
-                            $<input type="text" name="quant[1]" class="input-number" value="35.24" min="8" max="3000">
+                            $<input id="product_price" type="text" name="quant[1]" class="input-number" value="{{$product->price}}" min="8" max="3000">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
+                                <button id="plusBtn" type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
                                     <i class="icon-plus_round_icon"></i>
                                 </button>
                             </span>
@@ -571,6 +547,31 @@
         </div>
     </div>
     @endsection
-
-
 </body>
+@push('custom_js')
+<script >
+
+$(document).ready(function() {
+  console.log('Price Functions working 1');
+
+  currentPrice = $('#product_price').val();
+  console.log(currentPrice);
+  
+  plusBtn = $('#plusBtn');
+  minusBtn = $('#minusBtn');
+
+  plusBtn.on('click', function() {
+    currentValue = parseInt(currentPrice);
+    currentValue++;
+    // currentPrice.value(currentValue.toFixed(2));
+    $('#product_price').val(currentValue);
+  });
+
+  minusBtn.on('click', function() {
+    currentValue = parseInt(currentPrice);
+    currentValue--;
+    $('#product_price').val(currentValue);
+  });
+});
+</script>
+@endpush

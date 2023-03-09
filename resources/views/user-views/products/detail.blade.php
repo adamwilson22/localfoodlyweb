@@ -172,7 +172,7 @@
                         Based on 123 reviews
                     </div>
                     <h4 class="title">{{ $food->name }}</h4>
-                    <h6 class="price">${{ $food->price }}</h6>
+                    <h6 id="product_price" class="price" value="{{ $food->price }}">${{ $food->price }}</h6>
                     <div class="imgs-icon">
                         <img src="{{asset('public/customer/assets/images/screenshot_1.png') }}" class="" alt="...">
                         <img src="{{asset('public/customer/assets/images/screenshot_2.png') }}" class="" alt="...">
@@ -213,6 +213,31 @@
     </div>
 </section>
 
+
+<section class="section-padding product pb-0">
+        <div class="container">
+            <h2 class="heading pb-0">Variants</h2>
+        </div>
+        <hr>
+        <div class="container">
+            @foreach ($variations as $key=>$option)
+                <p class="mparagraph mb-2">
+                    {{  $option->name . ' ' . $option->type . ' ' . $option->required}}
+                </p>
+                <div class="d-flex align-items-center mb-3">
+                @foreach ($option->values as $value)
+                    <form id="options-form" class="mr-2">
+                        <input type="checkbox" id="variants" name="variants[]" value="{{ $value->optionPrice }}">
+                        <label for="variants">{{ $value->label . ' (+$' . $value->optionPrice . ')' }} </label>
+                    </form>
+                    <!--<p class="mparagraph">-->
+                    <!--</p>-->
+                @endforeach
+                </div>
+            @endforeach
+        </div>
+</section>
+
 <section class="section-padding product pb-0">
     <div class="container">
         <div class="row">
@@ -237,7 +262,7 @@
                     </div>
                     <div class="col-lg-6">
                         <ul>
-
+                            {{-- {{ $food->ingredients }} --}}
                         </ul>
                     </div>
                 </div>
@@ -245,7 +270,7 @@
             </div>
             <div class="col-lg-6 border-left pt-2">
                 <ul>
-                    {{ $food->allergens }}
+                    {{ $food->ingredients }}
 
                 </ul>
             </div>
@@ -257,66 +282,39 @@
         <h2 class="heading">Items that goes well with this purchase (Add Ons)</h2>
 
         <div class="row mt-2">
-            <div class="col-lg-6">
-                <div class="card related-card">
-                    <div class="row no-gutters">
-                        <div class="col-md-6">
-                            <img src="{{asset('public/customer/assets/images/news_image2-min-1.png') }}"
+            @foreach ($addonsData as $item)
+                <div class="col-lg-6">
+                    <div class="card related-card">
+                        <div class="row no-gutters">
+                            <div class="col-md-6">
+                                {{-- {{ $addonsData }} --}}
+                                {{-- <img src="{{ asset('public/customer/assets/images/news_image2-min-1.png') }}" --}}
+                                <img src="{{ $item->image }}"
                                 class="img-fluid" alt="...">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card-body">
-                                <div class="">
-                                    <div class="stars">
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        Based on 123 reviews
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <div class="">
+                                        <div class="stars">
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            <i class="icon-star"></i>
+                                            Based on 123 reviews
+                                        </div>
+                                        <h4 class="title">{{$item->name}}</h4>
+                                        <h6 class="price">${{$item->price}}</h6>
+
+                                        <button class="btn btn-primary"><i class="icon-shopping-cart"></i> Add To
+                                            Cart</button>
                                     </div>
-                                    <h4 class="title">Product Name</h4>
-                                    <h6 class="price">$10.99</h6>
-
-                                    <button class="btn btn-primary"><i class="icon-shopping-cart"></i> Add To
-                                        Cart</button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card related-card">
-                    <div class="row no-gutters">
-                        <div class="col-md-6">
-                            <img src="{{asset('public/customer/assets/images/news_image2-min-1.png') }}"
-                                class="img-fluid" alt="...">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card-body">
-                                <div class="">
-                                    <div class="stars">
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        Based on 123 reviews
-                                    </div>
-                                    <h4 class="title">Product Name</h4>
-                                    <h6 class="price">$10.99</h6>
-
-                                    <button class="btn btn-primary"><i class="icon-shopping-cart"></i> Add To
-                                        Cart</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
@@ -383,7 +381,7 @@
 </section>
 <section class="section-padding product pb-0">
     <div class="container">
-        <h2 class="heading pb-0">Write A Review</h2>
+        <h2 class="heading pb-0">Write a Review</h2>
     </div>
     <hr>
     <div class="container">
@@ -433,7 +431,7 @@
 
 <section class="listitem section-padding">
     <div class="container">
-        <select name="" id="" class="btn btn-primary mr-2">
+        {{-- <select name="" id="" class="btn btn-primary mr-2">
             <option value="">Filter</option>
             <option value="">burger</option>
             <option value="">pizza</option>
@@ -444,7 +442,8 @@
             <option value="">Newest</option>
             <option value="">Oldest</option>
             <option value="">Popular</option>
-        </select>
+        </select> --}}
+        <h2 class="heading pb-0">Other Products</h2>
         <div class="row mt-3">
             <div class="col-lg-4">
                 <div class="card res-card items-card" style="">
@@ -670,8 +669,11 @@
 @endsection
 
 @section('script')
+@push('script_2')
 
 <script type="text/javascript">
+$(document).ready(function() {
+
 $(".add-to-cart").click(function(e) {
     e.preventDefault();
     var ele = $(this);
@@ -682,8 +684,7 @@ $(".add-to-cart").click(function(e) {
 
     console.log(addMoreQuantity)
     $.ajax({
-        url: '{{ url('
-        customer / add - to - cart ') }}' + '/' + ele.attr("data-id"),
+        url: '{{ url('customer / add - to - cart ') }}' + '/' + ele.attr("data-id"),
         method: "get",
         data: {
             _token: '{{ csrf_token() }}',
@@ -700,5 +701,39 @@ $(".add-to-cart").click(function(e) {
         }
     });
 });
+
+// $('input[name="variants[]"]').change(updatePrice);
+
+// function updatePrice() {
+
+//     var priceIncrease = 0;
+//     let price = parseInt($('#product_price').text().replace('$', ''));
+
+// $('input[name="variants[]"]:checked').each(function() {
+//     priceIncrease += parseInt($(this).val());
+//     console.log(priceIncrease);
+// });
+//   totalPrice = price + priceIncrease;
+// //   $('#product_price').text('$' + totalPrice.toFixed(2));
+//   $('#product_price').text('$' + totalPrice);
+// }
+
+$(document).ready(function() {
+  var originalPrice = parseInt($('#product_price').text().replace('$', ''));
+    $("input[type='checkbox']").click(function() {
+        
+        var priceTotal = originalPrice;
+        
+        $("input[type='checkbox']:checked").each(function() {
+            priceTotal += parseInt($(this).val());
+        });
+
+    $('#product_price').text('$' + priceTotal);
+  });
+});
+
+});
+
 </script>
 @endsection
+@endpush

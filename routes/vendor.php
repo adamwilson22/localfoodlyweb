@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Vendor\ProductController;
+// Route::post('sortProducts', 'ProductController@sort');
 
 Route::delete('category/{id}', 'CategoryController@deleteCategory')->name('category.destroy');
 Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
@@ -28,6 +29,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
     Route::group(['middleware' => ['vendor']], function () {
         Route::get('/', 'DashboardController@dashboard')->name('dashboard');
         Route::get('/get-restaurant-data', 'DashboardController@restaurant_data')->name('get-restaurant-data');
+        Route::post('/sortProducts', 'ProductController@sort');
         
 
         Route::get('/reviews', 'ReviewController@index')->name('reviews')->middleware('module:reviews');

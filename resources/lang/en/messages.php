@@ -1,4 +1,6 @@
 <?php return array (
+  'add_variation' => 'Add Variation',
+  'food_variations' => 'Food Variations ',
   'alert_restaurant_out_from_campaign' => 'You want your restaurant out from this campaign?',
   'alert_restaurant_join_campaign' => 'You want join this campaign?',
   'about_us' => 'About us',
@@ -1347,7 +1349,6 @@
   'Additional_price' => 'Additional price',
   'Option_name' => 'Option name',
   'validation.max.string' => 'validation.max.string',
-  'food_variations' => 'food variations',
   'add_new_variation' => 'add new variation',
   'add_new' => 'add new',
   'selcetion_type' => 'selcetion type',
@@ -1357,4 +1358,5 @@
   'Max' => 'Max',
   'Required' => 'Required',
   'Add_New_Option' => 'Add New Option',
+  'variant' => 'variant',
 );

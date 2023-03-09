@@ -35,6 +35,7 @@ Route::group(['prefix' => 'customer'], function () {
             Route::post('/updateprofile', [RestaurantController::class, 'updateProfile'])->name('profile.update');
             
             Route::get('/view/{id}/restaurant', [RestaurantController::class, 'restaurantView'])->name('restaurant.view');
+            Route::get('/view/{id}/restaurant-menu', [RestaurantController::class, 'restaurantMenu'])->name('restaurant.menu');
             Route::get('/view/{id}/food', [RestaurantController::class, 'foodView'])->name('food.view');
             Route::get('/follow', [RestaurantController::class, 'userFollow'])->name('user.follow');
             Route::get('add-to-cart/{id}', [CartController::class, 'addToCart'])->name('addtocart.food');

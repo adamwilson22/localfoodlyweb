@@ -440,14 +440,14 @@ div#notiNavbarDropdown {
     margin-bottom: 30px;
 }
 .small-banner h2 {
-    font-size: 44px;
+    font-size: 34px;
     font-weight: 700;
 }
 
 .small-banner p {
     color: #1c1c1c;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 14px;
 }
 .selling-list {
     height: 400px;
@@ -840,21 +840,27 @@ div#notiNavbarDropdown {
 .product-cards .card-body .action a {
     color: #fff;
 }
-
+.btn-group-lg > .btn, .btn-lg {
+    padding: 16px 28px;
+}
 /* product detail */
 .product-detail .product-big .slick-slide {
-    height: 420px;
+    height: 340px;
     border-radius: 6px;
     background-color: #E8E8E8;
 }
 .product-nav {
-    margin-top: 30px;
+    margin-top: 16px;
 }
-
+.product-nav .slick-slide {
+    height: auto;
+}
 .product-nav img {
-    width: 90px;
-    height: 90px;
+    width: 65px;
+    height: 65px;
     margin: auto;
+    border-radius: 4px;
+    object-fit: cover;
 }
 .product-detail .product-big .slick-slide img {
     width: 100%;
@@ -1024,13 +1030,13 @@ div#notiNavbarDropdown {
 }
 .star {
     color: #333333;
-    font-size: 20px;
+    font-size: 16px;
     margin-bottom: 20px;
 }
 
 .star i {
     color: #FB9300;
-    font-size: 24px;
+    font-size: 20px;
     letter-spacing: -6px;
 }
 
@@ -1052,14 +1058,14 @@ div#notiNavbarDropdown {
 }
 
 .quantity-add .input-number {
-    font-size: 40px;
+    font-size: 28px;
     font-weight: 700;
     color: #333333;
     border: none;
     max-width: 200px;
 }
 .quantity-add {
-    font-size: 40px;
+    font-size: 28px;
     font-weight: 700;
     color: #333333;
 
@@ -1079,11 +1085,13 @@ div#notiNavbarDropdown {
 
 .card-table .info h4 {
     margin-bottom: 0;
-    font-size: 18px;
+    font-size: 16px;
     color: #333333;
 }
-
-.card-table .info p {margin-bottom: 0;}
+.seller-card li.list-group-item {
+    padding: 10px 0;
+}
+.card-table .info p {margin-bottom: 0;font-size: 14px;}
 
 .card td {
     padding: 14px;
@@ -1406,7 +1414,9 @@ div#notiNavbarDropdown {
 .top-selling .cover img {
     width: 100%;
 }
-
+.top-selling .cover img[src=''] {
+    height: 100px;
+}
 .temp .custom-checkbox .custom-control-label::before {
     bottom: -1px;
     top: auto;
@@ -2192,6 +2202,98 @@ body.matchespg footer {
 .page-header-title i.tio-add-circle-outlined {
     display: none;
 }
+#sortable-list {
+}
+
+#sortable-list .card {
+    width: 31.66%;
+    display: inline-block;
+    margin: 15px 6px 0;
+}
+
+
+#sortable-list .card .product-img img,#sortable-list .card .product-img video {
+    width: 100%;
+    height: 180px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+#sortable-list .card .content {
+    padding: 10px 0;
+}
+
+#sortable-list .card .content .name-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+
+#sortable-list .card .content .name-price a h4 {
+    margin-bottom: 0;
+    font-size: 18px;
+}
+
+#sortable-list .card .content .name-price p {
+    margin-bottom: 0;
+}
+
+#sortable-list .card .content .star {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+#sortable-list .card .content .star i {
+    font-size: 16px;
+}
+
+#sortable-list .card .action {background: #006AFF;width: 40px;height: 40px;display: inline-flex;align-items: center;border-radius: 6px;float: right;margin-bottom: 14px;}
+
+#sortable-list .card .action a {color: #fff;padding: 10px;}
+.detail-pro {}
+
+.detail-pro .card-body {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.detail-pro .card-body .product-img {
+    margin-bottom: 0;
+    margin-right: 8px;
+}
+
+.detail-pro .card-body .product-img img {
+    height: 80px;
+    width: 80px;
+}
+
+.detail-pro .card-body .content h4 {
+    font-size: 16px;
+}
+
+.detail-pro .card-body .content p {
+    font-size: 14px;
+}
+
+.product-cards .card-body .content .star {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.product-cards .card-body .content .star i {
+    font-size: 14px;
+}
+
+.product-cards .card-body .action {
+    right: 10px;
+    bottom: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    padding: 8px;
+}
 @media (max-width: 1599px) {
     .customer .detail .points {
         text-align: left;
@@ -2211,6 +2313,12 @@ body.matchespg footer {
     }
 }
 @media (max-width: 1399px) {
+    .product-cards .card {
+        margin-bottom: 16px;
+    }
+    .product-detail .product-big .slick-slide {
+        height: 240px;
+    }
     .rating .card .card-body {
         padding: 12px;
     }

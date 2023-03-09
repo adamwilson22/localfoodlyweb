@@ -33,6 +33,7 @@ final class Versions
      * @internal
      */
     const VERSIONS          = array (
+  'asantibanez/laravel-blade-sortable' => 'v1.3.0@b9550761d6da4773eb04b99d337605f6f3384b92',
   'asm89/stack-cors' => 'v2.1.1@73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
   'barryvdh/laravel-cors' => 'v2.2.0@783a74f5e3431d7b9805be8afb60fd0a8f743534',
   'box/spout' => 'v3.3.0@9bdb027d312b732515b884a341c0ad70372c6295',
@@ -191,7 +192,7 @@ final class Versions
   'sebastian/type' => '3.2.0@fb3fe09c5f0bae6bc27ef3ce933a1e0ed9464b6e',
   'sebastian/version' => '3.0.2@c6c1022351a901512170118436c764e473f6de8c',
   'theseer/tokenizer' => '1.2.1@34a41e998c2183e22995f158c581e7b5e755ab9e',
-  'laravel/laravel' => '1.0.0+no-version-set@',
+  'laravel/laravel' => 'dev-master@1d47c17a9e7e20927f6b2c9b2c1776658d252a76',
 );
 
     private function __construct()

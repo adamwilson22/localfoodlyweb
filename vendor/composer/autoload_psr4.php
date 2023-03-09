@@ -131,5 +131,6 @@ return array(
     'Box\\Spout\\' => array($vendorDir . '/box/spout/src/Spout'),
     'Barryvdh\\Debugbar\\' => array($vendorDir . '/barryvdh/laravel-debugbar/src'),
     'Asm89\\Stack\\' => array($vendorDir . '/asm89/stack-cors/src'),
+    'Asantibanez\\LaravelBladeSortable\\' => array($vendorDir . '/asantibanez/laravel-blade-sortable/src'),
     'App\\' => array($baseDir . '/app'),
 );

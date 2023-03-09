@@ -25,7 +25,7 @@ class ProductController extends Controller
         $products = [];
         if ($restaurant) {
 
-            $products = Food::where('restaurant_id', $restaurant->id)->get();
+            $products = Food::where('restaurant_id', $restaurant->id)->orderBy('position', 'asc')->orderBy('id', 'asc')->get();
             foreach ($products as $product) {
                 $product->image = unserialize($product->image);
                 $images = [];
@@ -43,6 +43,7 @@ class ProductController extends Controller
     public function create_product(Request $request)
     {
         // dd($request->all());
+
         $rules = [
             "name"  => "required",
             "description" => "required",
@@ -203,8 +204,8 @@ class ProductController extends Controller
                 $img = 'prods' . time() . '.' . $imagefile->getClientOriginalName();
                 $imagefile->move(public_path('images'), $img);
 
-                // $images[]= $imagefile->getClientOriginalName();
                 array_push($images, $img);
+                // $images[]= $imagefile->getClientOriginalName();
             }
             $img = serialize($images);
             $input['image'] = $img;
@@ -234,8 +235,26 @@ class ProductController extends Controller
         $input['restaurant_id'] = $restaurant->id;
         // $input['image'] = $img;
         
+        // *********************** Hassan Code - Food Variations ***********************
+        // $variations = [];
+        // foreach(array_values($request->variation) as $key=>$option)
+        // {
+        //     // dd($request->variation);
+        //     $temp_value = [];
+        //     // dd($option);
+            
+        //     if(isset($option['label'])){
+        //         $temp_option['label'] = $option['label'];
+        //     }
+        //     $temp_option['price'] = $option['price'];
+        //     array_push($temp_value,$temp_option);
+            
+        //     $temp_variation['values']= $temp_value;
+        //     array_push($variations,$temp_variation);
+        // }
+
+        // *********************** Hassan Code - Food Variations ***********************
         
-        $variations = [];
         if(isset($request->options))
         {
             foreach(array_values($request->options) as $key=>$option)
@@ -246,20 +265,20 @@ class ProductController extends Controller
                 $temp_variation['min']= $option['min'] ?? 0;
                 $temp_variation['max']= $option['max'] ?? 0;
                 $temp_variation['required']= $option['required']??'off';
-                // if($option['min'] > 0 &&  $option['min'] > $option['max']  ){
-                //     $validator->getMessageBag()->add('name', translate('messages.minimum_value_can_not_be_greater_then_maximum_value'));
-                //     return response()->json(['errors' => Helpers::error_processor($validator)]);
-                // }
-                // if(!isset($option['values'])){
-                //     $validator->getMessageBag()->add('name', translate('messages.please_add_options_for').$option['name']);
-                //     return response()->json(['errors' => Helpers::error_processor($validator)]);
-                // }
+                if($option['min'] > 0 &&  $option['min'] > $option['max']  ){
+                    $validator->getMessageBag()->add('name', translate('messages.minimum_value_can_not_be_greater_then_maximum_value'));
+                    return response()->json(['errors' => Helpers::error_processor($validator)]);
+                }
+                if(!isset($option['values'])){
+                    $validator->getMessageBag()->add('name', translate('messages.please_add_options_for').$option['name']);
+                    return response()->json(['errors' => Helpers::error_processor($validator)]);
+                }
 
-                // dd($option['max'] > count($option['values']));
-                // if($option['max'] > count($option['values'])  ){
-                //     $validator->getMessageBag()->add('name', translate('messages.please_add_more_options_or_change_the_max_value_for').$option['name']);
-                //     return response()->json(['errors' => Helpers::error_processor($validator)]);
-                // }
+                dd($option['max'] > count($option['values']));
+                if($option['max'] > count($option['values'])  ){
+                    $validator->getMessageBag()->add('name', translate('messages.please_add_more_options_or_change_the_max_value_for').$option['name']);
+                    return response()->json(['errors' => Helpers::error_processor($validator)]);
+                }
                 $temp_value = [];
 
                 foreach(array_values($option['values']) as $value)
@@ -300,6 +319,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Food::where('id', $id)->first();
+        $addon = AddOn::where('restaurant_id', $product->restaurant_id)->get();
+        // dd($addon);
         $product->image = unserialize($product->image);
         $images = [];
         foreach ($product->image as $img) {
@@ -309,8 +330,8 @@ class ProductController extends Controller
             // $mimetype[] = mime_content_type('http://testapp.thesuitchstaging.com/public/images/prods1677017460.Customer%20Signup.webm');
         }
         $product->image = $images;
+        return view('vendor-views.addon.product-detail', compact('product','addon'));
         // dd(strstr($mimetype, "video/"));
-        return view('vendor-views.addon.product-detail', compact('product'));
     }
 
     public function edit($id)
@@ -569,5 +590,17 @@ class ProductController extends Controller
                 "status"    => false
             ]);
         }
+    }
+
+    public function sort(Request $request)
+    {
+        
+        $ids = explode(',', $request->input('ids'));
+        $position = 0;
+        foreach ($ids as $id) {
+            Food::where('id', $id)->update(['position' => $position]);
+            $position++;
+        }
+        return response()->json(['success' => true]);
     }
 }

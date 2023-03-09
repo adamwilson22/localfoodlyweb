@@ -7,6 +7,7 @@ use App\Models\Follower;
 use App\Models\Food;
 use App\Models\Restaurant;
 use App\Models\Review;
+
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,9 @@ use App\Models\KitchenGallery;
 use Illuminate\Support\Facades\Validator;
 use Brian2694\Toastr\Facades\Toastr;
 use App\CentralLogics\Helpers;
+use App\Models\AddOn as ModelsAddOn;
 use App\Models\User;
+use App\Models\AddOn;
 
 class RestaurantController extends Controller
 {
@@ -100,18 +103,58 @@ class RestaurantController extends Controller
         // dd($kitchengallery);
         return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery'));
     }
+    public function restaurantMenu($id)
+    {
+        $restaurant = Restaurant::where('id', $id)->first();
+        $foods = Food::where('restaurant_id',$id)->where('status', 1)->get();
+        $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
+        $follower = Follower::where([
+            ['restaurant_id', $id],
+            ['customer_id', Auth::user()->id],
+            ['status','1']
+        ])->first();
+        $followerCount = Follower::where([
+                ['restaurant_id', $id]
+        ])->count();
+        
+        $cart = session()->get('cart');
+        foreach ((array) session('cart') as $details) {
+            if($id != $details['restaurant_id'])
+            {
+                // dd();
+                session()->forget('cart');
+            }
+        }
+        $kitchengallery = KitchenGallery::where('restaurant_id', $id)->get();
+        // dd($kitchengallery);
+        return view('user-views.products.restaurant-menu', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery'));
+    }
 
     public function foodView($id)
     {
         $food = Food::where('id',$id)->first();
         $reviews = Review::where('food_id', $id)->get();
+
+        $addonsData = AddOn::where('restaurant_id',$food->restaurant_id)->get();
+        // dd(json_decode($food->variations));
+        $variations = json_decode($food->variations);
+        // dd($variations);
+        // foreach(array_values($variations) as $key=>$option)
+        // {
+        //     // dd($option->values);
+        //     foreach($option->values as $value)
+        //     {
+        //         dd($value);     
+        //     }
+        // }
+        
         // foreach ($reviews as $key => $value) {
         //     # code...
         //     dd($value->customer());
         // }
         // dd(empty($reviews->all()));
 
-        return view('user-views.products.detail', compact('food', 'reviews'));
+        return view('user-views.products.detail', compact('food', 'reviews', 'addonsData', 'variations'));
     }
     
     public function userFollow(Request $request)
