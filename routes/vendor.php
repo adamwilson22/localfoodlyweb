@@ -175,6 +175,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('addproduct/{type}', 'AddOnController@addproduct')->name('addproduct');
             Route::get('addproduct2', 'AddOnController@addproduct2')->name('addproduct2');
             Route::get('pizza-products', 'AddOnController@pizza_products')->name('pizza-products');
+            Route::post('customer', 'AddOnController@addcustomergroup')->name('addcustomergroup');
             Route::get('customer', 'AddOnController@customer')->name('customer');
             Route::get('order', 'OrderController@index')->name('order');
             Route::get('invoices', 'AddOnController@invoices')->name('invoices');
@@ -204,6 +205,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
         Route::post('kitchen-store-gallery', 'SettingsController@CreateStoreGallery')->name('kitchen.store.gallery');
         Route::post('change-password', 'SettingsController@ChangePassword')->name('change_password');
         Route::post('kitchen-store-gallery', 'SettingsController@CreateStoreGallery')->name('kitchen.store.gallery');
+        Route::delete('kitchen-delete-gallery/{id}', 'SettingsController@DeleteStoreGallery')->name('kitchen.delete.gallery');
 
 
         // Settings Routes Ends

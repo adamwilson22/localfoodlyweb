@@ -7,12 +7,16 @@ use App\Models\AddOn;
 use App\Models\Restaurant;
 use App\Models\Food;
 use App\Models\Badge;
+use Redirect;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\CentralLogics\Helpers;
 use App\Models\Translation;
 use App\Models\Category;
-
+use App\Models\Customer;
+use App\Models\CustomerGroupAssigned;
+use App\Models\CustomerGroups;
+use Illuminate\Support\Facades\Validator;
 
 class AddOnController extends Controller
 {
@@ -123,10 +127,51 @@ class AddOnController extends Controller
         return view('vendor-views.addon.addproduct');
     }
 
+    public function addcustomergroup(Request $request){
+
+        $rules = [
+            "name"  => "required",
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $customerGroupFields = new CustomerGroups();
+        $customerGroupFields->name = $request->name;
+        $insert = $customerGroupFields->save();
+        // dd($insert);
+
+        // $insert = Food::create($customerGroupFields);
+        if ($insert) {
+            return Redirect('vendor-panel/addon/customer')->with([
+                "message" => "Customer Group Created Successfully",
+                "code"      => 1,
+                "status"    => true
+            ]);
+        } else {
+            return Redirect('Vendor-panel/addon/customer')->with([
+                "code"      => 0,
+                'message'   => "Customer Group Not Created",
+                "status"    => false
+            ]);
+        }
+    }
+
     public function customer()
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.customer');
+        $customers[] = Customer::all();
+        // $customerGroup = CustomerGroupAssigned::all();
+        // foreach($customers as $key => $item){
+        //     foreach($item as $customer){
+        //         dd($customer->ful_name);
+        //     }
+        // }
+        
+        return view('vendor-views.addon.customer', compact('customers'));
     }
     public function settings()
     {

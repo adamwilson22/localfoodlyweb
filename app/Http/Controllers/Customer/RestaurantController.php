@@ -7,6 +7,9 @@ use App\Models\Follower;
 use App\Models\Food;
 use App\Models\Restaurant;
 use App\Models\Review;
+use App\Models\Category;
+use App\Models\Badge;
+
 
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -32,6 +35,83 @@ class RestaurantController extends Controller
         return view('user-views.restaurant.profile', compact('user'));
     }
 
+    public function filterCategory(Request $request,$id)
+    {
+        $query = $request->input('category');
+        
+        // dd($query);
+        
+
+        $restaurant = Restaurant::where('id', $id)->first();
+        $foods = Food::where('restaurant_id',$id)->where('status', 1)->where('category_id', $query)->get();
+        $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
+        $follower = Follower::where([
+            ['restaurant_id', $id],
+            ['customer_id', Auth::user()->id],
+            ['status','1']
+        ])->first();
+        $followerCount = Follower::where([
+                ['restaurant_id', $id]
+        ])->count();
+        
+        $cart = session()->get('cart');
+        foreach ((array) session('cart') as $details) {
+            if($id != $details['restaurant_id'])
+            {
+                // dd();
+                session()->forget('cart');
+            }
+        }
+        $kitchengallery = KitchenGallery::where('restaurant_id', $id)->get();
+        $categories = Category::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
+        $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        // dd($badges1);
+        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
+
+
+
+        // $foods = Food::where('name', 'like', "%$query%")->get();
+        // return view('foods.index', compact('foods'));
+    }
+
+    public function filterBadges(Request $request,$id)
+    {
+       
+        $query1 = $request->input('badges');
+        // dd($query1);
+        
+        $restaurant = Restaurant::where('id', $id)->first();
+        $foods = Food::where('restaurant_id',$id)->where('status', 1)->whereJsonContains('badges', [$query1])->get();
+        $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
+        $follower = Follower::where([
+            ['restaurant_id', $id],
+            ['customer_id', Auth::user()->id],
+            ['status','1']
+        ])->first();
+        $followerCount = Follower::where([
+                ['restaurant_id', $id]
+        ])->count();
+        
+        $cart = session()->get('cart');
+        foreach ((array) session('cart') as $details) {
+            if($id != $details['restaurant_id'])
+            {
+                // dd();
+                session()->forget('cart');
+            }
+        }
+        $kitchengallery = KitchenGallery::where('restaurant_id', $id)->get();
+        $categories = Category::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
+        $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        // dd($badges1);
+        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
+
+
+        // $foods = Food::where('name', 'like', "%$query%")->get();
+        // return view('foods.index', compact('foods'));
+    }
     public function updateProfile(Request $request){
 // dd($request);
         $validator = Validator::make($request->all(), [
@@ -100,9 +180,16 @@ class RestaurantController extends Controller
             }
         }
         $kitchengallery = KitchenGallery::where('restaurant_id', $id)->get();
-        // dd($kitchengallery);
-        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery'));
+        $categories = Category::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
+        $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        // dd($badges1);
+        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
     }
+
+
+
+
     public function restaurantMenu($id)
     {
         $restaurant = Restaurant::where('id', $id)->first();

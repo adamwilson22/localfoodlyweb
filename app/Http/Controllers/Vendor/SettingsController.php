@@ -23,7 +23,12 @@ class SettingsController extends Controller
         $user = auth('vendor')->user()->id;
         $data = Vendor::where('id',$user)->first();
         $restaurant = Restaurant::where('vendor_id',$user)->first();
-        return view('vendor-views.addon.settings', compact('data', 'restaurant'));
+        $kitchengallery = KitchenGallery::where('restaurant_id', $restaurant->id)->get();
+        // foreach ($kitchengallery as $g) {
+        //     # code...
+        //     dd($g->id);
+        // }
+        return view('vendor-views.addon.settings', compact('data', 'restaurant', 'kitchengallery'));
     }
 
     public function UpdateProfile(Request $request)
@@ -122,6 +127,28 @@ class SettingsController extends Controller
 
     }
 
+    public function DeleteStoreGallery(Request $request, $id)
+    {
+        // dd($request->all());
+        // $user = auth('vendor')->user()->id;
+        // $data = Vendor::where('id',$user)->first();
+        // $restaurant = Restaurant::where('vendor_id',$user)->first();
+        $kitchengallery = KitchenGallery::where('id', $id)->first();
+        // dd($kitchengallery);
+        if($kitchengallery->delete())
+        {
+            return [
+                'status' => true,
+                'message' => 'Image Deleted'
+            ];
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Image Not Deleted'
+            ];
+        }
+
+    }
     // Create Store
 
     public function CreateStore(Request $request)

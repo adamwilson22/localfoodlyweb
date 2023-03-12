@@ -62,18 +62,44 @@
 
     <section class="listitem section-padding">
         <div class="container">
-            <select name="" id="" class="btn btn-primary mr-2">
-                <option value="">Filter</option>
-                <option value="">burger</option>
-                <option value="">pizza</option>
-                <option value="">sandwich</option>
-            </select>
             <select name="" id="" class="btn btn-secondary">
                 <option value="">Sort</option>
                 <option value="">Newest</option>
                 <option value="">Oldest</option>
                 <option value="">Popular</option>
             </select>
+            
+            <select name="" id="mySelect" class="btn btn-primary mr-2">
+                <option selected disabled>Select Your Filter</option>
+                <option value="Category">Category</option>
+                <option value="Badges">Badges</option>
+            
+            </select>
+
+            {{-- <form method="GET" action="{{ route('foods.filter') }}"> --}}
+                {{-- <input type="text" name="search" placeholder="Search by food name..."> --}}
+               
+            
+            
+            
+            <div class="form-group" style="display:none" id ="FilterCategory">
+                <form method="GET" action="{{ route('foods.filter1',$restaurant->id) }}">
+                {!! Form::label('category', 'Filter by Category') !!}
+                {!! Form::select('category', $categories, null, ['class' => 'form-control']) !!}
+                <button type="submit"  id ="FilterCategory1"> Filter</button>
+                 </form>
+            </div>
+
+            <div class="form-group" style="display:none" id ="FilterBadges">
+                <form method="GET" action="{{ route('foods.filter2',$restaurant->id) }}">
+                {!! Form::label('Badges', 'Filter by Badges') !!}
+                {!! Form::select('badges', $badges, null, ['class' => 'form-control']) !!}
+
+                <button type="submit" id ="FilterBadges1"> Filter</button>
+                </form>
+            </div>
+       
+           
             <div class="row mt-3">
                 @forelse ($foods as $food)
                     @php
@@ -159,6 +185,45 @@
 @section('script')
 
     <script type="text/javascript">
+      $(document).ready(function () {
+           console.log("osama");
+           selectElement = document.querySelector('#mySelect');
+
+selectElement.addEventListener('change', (event) => {
+
+   selectedOption = event.target.value;
+  console.log(`Selected option: ${selectedOption}`);
+
+  if (selectedOption == "Category") {
+    $("#FilterCategory").show();
+    $("#FilterCategory1").show();
+    $("#FilterBadges").hide();
+    $("#FilterBadges1").hide();
+  } if (selectedOption == "Badges") {
+    $("#FilterBadges").show();
+    $("#FilterBadges1").show();
+    $("#FilterCategory").hide();
+    $("#FilterCategory1").hide();
+  }
+
+
+  // Perform any other actions you want to take when an option is selected
+  // API Calling for Filtering Data 
+
+//   axios.post('/vendor-panel/sortProducts', {
+//                         ids: ids.join()
+//                     })
+//                     .then(function(response) {
+//                         console.log(response.data);
+//                     })
+//                     .catch(function(error) {
+//                         console.log(error);
+//                     });
+
+});
+        });
+
+
         $(".add-to-cart").click(function(e) {
             e.preventDefault();
             var ele = $(this);

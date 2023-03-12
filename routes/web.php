@@ -34,6 +34,12 @@ Route::group(['prefix' => 'customer'], function () {
             Route::get('/editprofile', [RestaurantController::class, 'customerDetails'])->name('customer.details');
             Route::post('/updateprofile', [RestaurantController::class, 'updateProfile'])->name('profile.update');
             
+            // Filter Data badges or Categories
+            Route::get('/view/{id}/restaurant', [RestaurantController::class, 'restaurantView'])->name('restaurant.view');
+            Route::get('/view/{id}/restaurant/filter', [RestaurantController::class, 'filterCategory'])->name('foods.filter1');
+            Route::get('/view/{id}/restaurant/filterbadges', [RestaurantController::class, 'filterBadges'])->name('foods.filter2');
+
+            
             Route::get('/view/{id}/restaurant', [RestaurantController::class, 'restaurantView'])->name('restaurant.view');
             Route::get('/view/{id}/restaurant-menu', [RestaurantController::class, 'restaurantMenu'])->name('restaurant.menu');
             Route::get('/view/{id}/food', [RestaurantController::class, 'foodView'])->name('food.view');

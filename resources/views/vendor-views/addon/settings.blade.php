@@ -439,6 +439,15 @@ input[type="file"] {
                                     <!--end::Input group-->
                                 </form>
                                 <!--end::Form-->
+                                <div class="container">
+                                    <h3>Kitchen Images</h3>
+                                    @foreach ($kitchengallery as $g)
+                                    <img style="width:auto; height:150px" src="{{$g->image}}" class="" alt="...">
+                                    <div class="action-btn" style="display:inline">
+                                        <button style="font-size:30px" type="button" onclick="delete_img({{$g->id}})"><i class="icon-trash"></i></button>
+                                        </div>
+                                    @endforeach 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -516,6 +525,40 @@ input[type="file"] {
             preview.src = src;
             preview.style.display = "block";
         }
+    }
+
+    function delete_img(id) {
+        var del = id;
+        // var url = "{{ route('vendor.kitchen.delete.gallery',"+ del + " ) }}";
+        var url = '{{ route("vendor.kitchen.delete.gallery", ":id") }}';
+        url = url.replace(':id', id);
+
+        console.log(del);
+        console.log(url);
+        $.ajax({
+                    url: url,
+                    method: "DELETE",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        // id: ele.attr("data-id")
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        console.log(response);
+                        toastr.success("Image Deleted");
+                        setTimeout(function(){
+                            window.location.reload(1);
+                        }, 1000);
+                        // parent_row.remove();
+                        // $(".cart-count").html(response.countlist);
+                        // $("span#status").html('<div class="alert alert-success">' + response.msg +
+                        //     '</div>');
+
+                        // $("#header-bar").html(response.data);
+
+                        // cart_total.text(response.total);
+                    }
+                });
     }
     </script>
     @endpush
