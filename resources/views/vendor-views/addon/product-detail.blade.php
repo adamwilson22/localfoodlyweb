@@ -26,6 +26,13 @@
                     <div class="col-lg-6">
                         <div class="product-detail">
                             <div class="product-big">
+
+                                @if ($product->feature_image != null )
+                                <li> 
+                                    <img src="{{$product->feature_image }}"
+                                       >
+                                </li>
+                                @endif
                                 @foreach ($product->image as $img)
                                 <div>
                                     <img src="{{ $img }}" alt="">
@@ -49,7 +56,12 @@
                                 <a href="#" class="btn btn-primary btn-lg w-100" data-toggle="modal" data-target="#sharedModalCenter">Share This Product</a>
                             </div>
                             <div class="product-nav">
-                                
+                                @if ($product->feature_image != null )
+                                <li> 
+                                    <img src="{{$product->feature_image }}"
+                                       >
+                                </li>
+                                @endif
                                 @foreach ($product->image as $img)
                                 <div>
                                     <img src="{{ $img }}" alt="">
@@ -124,25 +136,31 @@
                             </div>
                             <div class="col-lg-5">
                                 <div class="sltoption justify-content-end">
-                                    <img src="{{ asset('public/assets/admin/img/vegan.png') }}" alt="">
+                                    {{-- <img src="{{ asset('public/assets/admin/img/vegan.png') }}" alt="">
                                     <img src="{{ asset('public/assets/admin/img/madetoorder.png') }}" alt="">
-                                    <img src="{{ asset('public/assets/admin/img/nutfree.png') }}" alt="">
+                                    <img src="{{ asset('public/assets/admin/img/nutfree.png') }}" alt=""> --}}
+                                   <?php $array = json_decode($product->badges);?>
+                                    @foreach($badges as $badge)
+                                    @if ($array !=null && (in_array($badge->id, $array)) )
+                                    <img src={{$badge->image }} class="" alt="" />
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                         
                         <div class="star">
-                            @for ($i = 0 ; $i  < $product->rating_count ; $i++)
+                            @for ($i = 0 ; $i  < $product->rating_count+5 ; $i++)
                             
                                 <i class="icon-star_icon"></i>    
                             
                             @endfor
                             
-                            ({{ $product->rating_count }})
+                            ({{ $product->rating_count+5 }})
                         </div>
 
                         <p>{{$product->description}}</p>
-                        <div class="btn-group sizing-btn btn-group-toggle" data-toggle="buttons">
+                        {{-- <div class="btn-group sizing-btn btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-secondary active">
                                 <input type="radio" name="options" id="small" autocomplete="off" checked> S
                             </label>
@@ -155,7 +173,7 @@
                             <label class="btn btn-secondary">
                                 <input type="radio" name="options" id="extralarge" autocomplete="off"> XL
                             </label>
-                        </div>
+                        </div> --}}
                         <div class=" form-group">
                             <label class="input-label" for="">{{'Serves: ' . $product->serves }}</label>
                             {{-- <select name="" id="" class="custom-select custom-select-lg">
@@ -195,17 +213,18 @@
                             </div> --}}
                         </div>
                         <div class="input-group quantity-add">
-                            <span class="input-group-btn">
+                            {{-- <span class="input-group-btn">
                                 <button id="minusBtn" type="button" class="btn btn-default btn-number"  data-type="minus" data-field="quant[1]">
                                     <i class="icon-minus_round_icon"></i>
                                 </button>
-                            </span>
-                            $<input id="product_price" type="text" name="quant[1]" class="input-number" value="{{$product->price}}" min="8" max="3000">
-                            <span class="input-group-btn">
+                            </span> --}}
+                            ${{$product->price}}
+                            {{-- $<input id="product_price" type="text" name="quant[1]" class="input-number" value="{{$product->price}}" min="8" max="3000"> --}}
+                            {{-- <span class="input-group-btn">
                                 <button id="plusBtn" type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]">
                                     <i class="icon-plus_round_icon"></i>
                                 </button>
-                            </span>
+                            </span> --}}
                         </div>
                     </div>
                 </div>

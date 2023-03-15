@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="review-box">
-                                    <p>RESTAURANT RREVIEWS</p>
+                                    <p>RESTAURANT REVIEWS</p>
                                     <h4>2K</h4>
                                 </div>
                             </div>
@@ -62,12 +62,12 @@
 
     <section class="listitem section-padding">
         <div class="container">
-            <select name="" id="" class="btn btn-secondary">
+            {{-- <select name="" id="" class="btn btn-secondary">
                 <option value="">Sort</option>
                 <option value="">Newest</option>
                 <option value="">Oldest</option>
                 <option value="">Popular</option>
-            </select>
+            </select> --}}
             
             <select name="" id="mySelect" class="btn btn-primary mr-2">
                 <option selected disabled>Select Your Filter</option>
@@ -111,10 +111,9 @@
                             <div class="img">
                                 <label for="">{{ $food->product_type }}</label>
                                 <a href="{{ route('food.view', $food->id) }}">
-                                    @if (!empty($product->feature_video))
-                                        <video src="{{$product->feature_video}}" controls></video>
-                                    @elseif (!empty($product->feature_image))
-                                        <img src="{{ $product->feature_image }}" alt="">
+                                    @if (!empty($food->feature_image))
+                                    <img src="{{ !empty($food->feature_image) ? $food->feature_image  : asset('customer/assets/images/news_image2-min-1.png') }}"
+                                    class="card-img-top" alt="...">
                                     @else
                                         @foreach ($images as $image)
                                             {{-- {{ dd($image) }} --}}
@@ -175,11 +174,35 @@
     </section>
         <div class="container">
             <h3>Kitchen Images</h3>
-            @foreach ($kitchengallery as $g)
-            <img style="width:auto; height:150px" src="{{$g->image}}" class="" alt="...">
-    
-            @endforeach 
-        </div>
+            @forelse ($kitchengallery as $g)
+            <div id="img{{$g->id}}" class="d-inline" style="">
+                @if(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
+                    
+                    <a href="{{$g->image}}" data-fancybox="gallery" data-caption="Kitchen Image">
+                        <img src="{{$g->image}}" class="kitchenimg" alt="...">
+                      </a>
+                @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
+                    {{-- <div class="document-file"> --}}
+                        <a href="{{ asset($g->image) }}" target="_blank" style="vertical-align: middle;">{{ $g->image }}</a>
+                    {{-- </div> --}}
+                @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['pdf']))
+                    {{-- <div class="pdf-file"> --}}
+                        <embed src="{{ asset($g->image) }}" type="application/pdf" class="kitchenimg" style="vertical-align: middle;"/>
+                    {{-- </div> --}}
+                @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm']))
+                    {{-- <div class="video-file"> --}}
+                        <video src="{{ asset($g->image) }}" class="kitchenimg" style="vertical-align: middle;" controls></video>
+                    {{-- </div> --}}
+                @endif
+                @empty
+                <p>Image not found...</p>
+                    
+                @endforelse
+                {{-- @foreach ($kitchengallery as $g)
+                <img style="width:auto; height:150px" src="{{$g->image}}" class="" alt="...">
+        
+                @endforeach  --}}
+            </div>
 @endsection
 
 @section('script')

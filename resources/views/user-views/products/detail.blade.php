@@ -103,9 +103,15 @@
                         @php
                         $images = unserialize($food->image);
                         @endphp
+                        @if ($food->feature_image != null )
+                        <li> 
+                            <img src="{{$food->feature_image }}"
+                               >
+                        </li>
+                        @endif
                         @foreach ($images as $image)
                         {{-- {{ dd($image) }} --}}
-                        <li>
+                        <li> 
                             <img src="{{ !empty(asset('public/images') . '/' . $image) ? asset('public/images') . '/' . $image : asset('public/customer/assets/images/screenshot_1.png') }}"
                                 class="" alt="...">
                         </li>
@@ -131,6 +137,13 @@
                         </li> --}}
                     </ul>
                     <ul class="dots-slider">
+                        
+                        @if ($food->feature_image != null )
+                        <li> 
+                            <img src="{{$food->feature_image }}"
+                               >
+                        </li>
+                        @endif
                         @foreach ($images as $image)
                         {{-- {{ dd($image) }} --}}
                         <li>
@@ -169,14 +182,25 @@
                         <i class="icon-star"></i>
                         <i class="icon-star"></i>
                         <i class="icon-star"></i>
-                        Based on 123 reviews
+                        Based on 128 reviews
                     </div>
+
+                  
                     <h4 class="title">{{ $food->name }}</h4>
                     <h6 id="product_price" class="price" value="{{ $food->price }}">${{ $food->price }}</h6>
                     <div class="imgs-icon">
-                        <img src="{{asset('public/customer/assets/images/screenshot_1.png') }}" class="" alt="...">
-                        <img src="{{asset('public/customer/assets/images/screenshot_2.png') }}" class="" alt="...">
-                        <img src="{{asset('public/customer/assets/images/screenshot_3.png') }}" class="" alt="...">
+           
+                      
+                        <?php $array = json_decode($food->badges);
+
+                        ?>
+                                    @foreach($badges as $badge)
+                                    @if ($array !=null &&  (in_array($badge->id, $array)) )
+                                    <img src={{$badge->image }} class="" alt="" />
+                                    @endif
+                                    @endforeach
+
+                   
                     </div>
                     <div class="info">
                         <p>Serves {{ $food->serves }}</p>
@@ -220,9 +244,10 @@
         </div>
         <hr>
         <div class="container">
+            @if (!empty($variations))
             @foreach ($variations as $key=>$option)
                 <p class="mparagraph mb-2">
-                    {{  $option->name . ' ' . $option->type . ' ' . $option->required}}
+                    {{  $option->name }}
                 </p>
                 <div class="d-flex align-items-center mb-3">
                 @foreach ($option->values as $value)
@@ -235,6 +260,8 @@
                 @endforeach
                 </div>
             @endforeach
+            @endif
+
         </div>
 </section>
 
@@ -270,7 +297,7 @@
             </div>
             <div class="col-lg-6 border-left pt-2">
                 <ul>
-                    {{ $food->ingredients }}
+                    {{ $food->allergens }}
 
                 </ul>
             </div>
@@ -306,8 +333,9 @@
                                         <h4 class="title">{{$item->name}}</h4>
                                         <h6 class="price">${{$item->price}}</h6>
 
-                                        <button class="btn btn-primary"><i class="icon-shopping-cart"></i> Add To
+                                        <button class="btn btn-primary add-to-cart" data-id="{{ $item->id }}"><i class="icon-shopping-cart"></i> Add To
                                             Cart</button>
+                                            
                                     </div>
                                 </div>
                             </div>
@@ -678,13 +706,14 @@ $(".add-to-cart").click(function(e) {
     e.preventDefault();
     var ele = $(this);
     var addMoreQuantity = $('#addMoreQuantity').val();
+    console.log(ele);
     console.log(ele.attr("data-id"));
 
     ele.siblings('.btn-loading').show();
 
     console.log(addMoreQuantity)
     $.ajax({
-        url: '{{ url('customer / add - to - cart ') }}' + '/' + ele.attr("data-id"),
+        url: '{{ url('customer/add-to-cart') }}' + '/' + ele.attr("data-id"),
         method: "get",
         data: {
             _token: '{{ csrf_token() }}',

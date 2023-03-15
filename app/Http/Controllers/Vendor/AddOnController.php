@@ -16,8 +16,9 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\CustomerGroupAssigned;
 use App\Models\CustomerGroups;
+use App\Models\Units;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 class AddOnController extends Controller
 {
     public function index()
@@ -64,8 +65,74 @@ class AddOnController extends Controller
         $category = Category::where('restaurant_id', Helpers::get_restaurant_id())->get();
         $addon = AddOn::all();
         $badges = Badge::where('restaurant_id', $restaurant->id)->get();
-        return view('vendor-views.addon.addproduct', compact(["category", "type", "addon", "badges"]));
+        $units = Units::where('restaurant_id',Helpers::get_restaurant_id())->get();
+        // dd( $addon);
+        return view('vendor-views.addon.addproduct', compact(["category", "type", "addon", "badges", "units"]));
     }
+
+    public function addUnit(Request $request){
+        
+        $unitFound = DB::table('units')
+        ->where('unit_name', $request->unitName)
+        ->where('restaurant_id', Helpers::get_restaurant_id())
+        ->get();
+        
+        // dd(count($unitFound));
+        
+        // if($unitFound){
+        //     $unitFound->unit_name = $request->unitName;
+        //     $unitFound->save();
+        // }
+        // else{
+        //     DB::table('units')->insert(
+        //         [
+        //             'unit_name' => $request->unitName,
+        //             'restaurant_id', Helpers::get_restaurant_id()
+        //         ]
+        //     );
+        // }
+        // if($unitFound){
+        //     DB::table('units')
+        //     ->where('id', $unitFound[0]->id)
+        //     ->update(['unit_name' => $request->unitName]);
+        // }
+        if(count($unitFound) > 0){
+            return "0";
+        }
+        else{
+        DB::table('units')->insert(
+            [
+                'unit_name' => $request->unitName,
+                'restaurant_id' => Helpers::get_restaurant_id()
+            ]
+        );
+        
+        // $units = Units::where('restaurant_id',Helpers::get_restaurant_id())->get();
+        // $units = DB::table('units')->las
+        return response()->json($request->unitName);
+    }
+        // if ($unitFound) {
+        //     return Redirect('vendor-panel/addon/add_unit')->with([
+        //         "message" => "Unit already exists!",
+        //         "code"      => 1,
+        //         "status"    => true
+        //     ]);
+        // } 
+        // else {
+        //     DB::table('units')->insert(
+        //         [
+        //             'unit_name' => $request->unitName,
+        //             'restaurant_id', Helpers::get_restaurant_id()
+        //         ]
+        //     );
+        //     return Redirect('Vendor-panel/addon/add_unit')->with([
+        //         "code"      => 0,
+        //         'message'   => "Unit added!",
+        //         "status"    => false
+        //     ]);
+        // }
+    }
+
     public function addproduct2()
     {
         $vendor = auth('vendor')->user()->id;
@@ -160,10 +227,50 @@ class AddOnController extends Controller
         }
     }
 
+    public function assignGroupToCustomers(Request $request){
+        // $assignGroupToCustomer = new CustomerGroupAssigned();
+        $success = false;
+
+        foreach($request->customers as $customer){
+            $success = DB::table('customer_group_assigned')
+                ->updateOrInsert(
+                    ['customer_id' =>  $customer],
+                    ['group_id' => $request->groupID]
+                );
+
+            // $assignGroupToCustomer->customer_id = $customer;
+            // $assignGroupToCustomer->group_id = $request->groupID;
+            // $insert = $assignGroupToCustomer->save();
+        }
+
+        if ($success) {
+            return Redirect('vendor-panel/addon/customer')->with([
+                "message" => "Customer Group(s) assigned Successfully",
+                "code"      => 1,
+                "status"    => true
+            ]);
+        } else {
+            return Redirect('Vendor-panel/addon/customer')->with([
+                "code"      => 0,
+                'message'   => "Customer Group(s) Not assigned!",
+                "status"    => false
+            ]);
+        }
+    }
+
     public function customer()
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        $customers[] = Customer::all();
+        // $customers[] = Customer::all();
+        $assignedCustomerGroups = DB::table('customers as cc')
+            ->leftJoin('customer_group_assigned as cga', 'cga.customer_id', '=', 'cc.id')
+            ->leftJoin('customer_groups as cg', 'cg.id', '=', 'cga.id')
+            ->select('cc.id as id','cc.ful_name as customer_name','cg.name as customer_group_name','cc.email','cc.phone_number','cc.address','cc.image')
+            ->get();
+        
+        $customerGroups = CustomerGroups::all();
+
+        // dd($customerGroups);
         // $customerGroup = CustomerGroupAssigned::all();
         // foreach($customers as $key => $item){
         //     foreach($item as $customer){
@@ -171,17 +278,22 @@ class AddOnController extends Controller
         //     }
         // }
         
-        return view('vendor-views.addon.customer', compact('customers'));
+        return view('vendor-views.addon.customer', compact('assignedCustomerGroups', 'customerGroups'));
     }
     public function settings()
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         return view('vendor-views.addon.settings'/**/);
     }
-    public function single_customer()
+    public function single_customer(Request $request)
     {
-        $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.single-customer');
+        $customerDetails = DB::table('customers as cc')
+        ->where('id', '=', $request->id)
+        ->select('cc.id as id','cc.ful_name as customer_name','cc.email','cc.phone_number','cc.address')
+        ->first();
+        // dd($customerDetails);
+        // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
+        return view('vendor-views.addon.single-customer', compact('customerDetails'));
     }
     public function order()
     {

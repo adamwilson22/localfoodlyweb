@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Food, Order, OrderTransaction};
+use App\Models\{Food, Order, OrderTransaction, AddOn};
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,10 @@ class CartController extends Controller
 
         $food = Food::find($id);
         if (!$food) {
-            abort(404);
+            $food = AddOn::find($id);
+            if(!$food){
+                abort(404);
+            }
         }
 
         $cart = session()->get('cart');

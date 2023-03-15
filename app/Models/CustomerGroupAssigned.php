@@ -13,8 +13,4 @@ class CustomerGroupAssigned extends Model
         'group_id'
     ];
 
-    public function customers()
-    {
-        return $this->hasMany(Customer::class);
-    }
 }

@@ -536,51 +536,87 @@
                                         </div>
                                     </div>
                                 </div> --}}
-
+                                <?php 
+                                $array = json_decode($product->badges); 
+                                
+                                ?>
                                 <div class=" form-group">
                                     <label class="input-label" for="">Unit</label>
                                     <input type="number" class="form-control form-control-lg" name="unit" value="{{$product->unit}}" placeholder="Please enter the quantity or size">
                                 </div>
                                 <div class=" form-group">
                                     <label class="input-label" for="addons">Add-On</label>
-                                    <select name="add_ons[]" class="custom-select custom-select-lg" multiple data-placeholder="Select Add-On">
-                                        <!--<option>Italian Sausage</option>-->
-                                        <!--<option>Meatballs</option>-->
-                                        <!--<option>Nuggets</option>-->
+                                    <select class="addonDropdown" name="add_ons[]" multiple="multiple">
                                         @foreach ($addon as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            <option  value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
-                                      </select>
+                                    </select>
                                 </div>
                                 <div class=" form-group">
-                                    <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More Add-On</a>
+                                    <a href="{{ route('vendor.addon.add-new') }}">Create More Add-On</a>
                                 </div>
                                 <div class=" form-group">
                                     <label class="input-label" for="addons">Badge</label>
-                                    <select name="Badge[]" class="custom-select custom-select-lg" multiple
-                                        data-placeholder="Select Badge">
-                                        {{-- <option>Italian Sausage</option>
-                                        <option>Meatballs</option>
-                                        <option>Nuggets</option> --}}
+                                    <select class="badgesDropdown" name="Badge[]" multiple="multiple">
                                         @foreach ($badges as $badge)
-                                            <option value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                        @if ($array !=null &&  (in_array($badge->id, $array)) )
+                                            <option selected value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                        @else
+                                        <option value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                        @endif 
+                                          
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class=" form-group">
                                     <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
                                 </div>
-                                 <div class="form-group">
-                                     <div class="variant_combination" id="variant_combination">
-                                        @include(
-                                            'vendor-views.product.partials._edit-combinations',
-                                            [
-                                                'combinations' => json_decode(
-                                                    $product['variations'],
-                                                    true
-                                                ),
-                                            ]
-                                        )
+                                
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="card-title">
+                                                <span class="card-header-icon">
+                                                    <i class="tio-canvas-text"></i>
+                                                </span>
+                                                <span> {{ translate('messages.food_variations') }}</span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-2">
+                                                <div class="col-md-12" >
+                                                    <div id="add_new_option">
+                                                    @if (isset($product->variations))
+                                                        @foreach (json_decode($product->variations,true) as $key_choice_options=>$item)
+                                                            {{-- {{ dd($item['price']) }} --}}
+        
+                                                            @if (isset($item["price"]))
+                                                                <div class="col-md-12">
+                                                                    <div class="variant_combination" id="variant_combination">
+                                                                        @include(
+                                                                            'admin-views.product.partials._edit-combinations',
+                                                                            [
+                                                                                'combinations' => json_decode(
+                                                                                    $product['variations'],
+                                                                                    true
+                                                                                ),
+                                                                            ]
+                                                                        )
+                                                                    </div>
+                                                                </div>
+                                                                @break
+                                                            @else
+                                                                @include('admin-views.product.partials._new_variations',['item'=>$item,'key'=>$key_choice_options+1])
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <button type="button" class="btn btn-outline-success" id="add_new_option_button">{{translate('add_new_variation')}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class=" form-group">
@@ -843,6 +879,8 @@
 @push('custom_js')
 <script >
     $(function() {
+        $('.addonDropdown').select2();
+            $('.badgesDropdown').select2();
     // Multiple images preview with JavaScript
     var previewImages = function(input, imgPreviewPlaceholder) {
     if (input.files) {
@@ -911,105 +949,8 @@ function render_img(input) {
 
     </script>
 <script>
-$(document).ready(function () {
 
-var select = $('select[multiple]');
-var options = select.find('option');
 
-var div = $('<div />').addClass('selectMultiple');
-var active = $('<div />');
-var list = $('<ul />');
-var placeholder = select.data('placeholder');
-
-var span = $('<span />').text(placeholder).appendTo(active);
-
-options.each(function () {
-  var text = $(this).text();
-  if ($(this).is(':selected')) {
-    active.append($('<a />').html('<em>' + text + '</em><i></i>'));
-    span.addClass('hide');
-  } else {
-    list.append($('<li />').html(text));
-  }
-});
-
-active.append($('<div />').addClass('arrow'));
-div.append(active).append(list);
-
-select.wrap(div);
-
-$(document).on('click', '.selectMultiple ul li', function (e) {
-  var select = $(this).parent().parent();
-  var li = $(this);
-  if (!select.hasClass('clicked')) {
-    select.addClass('clicked');
-    li.prev().addClass('beforeRemove');
-    li.next().addClass('afterRemove');
-    li.addClass('remove');
-    var a = $('<a />').addClass('notShown').html('<em>' + li.text() + '</em><i></i>').hide().appendTo(select.children('div'));
-    a.slideDown(400, function () {
-      setTimeout(function () {
-        a.addClass('shown');
-        select.children('div').children('span').addClass('hide');
-        select.find('option:contains(' + li.text() + ')').prop('selected', true);
-      }, 500);
-    });
-    setTimeout(function () {
-      if (li.prev().is(':last-child')) {
-        li.prev().removeClass('beforeRemove');
-      }
-      if (li.next().is(':first-child')) {
-        li.next().removeClass('afterRemove');
-      }
-      setTimeout(function () {
-        li.prev().removeClass('beforeRemove');
-        li.next().removeClass('afterRemove');
-      }, 200);
-
-      li.slideUp(400, function () {
-        li.remove();
-        select.removeClass('clicked');
-      });
-    }, 600);
-  }
-});
-
-$(document).on('click', '.selectMultiple > div a', function (e) {
-  var select = $(this).parent().parent();
-  var self = $(this);
-  self.removeClass().addClass('remove');
-  select.addClass('open');
-  setTimeout(function () {
-    self.addClass('disappear');
-    setTimeout(function () {
-      self.animate({
-        width: 0,
-        height: 0,
-        padding: 0,
-        margin: 0
-      }, 300, function () {
-        var li = $('<li />').text(self.children('em').text()).addClass('notShown').appendTo(select.find('ul'));
-        li.slideDown(400, function () {
-          li.addClass('show');
-          setTimeout(function () {
-            select.find('option:contains(' + self.children('em').text() + ')').prop('selected', false);
-            if (!select.find('option:selected').length) {
-              select.children('div').children('span').removeClass('hide');
-            }
-            li.removeClass();
-          }, 400);
-        });
-        self.remove();
-      })
-    }, 300);
-  }, 400);
-});
-
-$(document).on('click', '.selectMultiple > div .arrow, .selectMultiple > div span', function (e) {
-  $(this).parent().parent().toggleClass('open');
-});
-
-});
 
     $('#related_tags, #ingredients, #allergens').on('change',function(){
         $('.'+$(this).attr('id')).append(render_tag((this).value, (this).id));
@@ -1028,5 +969,238 @@ function render_tag(value, id) {
         `;
     return tag;
 }
+</script>
+<script>
+    function show_min_max(data){
+        $('#min_max1_'+data).removeAttr("readonly");
+        $('#min_max2_'+data).removeAttr("readonly");
+        $('#min_max1_'+data).attr("required","true");
+        $('#min_max2_'+data).attr("required","true");
+    }
+    function hide_min_max (data){
+        $('#min_max1_'+data).val(null).trigger('change');
+        $('#min_max2_'+data).val(null).trigger('change');
+        $('#min_max1_'+data).attr("readonly","true");
+        $('#min_max2_'+data).attr("readonly","true");
+        $('#min_max1_'+data).attr("required","false");
+        $('#min_max2_'+data).attr("required","false");
+    }
+
+
+
+    var count= {{isset($product->variations)?count(json_decode($product->variations,true)):0}};
+
+    $(document).ready(function(){
+        console.log(count);
+
+        $("#add_new_option_button").click(function(e){
+        count++;
+        var add_option_view = `
+    <div class="card view_new_option mb-2" >
+        <div class="card-header">
+            <label for="" id=new_option_name_`+count+`> {{  translate('add new variation')}}</label>
+        </div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-lg-3 col-md-6">
+                    <label for="">{{ translate('name')}}</label>
+                    <input required name=options[`+count+`][name] class="form-control" type="text" onkeyup="new_option_name(this.value,`+count+`)">
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="form-group">
+                        <label class="input-label text-capitalize d-flex alig-items-center"><span class="line--limit-1">{{ translate('messages.selcetion_type') }} </span>
+                        </label>
+                        <div class="resturant-type-group border">
+                            <label class="form-check form--check mr-2 mr-md-4">
+                                <input class="form-check-input" type="radio" value="multi"
+                                name="options[`+count+`][type]" id="type`+count+`" checked onchange="show_min_max(`+count+`)"
+                                >
+                                <span class="form-check-label">
+                                    {{ translate('Multiple') }}
+                                </span>
+                            </label>
+
+                            <label class="form-check form--check mr-2 mr-md-4">
+                                <input class="form-check-input" type="radio" value="single"
+                                name="options[`+count+`][type]" id="type`+count+`" onchange="hide_min_max(`+count+`)"
+                                >
+                                <span class="form-check-label">
+                                    {{ translate('Single') }}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="row g-2">
+                        <div class="col-sm-6 col-md-4">
+                            <label for="">{{  translate('Min')}}</label>
+                            <input id="min_max1_`+count+`" required name="options[`+count+`][min]" class="form-control" type="number" min="1">
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <label for="">{{  translate('Max')}}</label>
+                            <input id="min_max2_`+count+`" required name="options[`+count+`][max]" class="form-control" type="number" min="1">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="d-md-block d-none">&nbsp;</label>
+                                <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <input id="options[`+count+`][required]" name="options[`+count+`][required]" type="checkbox">
+                                    <label for="options[`+count+`][required]" class="m-0">{{  translate('Required')}}</label>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger btn-sm delete_input_button" onclick="removeOption(this)"
+                                        title="{{  translate('Delete')}}">
+                                        <i class="tio-add-to-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        <div id="option_price_` + count + `" >
+                <div class="border rounded p-3 pb-0 mt-3">
+                    <div  id="option_price_view_` + count + `">
+                        <div class="row g-3 add_new_view_row_class mb-3">
+                            <div class="col-md-4 col-sm-6">
+                                <label for="">{{ translate('Option_name') }}</label>
+                                <input class="form-control" required type="text" name="options[` + count +`][values][0][label]" id="">
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <label for="">{{ translate('Additional_price') }}</label>
+                                <input class="form-control" required type="number" min="0" step="0.01" name="options[` + count + `][values][0][optionPrice]" id="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 p-3 mr-1 d-flex "  id="add_new_button_` + count + `">
+                        <button type="button" class="btn btn-outline-primary" onclick="add_new_row_button(` +
+                count + `)" >{{ translate('Add_New_Option') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+        $("#add_new_option").append(add_option_view);
+
+        });
+
+    });
+
+    function new_option_name(value,data)
+    {
+        $("#new_option_name_"+data).empty();
+        $("#new_option_name_"+data).text(value)
+        console.log(value);
+    }
+    function removeOption(e)
+    {
+        element = $(e);
+        element.parents('.view_new_option').remove();
+    }
+    function deleteRow(e)
+    {
+        element = $(e);
+        element.parents('.add_new_view_row_class').remove();
+    }
+
+
+    function add_new_row_button(data)
+    {
+        count = data;
+        countRow = 1 + $('#option_price_view_'+data).children('.add_new_view_row_class').length;
+        var add_new_row_view = `
+            <div class="row add_new_view_row_class mb-3 position-relative pt-3 pt-md-0">
+                <div class="col-md-4 col-sm-5">
+                        <label for="">{{translate('Option_name')}}</label>
+                        <input class="form-control" required type="text" name="options[`+count+`][values][`+countRow+`][label]" id="">
+                    </div>
+                    <div class="col-md-4 col-sm-5">
+                        <label for="">{{translate('Additional_price')}}</label>
+                        <input class="form-control"  required type="number" min="0" step="0.01" name="options[`+count+`][values][`+countRow+`][optionPrice]" id="">
+                    </div>
+                    <div class="col-sm-2 max-sm-absolute">
+                        <label class="d-none d-md-block">&nbsp;</label>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)"
+                                title="{{translate('Delete')}}">
+                                <i class="tio-add-to-trash"></i>
+                            </button>
+                        </div>
+                </div>
+            </div>`;
+        $('#option_price_view_'+data).append(add_new_row_view);
+
+    }
+
+</script>
+
+<script>
+    $('#choice_attributes').on('change', function() {
+        $('#customer_choice_options').html(null);
+        combination_update();
+        $.each($("#choice_attributes option:selected"), function() {
+            add_more_customer_choice_option($(this).val(), $(this).text());
+        });
+    });
+
+    function add_more_customer_choice_option(i, name) {
+        let n = name;
+        $('#customer_choice_options').append(
+            '<div class="row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i +
+            '"><input type="text" class="form-control" name="choice[]" value="' + n +
+            '" placeholder="Choice Title" readonly></div><div class="col-lg-9"><input type="text" class="form-control" name="choice_options_' +
+            i +
+            '[]" placeholder="Enter choice values" data-role="tagsinput" onchange="combination_update()"></div></div>'
+            );
+        $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+    }
+
+    setTimeout(function() {
+        $('.call-update-sku').on('change', function() {
+            combination_update();
+        });
+    }, 2000)
+
+    $('#colors-selector').on('change', function() {
+        combination_update();
+    });
+
+    $('input[name="unit_price"]').on('keyup', function() {
+        combination_update();
+    });
+
+    function combination_update() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '{{ route('admin.food.variant-combination') }}',
+            data: $('#product_form').serialize(),
+            beforeSend: function() {
+                $('#loading').show();
+            },
+            success: function(data) {
+                $('#loading').hide();
+                $('#variant_combination').html(data.view);
+                if (data.length > 1) {
+                    $('#quantity').hide();
+                } else {
+                    $('#quantity').show();
+                }
+            }
+        });
+    }
 </script>
 @endpush

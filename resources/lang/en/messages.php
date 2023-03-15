@@ -1359,4 +1359,6 @@
   'Required' => 'Required',
   'Add_New_Option' => 'Add New Option',
   'variant' => 'variant',
+  'please_add_more_options_or_change_the_max_value_for' => 'please add more options or change the max value for',
+  'add new variation' => 'add new variation',
 );

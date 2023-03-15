@@ -150,7 +150,7 @@
         <div class="container">
             <h3>Kitchen Images</h3>
             @foreach ($kitchengallery as $g)
-            <img style="width:auto; height:150px" src="{{$g->image}}" class="" alt="...">
+            <img src="{{$g->image}}" class="kitchenimg" alt="...">
     
             @endforeach 
         </div>

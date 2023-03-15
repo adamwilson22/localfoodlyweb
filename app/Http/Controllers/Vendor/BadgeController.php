@@ -11,7 +11,9 @@ class BadgeController extends Controller
 {
     public function index()
     {
-        $badges = Badge::paginate(config('default_pagination'));
+        $badges = Badge::where('restaurant_id', \App\CentralLogics\Helpers::get_restaurant_id())->paginate(config('default_pagination'));
+        // $badges = Badge::where('restaurant_id', \App\CentralLogics\Helpers::get_restaurant_id())->get();
+        // dd($badges);
         return view('vendor-views.addon.badge', compact('badges'));
     }
 

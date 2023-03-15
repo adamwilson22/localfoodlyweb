@@ -538,22 +538,41 @@
                                         </div>
                                     </div>
                                 </div> --}}
-
+                                <?php 
+                                $array = json_decode($product->badges); 
+                                
+                                ?>
                                 <div class=" form-group">
                                     <label class="input-label" for="">Unit</label>
                                     <input type="number" class="form-control form-control-lg" name="unit" value="{{$product->unit}}" placeholder="Please enter the quantity or size">
                                 </div>
                                 <div class=" form-group">
-                                    <label class="input-label" for="addons">Add-On</label>
-                                    <select name="add_ons[]" class="custom-select custom-select-lg" multiple data-placeholder="Select Add-On">
-                                        <option>Italian Sausage</option>
-                                        <option>Meatballs</option>
-                                        <option>Nuggets</option>
-                                      </select>
-                                </div>
-                                <div class=" form-group">
-                                    <a href="#">Create More Add-On</a>
-                                </div>
+                                  <label class="input-label" for="addons">Add-On</label>
+                                  <select class="addonDropdown" name="add_ons[]" multiple="multiple">
+                                      @foreach ($addon as $item)
+                                          <option selected value="{{ $item->id }}">{{ $item->name }}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                              <div class=" form-group">
+                                  <a href="{{ route('vendor.addon.add-new') }}">Create More Add-On</a>
+                              </div>
+                              <div class=" form-group">
+                                  <label class="input-label" for="addons">Badge</label>
+                                  <select class="badgesDropdown" name="Badge[]" multiple="multiple">
+                                    @foreach ($badges as $badge)
+                                    @if ($array !=null &&  (in_array($badge->id, $array)) )
+                                        <option selected value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                    @else
+                                    <option value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                    @endif 
+                                      
+                                    @endforeach
+                                  </select>
+                              </div>
+                              <div class=" form-group">
+                                  <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
+                              </div>
 
                                 <div class=" form-group">
                                     <label class="input-label" for="">Serves</label>
@@ -788,6 +807,8 @@
 @push('custom_js')
 <script >
     $(function() {
+      $('.addonDropdown').select2();
+            $('.badgesDropdown').select2();
     // Multiple images preview with JavaScript
     var previewImages = function(input, imgPreviewPlaceholder) {
     if (input.files) {
@@ -855,105 +876,7 @@ function render_img(input) {
 
     </script>
 <script>
-$(document).ready(function () {
 
-var select = $('select[multiple]');
-var options = select.find('option');
-
-var div = $('<div />').addClass('selectMultiple');
-var active = $('<div />');
-var list = $('<ul />');
-var placeholder = select.data('placeholder');
-
-var span = $('<span />').text(placeholder).appendTo(active);
-
-options.each(function () {
-  var text = $(this).text();
-  if ($(this).is(':selected')) {
-    active.append($('<a />').html('<em>' + text + '</em><i></i>'));
-    span.addClass('hide');
-  } else {
-    list.append($('<li />').html(text));
-  }
-});
-
-active.append($('<div />').addClass('arrow'));
-div.append(active).append(list);
-
-select.wrap(div);
-
-$(document).on('click', '.selectMultiple ul li', function (e) {
-  var select = $(this).parent().parent();
-  var li = $(this);
-  if (!select.hasClass('clicked')) {
-    select.addClass('clicked');
-    li.prev().addClass('beforeRemove');
-    li.next().addClass('afterRemove');
-    li.addClass('remove');
-    var a = $('<a />').addClass('notShown').html('<em>' + li.text() + '</em><i></i>').hide().appendTo(select.children('div'));
-    a.slideDown(400, function () {
-      setTimeout(function () {
-        a.addClass('shown');
-        select.children('div').children('span').addClass('hide');
-        select.find('option:contains(' + li.text() + ')').prop('selected', true);
-      }, 500);
-    });
-    setTimeout(function () {
-      if (li.prev().is(':last-child')) {
-        li.prev().removeClass('beforeRemove');
-      }
-      if (li.next().is(':first-child')) {
-        li.next().removeClass('afterRemove');
-      }
-      setTimeout(function () {
-        li.prev().removeClass('beforeRemove');
-        li.next().removeClass('afterRemove');
-      }, 200);
-
-      li.slideUp(400, function () {
-        li.remove();
-        select.removeClass('clicked');
-      });
-    }, 600);
-  }
-});
-
-$(document).on('click', '.selectMultiple > div a', function (e) {
-  var select = $(this).parent().parent();
-  var self = $(this);
-  self.removeClass().addClass('remove');
-  select.addClass('open');
-  setTimeout(function () {
-    self.addClass('disappear');
-    setTimeout(function () {
-      self.animate({
-        width: 0,
-        height: 0,
-        padding: 0,
-        margin: 0
-      }, 300, function () {
-        var li = $('<li />').text(self.children('em').text()).addClass('notShown').appendTo(select.find('ul'));
-        li.slideDown(400, function () {
-          li.addClass('show');
-          setTimeout(function () {
-            select.find('option:contains(' + self.children('em').text() + ')').prop('selected', false);
-            if (!select.find('option:selected').length) {
-              select.children('div').children('span').removeClass('hide');
-            }
-            li.removeClass();
-          }, 400);
-        });
-        self.remove();
-      })
-    }, 300);
-  }, 400);
-});
-
-$(document).on('click', '.selectMultiple > div .arrow, .selectMultiple > div span', function (e) {
-  $(this).parent().parent().toggleClass('open');
-});
-
-});
 
     $('#related_tags, #ingredients, #allergens').on('change',function(){
         $('.'+$(this).attr('id')).append(render_tag((this).value, (this).id));

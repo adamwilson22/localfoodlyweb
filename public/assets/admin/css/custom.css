@@ -2294,6 +2294,20 @@ body.matchespg footer {
     font-size: 12px;
     padding: 8px;
 }
+.select2-container--default .select2-selection--multiple {
+    padding-top: 4px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background-color: transparent !important;
+}
+.select2-selection__choice__remove {
+    right: auto !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #ffffff !important;
+    padding-right: 6px !important;
+}
+
 @media (max-width: 1599px) {
     .customer .detail .points {
         text-align: left;

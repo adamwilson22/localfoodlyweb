@@ -388,7 +388,7 @@
                                     <div class=" form-group">
                                         <label class="input-label" for="">Product Name *</label>
                                         <input type="text" class="form-control form-control-lg" name="name"
-                                            placeholder="Name">
+                                            placeholder="Name" value="{{ old('name') }}">
                                     </div>
                                     <div class=" form-group" hidden>
                                         <label class="input-label" for="">Product Type *</label>
@@ -403,7 +403,7 @@
                                     </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="">Description *</label>
-                                        <textarea name="description" id="description" cols="" rows="4" class="form-control form-control-lg"></textarea>
+                                        <textarea name="description" id="description" cols="" rows="4" class="form-control form-control-lg">{{ old('description') }}</textarea>
                                     </div>
 
                                     <div class=" form-group">
@@ -411,7 +411,7 @@
                                         <select name="category_id" id="category_id" class="custom-select custom-select-lg">
                                             <option value="">Please select category</option>
                                             @foreach ($category as $value)
-                                                <option value="{{ $value->id }}">{{ $value->name }} </option>
+                                                <option value="{{ $value->id }}" @if(old('category_id') == $value->id) selected @endif>{{ $value->name }} </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -422,14 +422,14 @@
                                             <div class=" form-group">
                                                 <label class="input-label" for="">Date</label>
                                                 <input type="date" class="form-control form-control-lg"
-                                                    name="fulfillment_date">
+                                                    name="fulfillment_date" value="{{ old('fulfillment_date') }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class=" form-group">
                                                 <label class="input-label" for="">Time</label>
                                                 <input type="time" class="form-control form-control-lg"
-                                                    name="fulfillment_time">
+                                                    name="fulfillment_time" value="{{ old('fulfillment_time') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -439,14 +439,14 @@
                                             <div class=" form-group">
                                                 <label class="input-label" for="">Date</label>
                                                 <input type="date" class="form-control form-control-lg"
-                                                    name="pre_order_end_date">
+                                                    name="pre_order_end_date" value="{{ old('pre_order_end_date') }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class=" form-group">
                                                 <label class="input-label" for="">Time</label>
                                                 <input type="time" class="form-control form-control-lg"
-                                                    name="pre_order_end_time">
+                                                    name="pre_order_end_time" value="{{ old('pre_order_end_time') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -455,14 +455,14 @@
                                         <select name="fulfillment_type" id=""
                                             class="custom-select custom-select-lg">
                                             <option value="">Please select a delivery option</option>
-                                            <option value="delivery">Delivery</option>
-                                            <option value="pickup">Pickup</option>
+                                            <option value="delivery" @if(old('unit_serve') == 'delivery') selected @endif>Delivery</option>
+                                            <option value="pickup" @if(old('unit_serve') == 'pickup') selected @endif>Pickup</option>
                                         </select>
                                     </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="">Pre-Order Quantity Limit</label>
                                         <input type="number" class="form-control form-control-lg"
-                                            name="pre_order_quantity_limit" placeholder="10 Purchases">
+                                            name="pre_order_quantity_limit" placeholder="10 Purchases" value="{{ old('pre_order_quantity_limit') }}">
                                     </div>
                                     {{-- PreOrders --}}
 
@@ -589,20 +589,16 @@
                                      <div class=" form-group">
                                         <label class="input-label" for="addons">Unit Serve</label>
                                         <select name="unit_serve" class="custom-select custom-select-lg" data-placeholder="Select Unit Serve">
-                                            <option value="KG">KG</option>
-                                            <option value="DAZAN">DAZAN</option>
-                                            <option value="LENGTH">LENGTH</option>
+                                            <option value="KG" @if(old('unit_serve') == 'KG') selected @endif>KG</option>
+                                            <option value="DAZAN" @if(old('unit_serve') == 'DAZAN') selected @endif>DAZAN</option>
+                                            <option value="LENGTH" @if(old('unit_serve') == 'LENGTH') selected @endif>LENGTH</option>
                                           </select>
                                         <label class="input-label" for="">Unit</label>
-                                        <input type="number" class="form-control form-control-lg" name="unit" placeholder="Please enter the quantity or size">
+                                        <input type="number" class="form-control form-control-lg" name="unit" placeholder="Please enter the quantity or size" value="{{ old('unit') }}">
                                     </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Add-On</label>
-                                        <select name="add_ons[]" class="custom-select custom-select-lg" multiple
-                                            data-placeholder="Select Add-On">
-                                            {{-- <option>Italian Sausage</option>
-                                            <option>Meatballs</option>
-                                            <option>Nuggets</option> --}}
+                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple">
                                             @foreach ($addon as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
@@ -613,11 +609,7 @@
                                     </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Badge</label>
-                                        <select name="Badge[]" class="custom-select custom-select-lg" multiple
-                                            data-placeholder="Select Badge">
-                                            {{-- <option>Italian Sausage</option>
-                                            <option>Meatballs</option>
-                                            <option>Nuggets</option> --}}
+                                        <select class="badgesDropdown" name="Badge[]" multiple="multiple">
                                             @foreach ($badges as $badge)
                                                 <option value="{{ $badge->id }}">{{ $badge->name }}</option>
                                             @endforeach
@@ -728,7 +720,7 @@
                                                     </button>
                                                 </div>
                                                 <input id="price" type="number" name="price" class="form-control"
-                                                    placeholder="67.00">
+                                                    placeholder="00" value="{{ old('price') }}">
                                             </div>
                                             <!-- End Search -->
                                         </div>
@@ -857,7 +849,7 @@
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" name="images[]" class="custom-file-input"
-                                                id="images" multiple>
+                                                id="images" multiple required>
                                             <label class="custom-file-label" for="inputGroupFile01">Upload Images/Video
                                                 <p>Select file</p>
                                             </label>
@@ -878,7 +870,7 @@
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" name="featureImage" class="custom-file-input"
-                                                id="featureImage">
+                                                id="featureImage" required>
                                             <label class="custom-file-label" for="inputGroupFile01">Upload Feature Images
                                                 Optional
                                                 <p>Select file</p>
@@ -922,6 +914,8 @@
 @push('custom_js')
     <script>
         $(function() {
+            $('.addonDropdown').select2();
+            $('.badgesDropdown').select2();
             // Multiple images preview with JavaScript
             var previewImages = function(input, imgPreviewPlaceholder) {
                 if (input.files) {
@@ -1046,115 +1040,7 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
-
-            var select = $('select[multiple]');
-            var options = select.find('option');
-
-            var div = $('<div />').addClass('selectMultiple');
-            var active = $('<div />');
-            var list = $('<ul />');
-            var placeholder = select.data('placeholder');
-
-            var span = $('<span />').text(placeholder).appendTo(active);
-
-            options.each(function() {
-                var text = $(this).text();
-                if ($(this).is(':selected')) {
-                    active.append($('<a />').html('<em>' + text + '</em><i></i>'));
-                    span.addClass('hide');
-                } else {
-                    list.append($('<li />').html(text));
-                }
-            });
-
-            active.append($('<div />').addClass('arrow'));
-            div.append(active).append(list);
-
-            select.wrap(div);
-
-            $(document).on('click', '.selectMultiple ul li', function(e) {
-                var select = $(this).parent().parent();
-                var li = $(this);
-                if (!select.hasClass('clicked')) {
-                    select.addClass('clicked');
-                    li.prev().addClass('beforeRemove');
-                    li.next().addClass('afterRemove');
-                    li.addClass('remove');
-                    var a = $('<a />').addClass('notShown').html('<em>' + li.text() + '</em><i></i>').hide()
-                        .appendTo(select.children('div'));
-                    a.slideDown(400, function() {
-                        setTimeout(function() {
-                            a.addClass('shown');
-                            select.children('div').children('span').addClass('hide');
-                            select.find('option:contains(' + li.text() + ')').prop(
-                                'selected', true);
-                        }, 500);
-                    });
-                    setTimeout(function() {
-                        if (li.prev().is(':last-child')) {
-                            li.prev().removeClass('beforeRemove');
-                        }
-                        if (li.next().is(':first-child')) {
-                            li.next().removeClass('afterRemove');
-                        }
-                        setTimeout(function() {
-                            li.prev().removeClass('beforeRemove');
-                            li.next().removeClass('afterRemove');
-                        }, 200);
-
-                        li.slideUp(400, function() {
-                            li.remove();
-                            select.removeClass('clicked');
-                        });
-                    }, 600);
-                }
-            });
-
-            $(document).on('click', '.selectMultiple > div a', function(e) {
-                var select = $(this).parent().parent();
-                var self = $(this);
-                self.removeClass().addClass('remove');
-                select.addClass('open');
-                setTimeout(function() {
-                    self.addClass('disappear');
-                    setTimeout(function() {
-                        self.animate({
-                            width: 0,
-                            height: 0,
-                            padding: 0,
-                            margin: 0
-                        }, 300, function() {
-                            var li = $('<li />').text(self.children('em').text())
-                                .addClass('notShown').appendTo(select.find('ul'));
-                            li.slideDown(400, function() {
-                                li.addClass('show');
-                                setTimeout(function() {
-                                    select.find('option:contains(' +
-                                        self.children('em')
-                                        .text() + ')').prop(
-                                        'selected', false);
-                                    if (!select.find(
-                                            'option:selected')
-                                        .length) {
-                                        select.children('div')
-                                            .children('span')
-                                            .removeClass('hide');
-                                    }
-                                    li.removeClass();
-                                }, 400);
-                            });
-                            self.remove();
-                        })
-                    }, 300);
-                }, 400);
-            });
-
-            $(document).on('click', '.selectMultiple > div .arrow, .selectMultiple > div span', function(e) {
-                $(this).parent().parent().toggleClass('open');
-            });
-
-        });
+       
 
         $('#related_tags, #ingredients, #allergens').on('change', function() {
             $('.' + $(this).attr('id')).append(render_tag((this).value, (this).id));

@@ -1,4 +1,4 @@
-+@extends('layouts.vendor.app')
+@extends('layouts.vendor.app')
 
 @section('title', __('Customers'))
 

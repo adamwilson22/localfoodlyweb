@@ -171,11 +171,15 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('categories/edit', 'CategoryController@edit')->name('categories.edit');
             Route::post('categories/update', 'CategoryController@update')->name('categories.update');
             
-            
+            Route::post('/add_unit', 'AddOnController@addUnit');
             Route::get('addproduct/{type}', 'AddOnController@addproduct')->name('addproduct');
             Route::get('addproduct2', 'AddOnController@addproduct2')->name('addproduct2');
             Route::get('pizza-products', 'AddOnController@pizza_products')->name('pizza-products');
+
             Route::post('customer', 'AddOnController@addcustomergroup')->name('addcustomergroup');
+            // Route::post('/customer', 'AddOnController@assignGroupToCustomers');
+            Route::post('/assignGroupToCustomers', 'AddOnController@assignGroupToCustomers');
+
             Route::get('customer', 'AddOnController@customer')->name('customer');
             Route::get('order', 'OrderController@index')->name('order');
             Route::get('invoices', 'AddOnController@invoices')->name('invoices');
@@ -185,7 +189,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('product-detail/{id}', 'ProductController@show')->name('product-detail');
             Route::get('product-pre-order', 'AddOnController@product_pre_order')->name('product-pre-order');
             Route::get('product-subscription', 'AddOnController@product_subscription')->name('product-subscription');
-            Route::get('single-customer', 'AddOnController@single_customer')->name('single-customer');
+            Route::get('single-customer/{id}', 'AddOnController@single_customer')->name('single-customer');
             Route::post('store', 'AddOnController@store')->name('store');
             Route::get('edit/{id}', 'AddOnController@edit')->name('edit');
             Route::post('update/{id}', 'AddOnController@update')->name('update');

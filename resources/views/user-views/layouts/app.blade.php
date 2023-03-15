@@ -18,6 +18,7 @@
 
     <link rel='stylesheet' id='main-style-css'
         href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' type="text/css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
     <!--[if IE]>
   <script src="assets/js/html5.js"></script>
 <![endif]-->
@@ -169,6 +170,8 @@
     <script src="{{ asset('public/customer/assets/js/mlib.js') }}"></script>
     <script src="{{ asset('public/customer/assets/js/functions.js') }}"></script>
     <script src="{{ asset('public/customer/assets/js/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
     @yield('script')
 </body>
 

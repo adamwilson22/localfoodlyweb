@@ -160,7 +160,9 @@ class RestaurantController extends Controller
     public function restaurantView($id)
     {
         $restaurant = Restaurant::where('id', $id)->first();
-        $foods = Food::where('restaurant_id',$id)->where('status', 1)->get();
+        // $foods = Food::where('restaurant_id',$id)->where('status', 1)->get();
+        $foods = Food::where('restaurant_id',$id)->where('status', 1)->orderBy('position')->orderBy('id')->get();
+        // dd($foods);
         $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
         $follower = Follower::where([
             ['restaurant_id', $id],
@@ -183,7 +185,7 @@ class RestaurantController extends Controller
         $categories = Category::where('restaurant_id', $id)->pluck('name', 'id')->all();
         // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
         $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
-        // dd($badges1);
+        // dd($foods);
         return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
     }
 
@@ -193,7 +195,8 @@ class RestaurantController extends Controller
     public function restaurantMenu($id)
     {
         $restaurant = Restaurant::where('id', $id)->first();
-        $foods = Food::where('restaurant_id',$id)->where('status', 1)->get();
+        $foods = Food::where('restaurant_id',$id)->where('status', 1)->orderBy('position')->orderBy('id')->get();
+        // dd($foods);
         $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
         $follower = Follower::where([
             ['restaurant_id', $id],
@@ -225,7 +228,12 @@ class RestaurantController extends Controller
         $addonsData = AddOn::where('restaurant_id',$food->restaurant_id)->get();
         // dd(json_decode($food->variations));
         $variations = json_decode($food->variations);
-        // dd($variations);
+
+        // $badges = Badge::where('restaurant_id', $food->restaurant_id)->pluck('name', 'id','image')->all();
+        $badges = Badge::where('restaurant_id', $food->restaurant_id)->orderBy('name')->get();
+        
+
+        // dd($food->restaurant_id);
         // foreach(array_values($variations) as $key=>$option)
         // {
         //     // dd($option->values);
@@ -239,9 +247,10 @@ class RestaurantController extends Controller
         //     # code...
         //     dd($value->customer());
         // }
-        // dd(empty($reviews->all()));
+        // dd($addonsData);
 
-        return view('user-views.products.detail', compact('food', 'reviews', 'addonsData', 'variations'));
+
+        return view('user-views.products.detail', compact('food', 'reviews', 'addonsData', 'variations','badges'));
     }
     
     public function userFollow(Request $request)

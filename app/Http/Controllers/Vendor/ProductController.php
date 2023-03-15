@@ -182,13 +182,14 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator);
+            return Redirect::back()->withErrors($validator)->withInput();
         }
-        $data = $request->all();
+        $data = $request->except('token', 'images', 'featureImage','options');
+        // dd($data);
         $input = [];
         foreach ($data as $key => $value) {
             if (is_array($value)){
-                if(!empty($input[$key])){
+                if(!empty($data[$key])){
                     $input[$key] = implode(",", $value);
                 }
             } else {
@@ -254,31 +255,37 @@ class ProductController extends Controller
         // }
 
         // *********************** Hassan Code - Food Variations ***********************
-        
+        $variations = [];
         if(isset($request->options))
         {
             foreach(array_values($request->options) as $key=>$option)
             {
 
                 $temp_variation['name']= $option['name'];
-                $temp_variation['type']= $option['type'];
-                $temp_variation['min']= $option['min'] ?? 0;
-                $temp_variation['max']= $option['max'] ?? 0;
+                // $temp_variation['type']= $option['type'];
+                // $temp_variation['min']= $option['min'] ?? 0;
+                // $temp_variation['max']= $option['max'] ?? 0;
                 $temp_variation['required']= $option['required']??'off';
-                if($option['min'] > 0 &&  $option['min'] > $option['max']  ){
-                    $validator->getMessageBag()->add('name', translate('messages.minimum_value_can_not_be_greater_then_maximum_value'));
-                    return response()->json(['errors' => Helpers::error_processor($validator)]);
-                }
+                // if($option['min'] > 0 &&  $option['min'] > $option['max']  ){
+                //     $validator->getMessageBag()->add('name', translate('messages.minimum_value_can_not_be_greater_then_maximum_value'));
+                //     return response()->json(['errors' => Helpers::error_processor($validator)]);
+                // }
                 if(!isset($option['values'])){
                     $validator->getMessageBag()->add('name', translate('messages.please_add_options_for').$option['name']);
                     return response()->json(['errors' => Helpers::error_processor($validator)]);
                 }
 
-                dd($option['max'] > count($option['values']));
-                if($option['max'] > count($option['values'])  ){
-                    $validator->getMessageBag()->add('name', translate('messages.please_add_more_options_or_change_the_max_value_for').$option['name']);
-                    return response()->json(['errors' => Helpers::error_processor($validator)]);
-                }
+                // dd($option['max'] > count($option['values']));
+                // if($option['max'] > count($option['values'])  ){
+                //     $validator->getMessageBag()->add('name', translate('messages.please_add_more_options_or_change_the_max_value_for').$option['name']);
+                //     // return response()->json(['errors' => Helpers::error_processor($validator)]);
+                //     // return Redirect('Vendor-panel/addon/products')->with([
+                //     //     "code"      => 0,
+                //     //     'message'   => "Please add more options or change the max value",
+                //     //     "status"    => false
+                //     // ]);
+                //     return redirect()->back()->withInput();
+                // }
                 $temp_value = [];
 
                 foreach(array_values($option['values']) as $value)
@@ -301,6 +308,7 @@ class ProductController extends Controller
         $input['add_ons'] = $request->has('add_ons') ? json_encode($request->add_ons) : json_encode([]);
         $input['badges'] = $request->has('Badge') ? json_encode($request->Badge) : json_encode([]);
         $insert = Food::create($input);
+        // dd($input);
         if ($insert) {
             return Redirect('vendor-panel/addon/products')->with([
                 "message" => "Product Created Successfully",
@@ -308,11 +316,16 @@ class ProductController extends Controller
                 "status"    => true
             ]);
         } else {
-            return Redirect('Vendor-panel/addon/products')->with([
-                "code"      => 0,
-                'message'   => "Product Not Created",
-                "status"    => false
-            ]);
+            // return Redirect('Vendor-panel/addon/products')->with([
+            //     "code"      => 0,
+            //     'message'   => "Product Not Created",
+            //     "status"    => false
+            // ]);
+            return redirect()->back()->withInput()->with([
+                    "code"      => 0,
+                    'message'   => "Product Not Created",
+                    "status"    => false
+                ]);
         }
     }
 
@@ -330,7 +343,10 @@ class ProductController extends Controller
             // $mimetype[] = mime_content_type('http://testapp.thesuitchstaging.com/public/images/prods1677017460.Customer%20Signup.webm');
         }
         $product->image = $images;
-        return view('vendor-views.addon.product-detail', compact('product','addon'));
+        $badges = Badge::where('restaurant_id', $product->restaurant_id)->orderBy('name')->get();
+        // dd($badges) ;
+        return view('vendor-views.addon.product-detail', compact('product','addon','badges'));
+
         // dd(strstr($mimetype, "video/"));
     }
 
@@ -357,6 +373,7 @@ class ProductController extends Controller
         $related_tags = explode(",", $product->related_tags);
         // dd ($related_tags);
         // dd($product);
+
         if ($product->product_type != "preorder") {
             # code...
             return view('vendor-views.product.edit', compact('product', 'category', 'ingredients', 'allergens', 'related_tags', 'addon', 'badges'));
@@ -527,15 +544,16 @@ class ProductController extends Controller
         //     return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         // }
 
-        $data = $request->except('vendor');
+        $data = $request->except('vendor', 'options');
         $images = [];
         $input = [];
         foreach ($data as $key => $value) {
             if (is_array($value))
-                $input[$key] = implode(",", $value);
+            $input[$key] = implode(",", $value);
             else
                 $input[$key] = $value;
         }
+            dd($input);
 
         if ($request->has('oldimages')) {
             $product = Food::where('id', $id)->first();

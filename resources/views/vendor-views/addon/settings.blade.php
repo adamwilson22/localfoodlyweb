@@ -442,9 +442,24 @@ input[type="file"] {
                                 <div class="container">
                                     <h3>Kitchen Images</h3>
                                     @foreach ($kitchengallery as $g)
-                                    <img style="width:auto; height:150px" src="{{$g->image}}" class="" alt="...">
-                                    <div class="action-btn" style="display:inline">
-                                        <button style="font-size:30px" type="button" onclick="delete_img({{$g->id}})"><i class="icon-trash"></i></button>
+                                    <div id="img{{$g->id}}" class="d-inline">
+                                    @if(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
+                                        
+                                        <img src="{{$g->image}}" class="kitchenimg" alt="...">
+                                    @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
+                                        {{-- <div class="document-file"> --}}
+                                            <a href="{{ asset($g->image) }}" target="_blank" style="vertical-align: middle;">{{ $g->image }}</a>
+                                        {{-- </div> --}}
+                                    @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['pdf']))
+                                        {{-- <div class="pdf-file"> --}}
+                                            <embed src="{{ asset($g->image) }}" type="application/pdf" width="auto" class="kitchenimg" height="150px" style="vertical-align: middle;"/>
+                                        {{-- </div> --}}
+                                    @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm']))
+                                        {{-- <div class="video-file"> --}}
+                                            <video src="{{ asset($g->image) }}" width="auto" height="150px" class="kitchenimg" style="vertical-align: middle;" ></video>
+                                        {{-- </div> --}}
+                                    @endif
+                                        <button style="font-size:30px" type="button" id="{{$g->id}}" onclick="delete_img({{$g->id}})"><i class="icon-trash"></i></button>
                                         </div>
                                     @endforeach 
                                 </div>
@@ -489,6 +504,7 @@ input[type="file"] {
         accept: function(file, done) {
             if (file.status == "added") {
                 toastr.success('kitchen image uploaded');
+                reloadAndShowTab();
             } else {
                 toastr.error('kitchen image not uploaded');
             }
@@ -527,13 +543,14 @@ input[type="file"] {
         }
     }
 
-    function delete_img(id) {
+    function delete_img(id, img) {
         var del = id;
         // var url = "{{ route('vendor.kitchen.delete.gallery',"+ del + " ) }}";
         var url = '{{ route("vendor.kitchen.delete.gallery", ":id") }}';
         url = url.replace(':id', id);
-
-        console.log(del);
+        var element = document.getElementById('img'+id);
+        element.parentNode.removeChild(element);
+        console.log(element);
         console.log(url);
         $.ajax({
                     url: url,
@@ -547,7 +564,7 @@ input[type="file"] {
                         console.log(response);
                         toastr.success("Image Deleted");
                         setTimeout(function(){
-                            window.location.reload(1);
+                            // $('#v-pills-join-kitchenGallery').location.reload(1);
                         }, 1000);
                         // parent_row.remove();
                         // $(".cart-count").html(response.countlist);
@@ -559,6 +576,16 @@ input[type="file"] {
                         // cart_total.text(response.total);
                     }
                 });
+    }
+
+    function reloadAndShowTab() {
+  
+
+    // Show the specified tab
+    var tabLink = document.querySelector('#v-pills-join-kitchenGallery');
+    if (tabLink) {
+        tabLink.click();
+    }
     }
     </script>
     @endpush

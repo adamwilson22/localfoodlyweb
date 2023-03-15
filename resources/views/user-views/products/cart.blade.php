@@ -33,16 +33,31 @@
                                     @foreach ((array) session('cart') as $id => $details)
                                         <?php $total += $details['price'] * $details['quantity']; ?>
                                         @php
-                                            $images = unserialize($details['photo']);
+                                            if (@unserialize($details['photo']) !== false) {
+                                                // continue;
+                                                // dd('true');
+                                                $images = unserialize($details['photo']);
+                                            }
+                                            else {
+                                            // dd(@unserialize($details['photo']));
+
+                                            //     dd('false');
+                                                $images = $details['photo'];
+                                            }
                                         @endphp
                                         <tr>
                                             <td data-th="Product">
-                                                @foreach ($images as $image)
-                                                    {{-- {{ dd($image) }} --}}
-                                                    <img src="{{ !empty(asset('public/images') . '/' . $image) ? asset('public/images') . '/' . $image : asset('customer/assets/images/news_image2-min-1.png') }}"
-                                                        class="img-fluid" alt="...">
-                                                @break
-                                            @endforeach
+                                                @if( is_array($images))
+                                                    @foreach ($images as $image)
+                                                        {{-- {{ dd($image) }} --}}
+                                                        <img src="{{ !empty(asset('public/images') . '/' . $image) ? asset('public/images') . '/' . $image : asset('customer/assets/images/news_image2-min-1.png') }}"
+                                                            class="img-fluid" alt="...">
+                                                    @break
+                                                    @endforeach
+                                                @else
+                                                    <img src="{{ !empty($images) ?$images : asset('customer/assets/images/news_image2-min-1.png') }}"
+                                                    class="img-fluid" alt="...">
+                                                @endif
                                             {{-- <img src="{{ asset('custmer/assets/images/news_image2-min.png') }}"
                                                 class="img-fluid" alt="..."> --}}
                                         </td>

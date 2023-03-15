@@ -37,7 +37,7 @@ jQuery(document).ready(function () {
     $('#pagingBox').children().css('display', 'none');
     
     //and show the first n (show_per_page) elements
-    $('#pagingBox').children().slice(0, show_per_page).css('display', 'block');
+    $('#pagingBox').children().slice(0, show_per_page).css('display', 'inline-block');
 
 });
 
@@ -85,7 +85,9 @@ $('#current_page').val(page_num);
 
 
 $(".sltcateg").click(function(){
-    $(".product-checkbox,.customer-checkbox").addClass("active");
+    // $(".product-checkbox,.customer-checkbox").addClass("active");
+    $(".product-checkbox,.customer-checkbox").toggleClass("active");
+    // $("#myDiv").toggleClass("my-class");
 });
 
 
