@@ -13,47 +13,10 @@
                     value="{{ $item['name'] }}">
             </div>
 
-            <div class="col-lg-3 col-md-6">
-                <div class="form-group">
-                    <label class="input-label text-capitalize d-flex alig-items-center"><span
-                            class="line--limit-1">{{ translate('messages.selcetion_type') }} </span>
-                    </label>
-                    <div class="resturant-type-group border">
-                        <label class="form-check form--check mr-2 mr-md-4">
-                            <input class="form-check-input" type="radio" value="multi"
-                                name="options[{{ $key }}][type]" id="type{{ $key }}"
-                                {{ $item['type'] == 'multi' ? 'checked' : '' }}
-                                onchange="show_min_max({{ $key }})">
-                            <span class="form-check-label">
-                                {{ translate('Multiple') }}
-                            </span>
-                        </label>
-
-                        <label class="form-check form--check mr-2 mr-md-4">
-                            <input class="form-check-input" type="radio" value="single"
-                                {{ $item['type'] == 'single' ? 'checked' : '' }} name="options[{{ $key }}][type]"
-                                id="type{{ $key }}" onchange="hide_min_max({{ $key }})">
-                            <span class="form-check-label">
-                                {{ translate('Single') }}
-                            </span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-12 col-lg-6">
                 <div class="row g-2">
-                    <div class="col-sm-6 col-md-4">
-                        <label for="">{{ translate('Min') }}</label>
-                        <input id="min_max1_{{ $key }}" {{ $item['type'] == 'single' ? 'readonly ' : 'required' }}
-                            value="{{ ($item['min'] != 0) ? $item['min']:''  }}" name="options[{{ $key }}][min]"
-                            class="form-control" type="number" min="1">
-                    </div>
-                    <div class="col-sm-6 col-md-4">
-                        <label for="">{{ translate('Max') }}</label>
-                        <input id="min_max2_{{ $key }}" {{ $item['type'] == 'single' ? 'readonly ' : 'required' }}
-                            value="{{ ($item['max'] != 0) ? $item['max']:''  }}" name="options[{{ $key }}][max]"
-                            class="form-control" type="number" min="2">
-                    </div>
+                   
 
                     <div class="col-md-4">
                         <label class="d-md-block d-none">&nbsp;</label>

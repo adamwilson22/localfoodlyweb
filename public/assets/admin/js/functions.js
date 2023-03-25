@@ -84,7 +84,7 @@ $('#current_page').val(page_num);
 }
 
 
-$(".sltcateg").click(function(){
+$(".sltcateg, .bulk-action").click(function(){
     // $(".product-checkbox,.customer-checkbox").addClass("active");
     $(".product-checkbox,.customer-checkbox").toggleClass("active");
     // $("#myDiv").toggleClass("my-class");

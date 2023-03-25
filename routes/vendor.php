@@ -210,8 +210,6 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
         Route::post('change-password', 'SettingsController@ChangePassword')->name('change_password');
         Route::post('kitchen-store-gallery', 'SettingsController@CreateStoreGallery')->name('kitchen.store.gallery');
         Route::delete('kitchen-delete-gallery/{id}', 'SettingsController@DeleteStoreGallery')->name('kitchen.delete.gallery');
-
-
         // Settings Routes Ends
 
         Route::group(['prefix' => 'order', 'as' => 'order.' , 'middleware' => ['module:order']], function () {

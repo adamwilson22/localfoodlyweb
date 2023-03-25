@@ -6,6 +6,11 @@
     z-index:0;
     /* font-family:var(--secondary-font-family) */
 }
+
+.card-table .info{
+
+}
+
 .btn:before{
     -webkit-transition:.5s all ease;
     transition:.5s all ease;
@@ -1074,6 +1079,13 @@ div#notiNavbarDropdown {
 .card-table .info {
     display: flex;
     align-items: center;
+    max-width: 200px;
+
+}
+
+.card-table .info span {
+    display: block;
+    white-space: normal;
 }
 
 .card-table .info img {

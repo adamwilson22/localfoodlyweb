@@ -77,25 +77,6 @@ class AddOnController extends Controller
         ->where('restaurant_id', Helpers::get_restaurant_id())
         ->get();
         
-        // dd(count($unitFound));
-        
-        // if($unitFound){
-        //     $unitFound->unit_name = $request->unitName;
-        //     $unitFound->save();
-        // }
-        // else{
-        //     DB::table('units')->insert(
-        //         [
-        //             'unit_name' => $request->unitName,
-        //             'restaurant_id', Helpers::get_restaurant_id()
-        //         ]
-        //     );
-        // }
-        // if($unitFound){
-        //     DB::table('units')
-        //     ->where('id', $unitFound[0]->id)
-        //     ->update(['unit_name' => $request->unitName]);
-        // }
         if(count($unitFound) > 0){
             return "0";
         }
@@ -107,30 +88,9 @@ class AddOnController extends Controller
             ]
         );
         
-        // $units = Units::where('restaurant_id',Helpers::get_restaurant_id())->get();
-        // $units = DB::table('units')->las
         return response()->json($request->unitName);
     }
-        // if ($unitFound) {
-        //     return Redirect('vendor-panel/addon/add_unit')->with([
-        //         "message" => "Unit already exists!",
-        //         "code"      => 1,
-        //         "status"    => true
-        //     ]);
-        // } 
-        // else {
-        //     DB::table('units')->insert(
-        //         [
-        //             'unit_name' => $request->unitName,
-        //             'restaurant_id', Helpers::get_restaurant_id()
-        //         ]
-        //     );
-        //     return Redirect('Vendor-panel/addon/add_unit')->with([
-        //         "code"      => 0,
-        //         'message'   => "Unit added!",
-        //         "status"    => false
-        //     ]);
-        // }
+        
     }
 
     public function addproduct2()
@@ -228,46 +188,51 @@ class AddOnController extends Controller
     }
 
     public function assignGroupToCustomers(Request $request){
-        // $assignGroupToCustomer = new CustomerGroupAssigned();
-        $success = false;
-
+       
+        $event = "";
+       
         foreach($request->customers as $customer){
-            $success = DB::table('customer_group_assigned')
-                ->updateOrInsert(
-                    ['customer_id' =>  $customer],
-                    ['group_id' => $request->groupID]
+          $customerFound = DB::table('customer_group_assigned')
+            ->where('customer_id', $customer)
+            ->get();
+             
+            if(count($customerFound) > 0){
+                $event = "updated";
+                
+                DB::table('customer_group_assigned')
+                    ->where('customer_id', $customer)
+                    ->update(['group_id' => $request->groupID]);
+            }
+            else{
+                $event = "inserted";
+                
+                DB::table('customer_group_assigned')->insert(
+                    [
+                        'customer_id' => $request->unitName,
+                        'group_id' => $request->groupID
+                    ]
                 );
-
-            // $assignGroupToCustomer->customer_id = $customer;
-            // $assignGroupToCustomer->group_id = $request->groupID;
-            // $insert = $assignGroupToCustomer->save();
+            }
         }
-
-        if ($success) {
-            return Redirect('vendor-panel/addon/customer')->with([
-                "message" => "Customer Group(s) assigned Successfully",
+          
+        return Redirect('vendor-panel/addon/customer')->with([
+                "message" => "Customer Group(s) . $event . Successfully",
                 "code"      => 1,
                 "status"    => true
-            ]);
-        } else {
-            return Redirect('Vendor-panel/addon/customer')->with([
-                "code"      => 0,
-                'message'   => "Customer Group(s) Not assigned!",
-                "status"    => false
-            ]);
-        }
+        ]);
     }
 
     public function customer()
     {
+
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         // $customers[] = Customer::all();
         $assignedCustomerGroups = DB::table('customers as cc')
             ->leftJoin('customer_group_assigned as cga', 'cga.customer_id', '=', 'cc.id')
-            ->leftJoin('customer_groups as cg', 'cg.id', '=', 'cga.id')
-            ->select('cc.id as id','cc.ful_name as customer_name','cg.name as customer_group_name','cc.email','cc.phone_number','cc.address','cc.image')
+            ->leftJoin('customer_groups as cg', 'cg.id', '=', 'cga.group_id')
+            ->select('cc.id as id','cc.ful_name as customer_name','cg.name as customer_group_name','cg.id as group_ID', 'cc.email','cc.phone_number','cc.address','cc.image')
             ->get();
-        
+        // dd($assignedCustomerGroups);
         $customerGroups = CustomerGroups::all();
 
         // dd($customerGroups);
@@ -302,8 +267,35 @@ class AddOnController extends Controller
     }
     public function invoices()
     {
-        $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.invoices');
+        // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
+        $orderDetails = DB::table('orders as oo')
+        ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
+        ->Join('food as ff', 'ff.id', '=', 'od.food_id')
+        ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
+        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+        ->select('oo.id as order_id','od.id as order_details_id','oo.restaurant_id as restaurant_id','od.food_id','ff.name as food_name','uu.f_name','oo.payment_status','oo.order_amount')
+        ->get();
+
+        $paidInvoices = DB::table('orders as oo')
+        ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
+        ->Join('food as ff', 'ff.id', '=', 'od.food_id')
+        ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
+        ->where('oo.payment_status', 'paid')
+        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+        ->select('oo.id as order_id','od.id as order_details_id','oo.restaurant_id as restaurant_id','od.food_id','ff.name as food_name','uu.f_name','oo.payment_status','oo.order_amount')
+        ->get();
+
+        $unpaidInvoices = DB::table('orders as oo')
+        ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
+        ->Join('food as ff', 'ff.id', '=', 'od.food_id')
+        ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
+        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+        ->where('oo.payment_status', 'unpaid')
+        ->select('oo.id as order_id','od.id as order_details_id','oo.restaurant_id as restaurant_id','od.food_id','ff.name as food_name','uu.f_name','oo.payment_status','oo.order_amount')
+        ->get();
+        // dd($orderDetails);
+
+        return view('vendor-views.addon.invoices',compact('orderDetails','paidInvoices','unpaidInvoices'));
     }
     public function massage()
     {

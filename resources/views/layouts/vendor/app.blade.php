@@ -145,6 +145,7 @@
 <script src="{{asset('public/assets/admin')}}/js/sweet_alert.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/toastr.js"></script>
 <script src="{{asset('public/assets/admin')}}/js/functions.js"></script>
+
 @yield('script')
 @stack('custom_js')
 {!! Toastr::message() !!}

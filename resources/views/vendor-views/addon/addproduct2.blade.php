@@ -1060,7 +1060,172 @@
             return tag;
         }
     </script>
-    <script>
+        <script>
+            var count = 0;
+            // var countRow=0;
+            $(document).ready(function() {
+                $("#add_new_option_button").click(function(e) {
+                    count++;
+                    var add_option_view = `
+        <div class="card view_new_option mb-2" >
+            <div class="card-header">
+                <label for="" id=new_option_name_` + count + `> {{ translate('add_new') }}</label>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-lg-6 col-md-6">
+                        <label for="">{{ translate('name') }}</label>
+                        <input required name=options[` + count +
+                        `][name] class="form-control" type="text" onkeyup="new_option_name(this.value,` +
+                        count + `)">
+                    </div>
+    
+                    
+                    <div class="col-12 col-lg-6">
+                        <div class="row g-2">
+                            
+    
+                            <div class="col-md-4">
+                                <label class="d-md-block d-none">&nbsp;</label>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <input id="options[` + count + `][required]" name="options[` + count + `][required]" type="checkbox">
+                                        <label for="options[` + count + `][required]" class="m-0">{{ translate('Required') }}</label>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-danger btn-sm delete_input_button" onclick="removeOption(this)"
+                                            title="{{ translate('Delete') }}">
+                                            <i class="tio-add-to-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div id="option_price_` + count + `" >
+                    <div class="border rounded p-3 pb-0 mt-3">
+                        <div  id="option_price_view_` + count + `">
+                            <div class="row g-3 add_new_view_row_class mb-3">
+                                <div class="col-md-4 col-sm-6">
+                                    <label for="">{{ translate('Option_name') }}</label>
+                                    <input class="form-control" required type="text" name="options[` + count +
+                        `][values][0][label]" id="">
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label for="">{{ translate('Additional_price') }}</label>
+                                    <input class="form-control" required type="number" min="0" step="0.01" name="options[` +
+                        count + `][values][0][optionPrice]" id="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 p-3 mr-1 d-flex "  id="add_new_button_` + count + `">
+                            <button type="button" class="btn btn-outline-primary" onclick="add_new_row_button(` +
+                        count + `)" >{{ translate('Add_New_Option') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    
+                    $("#add_new_option").append(add_option_view);
+                });
+            });
+            $('#choice_attributes').on('change', function() {
+                $('#customer_choice_options').html(null);
+                $.each($("#choice_attributes option:selected"), function() {
+                    if ($(this).val().length > 50) {
+                        toastr.error(
+                            '{{ translate('validation.max.string', ['attribute' => translate('messages.variation'), 'max' => '50']) }}', {
+                                CloseButton: true,
+                                ProgressBar: true
+                            });
+                        return false;
+                    }
+                    add_more_customer_choice_option($(this).val(), $(this).text());
+                });
+            });
+    
+            function add_more_customer_choice_option(i, name) {
+                let n = name;
+                $('#customer_choice_options').append(
+                    '<div class="row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i +
+                    '"><input type="text" class="form-control" name="choice[]" value="' + n +
+                    '" placeholder="{{ translate('messages.choice_title') }}" readonly></div><div class="col-md-9"><input type="text" class="form-control" name="choice_options_' +
+                    i +
+                    '[]" placeholder="{{ translate('messages.enter_choice_values') }}" data-role="tagsinput" onchange="combination_update()"></div></div>'
+                );
+                $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+            }
+    
+            function combination_update() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+    
+                $.ajax({
+                    type: "POST",
+                    url: '{{ route('admin.food.variant-combination') }}',
+                    data: $('#food_form').serialize(),
+                    beforeSend: function() {
+                        $('#loading').show();
+                    },
+                    success: function(data) {
+                        $('#loading').hide();
+                        $('#variant_combination').html(data.view);
+                        if (data.length > 1) {
+                            $('#quantity').hide();
+                        } else {
+                            $('#quantity').show();
+                        }
+                    }
+                });
+            }
+    
+            function add_new_row_button(data) {
+                count = data;
+                countRow = 1 + $('#option_price_view_' + data).children('.add_new_view_row_class').length;
+                var add_new_row_view = `
+                <div class="row add_new_view_row_class mb-3 position-relative pt-3 pt-sm-0">
+                    <div class="col-md-4 col-sm-5">
+                            <label for="">{{ translate('Option_name') }}</label>
+                            <input class="form-control" required type="text" name="options[` + count + `][values][` +
+                    countRow + `][label]" id="">
+                        </div>
+                        <div class="col-md-4 col-sm-5">
+                            <label for="">{{ translate('Additional_price') }}</label>
+                            <input class="form-control"  required type="number" min="0" step="0.01" name="options[` +
+                    count +
+                    `][values][` + countRow + `][optionPrice]" id="">
+                        </div>
+                        <div class="col-sm-2 max-sm-absolute">
+                            <label class="d-none d-sm-block">&nbsp;</label>
+                            <div class="mt-1">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)"
+                                    title="{{ translate('Delete') }}">
+                                    <i class="tio-add-to-trash"></i>
+                                </button>
+                            </div>
+                    </div>
+                </div>`;
+                $('#option_price_view_' + data).append(add_new_row_view);
+    
+            }
+    
+            function deleteRow(e) {
+                element = $(e);
+                element.parents('.add_new_view_row_class').remove();
+            }
+    
+            function removeOption(e) {
+                element = $(e);
+                element.parents('.view_new_option').remove();
+            }
+        </script>
+    {{-- <script>
         var count = 0;
         // var countRow=0;
         $(document).ready(function() {
@@ -1255,5 +1420,5 @@
             element = $(e);
             element.parents('.view_new_option').remove();
         }
-    </script>
+    </script> --}}
 @endpush

@@ -990,6 +990,7 @@
             let modal = document.getElementById("unitsModal").style.display = "none";
             // modal.classList.remove(".modal-backdrop.show");
             $(".modal-backdrop").remove();
+            $('body').removeClass('modal-open');
         }
 
 

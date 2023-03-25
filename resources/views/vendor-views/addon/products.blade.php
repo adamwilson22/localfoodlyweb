@@ -58,6 +58,7 @@
                 </div>
             </div>
             <div class="col-xl-8 col-lg-6 mt-lg-0 mt-3 text-lg-right">
+                <a href="#" class="btn btn-secondary btn-lg bulk-action mb-2">Bulk Select</a>
                 <a href="{{ route('vendor.addon.categories') }}" class="btn btn-secondary btn-lg sltcateg">View All
                     Categories</a>
                 <a href="" class="btn btn-primary btn-lg ml-sm-3 mt-lg-0 mt-2" data-toggle="modal"
@@ -133,8 +134,10 @@
                 @foreach ($products as $product)
                     <div class="col-lg-4 ">
                         <div class="custom-control custom-checkbox product-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                            <label class="custom-control-label" for="customCheck1">
+                            {{-- <input type="checkbox" class="custom-control-input" id="customCheck1"> --}}
+                            <input type="checkbox" class="custom-control-input" data-id="{{ $product->id }}"
+                                    id="{{ 'customCheck[' . $product->id . ']' }}">
+                            <label class="custom-control-label" for="{{ 'customCheck[' . $product->id . ']' }}">
                                 <div class="card item">
                                     <div class="card-body" data-id="{{ $product->id }}">
                                         <div class="product-img">

@@ -300,6 +300,7 @@
 @endpush
 
 <body class="">
+    {{-- @dd($product) --}}
     @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -317,7 +318,7 @@
         <div class="product-form">
 
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-7 order-lg-1 order-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="form-head">
@@ -361,18 +362,18 @@
                                     </select>
                                 </div>
                                 {{-- PreOrders --}}
-                                {{-- <h2 class="mb-4">Fulfillment Date</h2>
+                                <h2 class="mb-4">Fulfillment Date</h2>
                                 <div class="form-row">
                                     <div class="col-lg-6">
                                         <div class=" form-group">
                                             <label class="input-label" for="">Date</label>
-                                            <input type="date" class="form-control form-control-lg" name="fulfillment_date">
+                                            <input type="date" class="form-control form-control-lg" name="fulfillment_date" value="{{$product->fulfillment_date}}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class=" form-group">
                                             <label class="input-label" for="">Time</label>
-                                            <input type="time" class="form-control form-control-lg" name="fulfillment_time">
+                                            <input type="time" class="form-control form-control-lg" name="fulfillment_time" value="{{$product->fulfillment_time}}">
                                         </div>
                                     </div>
                                 </div>
@@ -381,13 +382,13 @@
                                     <div class="col-lg-6">
                                         <div class=" form-group">
                                             <label class="input-label" for="">Date</label>
-                                            <input type="date" class="form-control form-control-lg" name="fulfillment_time">
+                                            <input type="date" class="form-control form-control-lg" name="pre_order_end_date" value="{{$product->pre_order_end_date}}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class=" form-group">
                                             <label class="input-label" for="">Time</label>
-                                            <input type="time" class="form-control form-control-lg" name="fulfillment_time">
+                                            <input type="time" class="form-control form-control-lg" name="pre_order_end_time" value="{{$product->pre_order_end_time}}">
                                         </div>
                                     </div>
                                 </div>
@@ -395,21 +396,19 @@
                                 <div class=" form-group">
                                     <select name="fulfillment_type" id="" class="custom-select custom-select-lg">
                                         <option value="">Please select a delivery option</option>
-                                        <option value="delivery">Delivery</option>
-                                        <option value="pickup">Pickup</option>
+                                        <option value="delivery" {{$product->fulfillment_type == 'delivery' ? 'selected' :'' }}>Delivery</option>
+                                        <option value="pickup" {{$product->fulfillment_type == 'pickup' ? 'selected' :'' }}>Pickup</option>
                                     </select>
                                 </div>
                                 <div class=" form-group">
                                     <label class="input-label" for="">Pre-Order Quantity Limit</label>
-                                    <input type="number" class="form-control form-control-lg" name="pre_order_quantity_limit" placeholder="10 Purchases">
-                                </div> --}}
+                                    <input type="number" class="form-control form-control-lg" name="pre_order_quantity_limit" placeholder="10 Purchases" value="{{$product->pre_order_quantity_limit}}">
+                                </div>
                                 {{-- PreOrders --}}
                                 
                                 <div class=" form-group">
                                     <label class="input-label" for="">Add Ingredients</label>
-                                    <textarea name="description" id="ingredients" cols="" rows="4" class="form-control form-control-lg">{{$product->ingredients}}</textarea>
-
-                                    {{-- <div class="search-form">
+                                    <div class="search-form">
                                         <div class="input-group input-group-merge input-group-flush">
                                             <div class="input-group-prepend">
                                                 <button type="submit" class="">
@@ -421,8 +420,8 @@
                                             <input id="ingredients" type="text" name="ingredient"  class="form-control form-control-lg" placeholder="Enter Ingredients" aria-label="Search by ingredients">
 
                                         </div>
-                                    </div> --}}
-                                    {{-- <div class="tags ingredients">
+                                    </div>
+                                    <div class="tags ingredients">
                                      @foreach ($ingredients as $value)
                                      <div class="alert alert-primary fade show" role="alert">
                                       {{$value}}
@@ -430,9 +429,9 @@
                                           <span aria-hidden="true">&times;</span>
                                       </button>
                                       <input type="hidden" name="ingredients[]" value="{{$value}}">
-                                    </div>
+                                  </div>
                                      @endforeach   
-                                    </div> --}}
+                                    </div>
                                 </div>
                                 {{-- <div class=" form-group">
                                     <label class="input-label" for="">Add Ingredients</label>
@@ -547,33 +546,80 @@
                                     <input type="number" class="form-control form-control-lg" name="unit" value="{{$product->unit}}" placeholder="Please enter the quantity or size">
                                 </div>
                                 <div class=" form-group">
-                                  <label class="input-label" for="addons">Add-On</label>
-                                  <select class="addonDropdown" name="add_ons[]" multiple="multiple">
-                                      @foreach ($addon as $item)
-                                          <option selected value="{{ $item->id }}">{{ $item->name }}</option>
-                                      @endforeach
-                                  </select>
-                              </div>
-                              <div class=" form-group">
-                                  <a href="{{ route('vendor.addon.add-new') }}">Create More Add-On</a>
-                              </div>
-                              <div class=" form-group">
-                                  <label class="input-label" for="addons">Badge</label>
-                                  <select class="badgesDropdown" name="Badge[]" multiple="multiple">
-                                    @foreach ($badges as $badge)
-                                    @if ($array !=null &&  (in_array($badge->id, $array)) )
-                                        <option selected value="{{ $badge->id }}">{{ $badge->name }}</option>
-                                    @else
-                                    <option value="{{ $badge->id }}">{{ $badge->name }}</option>
-                                    @endif 
-                                      
-                                    @endforeach
-                                  </select>
-                              </div>
-                              <div class=" form-group">
-                                  <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
-                              </div>
-
+                                    <label class="input-label" for="addons">Add-On</label>
+                                    <select class="addonDropdown" name="add_ons[]" multiple="multiple">
+                                        @foreach ($addon as $item)
+                                            <option  value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class=" form-group">
+                                    <a href="{{ route('vendor.addon.add-new') }}">Create More Add-On</a>
+                                </div>
+                                <div class=" form-group">
+                                    <label class="input-label" for="addons">Badge</label>
+                                    <select class="badgesDropdown" name="Badge[]" multiple="multiple">
+                                        @foreach ($badges as $badge)
+                                        @if ($array !=null &&  (in_array($badge->id, $array)) )
+                                            <option selected value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                        @else
+                                        <option value="{{ $badge->id }}">{{ $badge->name }}</option>
+                                        @endif 
+                                          
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class=" form-group">
+                                    <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
+                                </div>
+                                
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="card-title">
+                                                <span class="card-header-icon">
+                                                    <i class="tio-canvas-text"></i>
+                                                </span>
+                                                <span> {{ translate('messages.food_variations') }}</span>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-2">
+                                                <div class="col-md-12" >
+                                                    <div id="add_new_option">
+                                                    @if (isset($product->variations))
+                                                        @foreach (json_decode($product->variations,true) as $key_choice_options=>$item)
+                                                            {{-- {{ dd($item['price']) }} --}}
+        
+                                                            @if (isset($item["price"]))
+                                                                <div class="col-md-12">
+                                                                    <div class="variant_combination" id="variant_combination">
+                                                                        @include(
+                                                                            'admin-views.product.partials._edit-combinations',
+                                                                            [
+                                                                                'combinations' => json_decode(
+                                                                                    $product['variations'],
+                                                                                    true
+                                                                                ),
+                                                                            ]
+                                                                        )
+                                                                    </div>
+                                                                </div>
+                                                                @break
+                                                            @else
+                                                                @include('admin-views.product.partials._new_variations',['item'=>$item,'key'=>$key_choice_options+1])
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <button type="button" class="btn btn-outline-success" id="add_new_option_button">{{translate('add_new_variation')}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class=" form-group">
                                     <label class="input-label" for="">Serves</label>
                                     <select name="serves" id="serves" class="custom-select custom-select-lg">
@@ -625,15 +671,15 @@
                                     </div>
                                     
                                     <div class="tags related_tags">
-                                      @foreach ($allergens as $value)
+                                      @foreach ($related_tags as $value)
                                       <div class="alert alert-primary fade show" role="alert">
                                        {{$value}}
                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                            <span aria-hidden="true">&times;</span>
                                        </button>
                                        <input type="hidden" name="related_tags[]" value="{{$value}}">
-                                       @endforeach   
                                     </div>
+                                       @endforeach   
                                    </div>
                                 </div>
 
@@ -715,7 +761,9 @@
                                             Of Stock</label>
                                     </div>
                                 </div>
-
+                                <div class="form-group images-old">
+                                  
+                                </div>
                                 <Button type="submit" class="btn btn-primary btn-lg">Save Now</Button>
                             </div>
                         </div>
@@ -740,17 +788,18 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 order-lg-2 order-1 mb-lg-0 mb-3">
                         <div class="uploadimgs insert-img">
                             <div class="card">
                                 <div class="card-body">
+                                    
                                     <div class="form-row images-preview-div">
                                       @foreach ($product->image as $image)
                                           
                                       <div class="img">
                                           <img src="{{$image['link']}}" alt="">
                                           <div class="action-btn">
-                                              <i data-img="{{$image['name']}}" class="icon-trash old-img"></i>
+                                              <button type="button"><i data-img="{{$image['name']}}" class="icon-trash old-img"></i></button>
                                           </div>
                                       </div>
 
@@ -796,6 +845,30 @@
                                 </div>
                             </div>
                         </div>
+                         <br>
+                            <div class="uploadimgs insert-img">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-row featureImage-preview-div">
+                                            
+                                        </div>
+                                        <div class="inputgroup">
+                                            <div class="input-group-prepend">
+                                                <i class="icon-plus_round_icon"></i>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="featureImage" class="custom-file-input"
+                                                    id="featureImage">
+                                                <label class="custom-file-label" for="inputGroupFile01">Upload Feature
+                                                    Images
+                                                    Optional
+                                                    <p>Select file</p>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </form>
@@ -807,7 +880,7 @@
 @push('custom_js')
 <script >
     $(function() {
-      $('.addonDropdown').select2();
+        $('.addonDropdown').select2();
             $('.badgesDropdown').select2();
     // Multiple images preview with JavaScript
     var previewImages = function(input, imgPreviewPlaceholder) {
@@ -842,6 +915,7 @@
             
         `);
     })
+    
 
 function render_img(input) {
     if (input.files) {
@@ -853,7 +927,7 @@ function render_img(input) {
             <div class="img">
                 <img src="${event.target.result}" alt="">
                 <div class="action-btn">
-                    <button><i class="icon-trash"></i></button>
+                   <button type="button"><i class="icon-trash"></i></button>
                 </div>
             </div>
         `);
@@ -878,6 +952,7 @@ function render_img(input) {
 <script>
 
 
+
     $('#related_tags, #ingredients, #allergens').on('change',function(){
         $('.'+$(this).attr('id')).append(render_tag((this).value, (this).id));
         (this).value= "";
@@ -895,5 +970,207 @@ function render_tag(value, id) {
         `;
     return tag;
 }
+</script>
+<script>
+    function show_min_max(data){
+        $('#min_max1_'+data).removeAttr("readonly");
+        $('#min_max2_'+data).removeAttr("readonly");
+        $('#min_max1_'+data).attr("required","true");
+        $('#min_max2_'+data).attr("required","true");
+    }
+    function hide_min_max (data){
+        $('#min_max1_'+data).val(null).trigger('change');
+        $('#min_max2_'+data).val(null).trigger('change');
+        $('#min_max1_'+data).attr("readonly","true");
+        $('#min_max2_'+data).attr("readonly","true");
+        $('#min_max1_'+data).attr("required","false");
+        $('#min_max2_'+data).attr("required","false");
+    }
+
+
+
+    var count= {{isset($product->variations)?count(json_decode($product->variations,true)):0}};
+
+    $(document).ready(function(){
+        console.log(count);
+
+        $("#add_new_option_button").click(function(e){
+        count++;
+        var add_option_view = `
+    <div class="card view_new_option mb-2" >
+        <div class="card-header">
+            <label for="" id=new_option_name_`+count+`> {{  translate('add new variation')}}</label>
+        </div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-lg-3 col-md-6">
+                    <label for="">{{ translate('name')}}</label>
+                    <input required name=options[`+count+`][name] class="form-control" type="text" onkeyup="new_option_name(this.value,`+count+`)">
+                </div>
+
+                
+                <div class="col-12 col-lg-6">
+                    <div class="row g-2">
+                        
+
+                        <div class="col-md-4">
+                            <label class="d-md-block d-none">&nbsp;</label>
+                                <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <input id="options[`+count+`][required]" name="options[`+count+`][required]" type="checkbox">
+                                    <label for="options[`+count+`][required]" class="m-0">{{  translate('Required')}}</label>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger btn-sm delete_input_button" onclick="removeOption(this)"
+                                        title="{{  translate('Delete')}}">
+                                        <i class="tio-add-to-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        <div id="option_price_` + count + `" >
+                <div class="border rounded p-3 pb-0 mt-3">
+                    <div  id="option_price_view_` + count + `">
+                        <div class="row g-3 add_new_view_row_class mb-3">
+                            <div class="col-md-4 col-sm-6">
+                                <label for="">{{ translate('Option_name') }}</label>
+                                <input class="form-control" required type="text" name="options[` + count +`][values][0][label]" id="">
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <label for="">{{ translate('Additional_price') }}</label>
+                                <input class="form-control" required type="number" min="0" step="0.01" name="options[` + count + `][values][0][optionPrice]" id="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 p-3 mr-1 d-flex "  id="add_new_button_` + count + `">
+                        <button type="button" class="btn btn-outline-primary" onclick="add_new_row_button(` +
+                count + `)" >{{ translate('Add_New_Option') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+        $("#add_new_option").append(add_option_view);
+
+        });
+
+    });
+
+    function new_option_name(value,data)
+    {
+        $("#new_option_name_"+data).empty();
+        $("#new_option_name_"+data).text(value)
+        console.log(value);
+    }
+    function removeOption(e)
+    {
+        element = $(e);
+        element.parents('.view_new_option').remove();
+    }
+    function deleteRow(e)
+    {
+        element = $(e);
+        element.parents('.add_new_view_row_class').remove();
+    }
+
+
+    function add_new_row_button(data)
+    {
+        count = data;
+        countRow = 1 + $('#option_price_view_'+data).children('.add_new_view_row_class').length;
+        var add_new_row_view = `
+            <div class="row add_new_view_row_class mb-3 position-relative pt-3 pt-md-0">
+                <div class="col-md-4 col-sm-5">
+                        <label for="">{{translate('Option_name')}}</label>
+                        <input class="form-control" required type="text" name="options[`+count+`][values][`+countRow+`][label]" id="">
+                    </div>
+                    <div class="col-md-4 col-sm-5">
+                        <label for="">{{translate('Additional_price')}}</label>
+                        <input class="form-control"  required type="number" min="0" step="0.01" name="options[`+count+`][values][`+countRow+`][optionPrice]" id="">
+                    </div>
+                    <div class="col-sm-2 max-sm-absolute">
+                        <label class="d-none d-md-block">&nbsp;</label>
+                        <div class="mt-1">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)"
+                                title="{{translate('Delete')}}">
+                                <i class="tio-add-to-trash"></i>
+                            </button>
+                        </div>
+                </div>
+            </div>`;
+        $('#option_price_view_'+data).append(add_new_row_view);
+
+    }
+
+</script>
+
+<script>
+    $('#choice_attributes').on('change', function() {
+        $('#customer_choice_options').html(null);
+        combination_update();
+        $.each($("#choice_attributes option:selected"), function() {
+            add_more_customer_choice_option($(this).val(), $(this).text());
+        });
+    });
+
+    function add_more_customer_choice_option(i, name) {
+        let n = name;
+        $('#customer_choice_options').append(
+            '<div class="row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i +
+            '"><input type="text" class="form-control" name="choice[]" value="' + n +
+            '" placeholder="Choice Title" readonly></div><div class="col-lg-9"><input type="text" class="form-control" name="choice_options_' +
+            i +
+            '[]" placeholder="Enter choice values" data-role="tagsinput" onchange="combination_update()"></div></div>'
+            );
+        $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+    }
+
+    setTimeout(function() {
+        $('.call-update-sku').on('change', function() {
+            combination_update();
+        });
+    }, 2000)
+
+    $('#colors-selector').on('change', function() {
+        combination_update();
+    });
+
+    $('input[name="unit_price"]').on('keyup', function() {
+        combination_update();
+    });
+
+    function combination_update() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '{{ route('admin.food.variant-combination') }}',
+            data: $('#product_form').serialize(),
+            beforeSend: function() {
+                $('#loading').show();
+            },
+            success: function(data) {
+                $('#loading').hide();
+                $('#variant_combination').html(data.view);
+                if (data.length > 1) {
+                    $('#quantity').hide();
+                } else {
+                    $('#quantity').show();
+                }
+            }
+        });
+    }
 </script>
 @endpush

@@ -56,8 +56,7 @@
                                             <div class="detail">
                                                 <div class="info">
                                                     <div class="proimg">
-                                                        {{ $customer->image }}
-                                                        <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}"
+                                                        <img src="{{ asset('public/assets/admin/img/' . $customer->image)}}"
                                                             alt="">
                                                         <!-- <span class="status"></span> -->
                                                     </div>
@@ -213,8 +212,9 @@
                                 groupID: grpID
                             })
                             .then(function(response) {
-                                // console.log('Success:', response.message);
-                                console.log('Success: Customer Group(s) assigned Successfully');
+                                console.log('Success:', response.message);
+                                location.reload();
+                                // console.log('Success: Customer Group(s) assigned Successfully');
                             })
                             .catch(function(error) {
                                 console.log('Error:', error.message);

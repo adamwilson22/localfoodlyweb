@@ -24,8 +24,21 @@ class OrderController extends Controller
     {
         // Order::where(['checked' => 0])->where('restaurant_id',Helpers::get_restaurant_id())->update(['checked' => 1]);
 
-        $pendingorders = Order::with(['customer', 'restaurant'])->where('order_status', 'pending')->where('restaurant_id', Helpers::get_restaurant_id())->orderBy('schedule_at', 'desc')->get();
+        $pendingorders = DB::table('orders as oo')
+        ->join('customers as cc', 'cc.id', '=', 'oo.user_id')
+        ->where('order_status', 'pending')
+        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+        ->select('oo.*', 'cc.ful_name')
+        ->get();
 
+        $recurringOrders = DB::table('orders as oo')
+        ->join('customers as cc', 'cc.id', '=', 'oo.user_id')
+        ->where('order_status', 'recurring')
+        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+        ->select('oo.*', 'cc.ful_name')
+        ->get();
+        
+        // dd($recurringOrders);
 
         $orders = Order::with(['customer'])->orderBy('schedule_at', 'desc')->where('order_status', 'confirmed')
         ->where('restaurant_id', Helpers::get_restaurant_id())
@@ -44,7 +57,7 @@ class OrderController extends Controller
         // }
         // dd($pendingorders);
         // return view('vendor-views.addon.order');
-        return view('vendor-views.addon.order', compact('orders', 'pendingorders','delivery', 'pickup' ,'curbside'));
+        return view('vendor-views.addon.order', compact('orders', 'pendingorders', 'recurringOrders', 'delivery', 'pickup' ,'curbside'));
     }
 
     public function list($status)
@@ -123,6 +136,9 @@ class OrderController extends Controller
         ->paginate(config('default_pagination'));
 
         $status = trans('messages.'.$status);
+
+        // dd($orders);
+
         return view('vendor-views.order.list', compact('orders', 'status'));
     }
 

@@ -210,6 +210,30 @@
                         <p>pre Order DateTime: {{ $food->pre_order_end_date.' '.$food->pre_order_end_time }}</p>
                         @endif
                     </div>
+                    <div class="container">
+                        <h4 class="heading pb-0">Variants</h4>
+                    </div>
+                    <hr>
+                    <div class="container" id="variants">
+                        @if (!empty($variations))
+                        @foreach ($variations as $key=>$option)
+                            <p class="mb-2 font-weight-bold">
+                                {{  $option->name }}
+                            </p>
+                            <div class="d-flex align-items-center mb-3">
+                            @foreach ($option->values as $value)
+                                {{-- <form id="options-form" class="mr-2"> --}}
+                                    <input class="mr-1" type="radio" id="variantss" data-name="{{$option->name}},{{ $value->optionPrice }}" name="variants[{{$option->name}}]" value="{{ $value->optionPrice }}">
+                                    <label class="mr-2" for="variants">{{ $value->label . ' (+$' . $value->optionPrice . ')' }} </label>
+                                {{-- </form> --}}
+                                <!--<p class="mparagraph">-->
+                                <!--</p>-->
+                            @endforeach
+                            </div>
+                        @endforeach
+                        @endif
+            
+                    </div>
                     <div class="number">
                         <span class="minus">-</span>
                         <input type="text" id="addMoreQuantity" value="1" />
@@ -246,15 +270,15 @@
         <div class="container">
             @if (!empty($variations))
             @foreach ($variations as $key=>$option)
-                <p class="mparagraph mb-2">
+                <h4 class="mb-2">
                     {{  $option->name }}
-                </p>
+                </h4>
                 <div class="d-flex align-items-center mb-3">
                 @foreach ($option->values as $value)
-                    <form id="options-form" class="mr-2">
-                        <input type="checkbox" id="variants" name="variants[]" value="{{ $value->optionPrice }}">
+                    {{-- <form id="options-form" class="mr-2"> --}}
+                        <input class="mr-2" type="radio" id="variants" name="variants" value="{{ $value->optionPrice }}">
                         <label for="variants">{{ $value->label . ' (+$' . $value->optionPrice . ')' }} </label>
-                    </form>
+                    {{-- </form> --}}
                     <!--<p class="mparagraph">-->
                     <!--</p>-->
                 @endforeach
@@ -706,6 +730,15 @@ $(".add-to-cart").click(function(e) {
     e.preventDefault();
     var ele = $(this);
     var addMoreQuantity = $('#addMoreQuantity').val();
+    var variant = [];
+    var variants = $("#variants input[type='radio']:checked").map(function(index){
+        variant = $(this).attr("data-name");
+        return variant;
+    }).get();
+//            $.each(variants , function(index, val) { 
+//             variants[index] = 'test'
+// });
+    console.log(variants);
     console.log(ele);
     console.log(ele.attr("data-id"));
 
@@ -717,7 +750,8 @@ $(".add-to-cart").click(function(e) {
         method: "get",
         data: {
             _token: '{{ csrf_token() }}',
-            addMoreQuantity: addMoreQuantity
+            addMoreQuantity: addMoreQuantity,
+            variants: variants
         },
         dataType: "json",
         success: function(response) {
@@ -749,11 +783,11 @@ $(".add-to-cart").click(function(e) {
 
 $(document).ready(function() {
   var originalPrice = parseInt($('#product_price').text().replace('$', ''));
-    $("input[type='checkbox']").click(function() {
+    $("input[type='radio']").click(function() {
         
         var priceTotal = originalPrice;
         
-        $("input[type='checkbox']:checked").each(function() {
+        $("input[type='radio']:checked").each(function() {
             priceTotal += parseInt($(this).val());
         });
 

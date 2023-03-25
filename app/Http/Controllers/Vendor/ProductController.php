@@ -19,7 +19,6 @@ class ProductController extends Controller
 
     public function index()
     {
-
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
         $products = [];
@@ -362,7 +361,7 @@ class ProductController extends Controller
         // $imageName = [];
         foreach ($product->image as $key => $img) {
             # code...
-            $images[$key]['link'] = asset('images/' . $img);
+            $images[$key]['link'] = asset('public/images/' . $img);
             $images[$key]['name'] = $img;
         }
         $product->image = $images;
@@ -396,17 +395,20 @@ class ProductController extends Controller
         // ]);
 
         $rules = [
-            // "name"  => "required",
-            // "description" => "required",
-            // "images" => "required",
-            // "category_id" => "required",
-            // "price" => "required",
-            // "product_type" => "required"
+            "name"  => "required",
+            "description" => "required",
+            // "images" => "required|",
+            // "images.*" => "image|mimes:jpeg,png,jpg,gif",
+            "featureVideo" => "mimes:mp4,mov,ogg,qt|nullable",
+            "featureImage" => "image|mimes:jpeg,png,jpg,gif|nullable",
+            "category_id" => "required",
+            "price" => "required",
             // "discount" => "required",
             // "available_time_starts" => "required",
             // "available_time_ends" => "required",
             // "restaurant_id" => "required",
             // "tax"=> "required",
+            "product_type" => "required"
         ];
         // $images = [];
         // foreach ($request->file('images') as $imagefile) {
@@ -538,11 +540,12 @@ class ProductController extends Controller
         //     ];
         // }
 
-        // $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
-        // if ($validator->fails()) {
-        //     return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-        // }
+        if ($validator->fails()) {
+            dd(Helpers::error_processor($validator));
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
 
         $data = $request->except('vendor', 'options');
         $images = [];
@@ -553,7 +556,7 @@ class ProductController extends Controller
             else
                 $input[$key] = $value;
         }
-            dd($input);
+            // dd($request->all());
 
         if ($request->has('oldimages')) {
             $product = Food::where('id', $id)->first();
@@ -589,6 +592,54 @@ class ProductController extends Controller
             $featureImage  = asset("images/" . $file_name);
         }
         
+        $variations = [];
+        if(isset($request->options))
+        {
+            foreach(array_values($request->options) as $key=>$option)
+            {
+
+                $temp_variation['name']= $option['name'];
+                // $temp_variation['type']= $option['type'];
+                // $temp_variation['min']= $option['min'] ?? 0;
+                // $temp_variation['max']= $option['max'] ?? 0;
+                $temp_variation['required']= $option['required']??'off';
+                // if($option['min'] > 0 &&  $option['min'] > $option['max']  ){
+                //     $validator->getMessageBag()->add('name', translate('messages.minimum_value_can_not_be_greater_then_maximum_value'));
+                //     return response()->json(['errors' => Helpers::error_processor($validator)]);
+                // }
+                if(!isset($option['values'])){
+                    $validator->getMessageBag()->add('name', translate('messages.please_add_options_for').$option['name']);
+                    return response()->json(['errors' => Helpers::error_processor($validator)]);
+                }
+
+                // dd($option['max'] > count($option['values']));
+                // if($option['max'] > count($option['values'])  ){
+                //     $validator->getMessageBag()->add('name', translate('messages.please_add_more_options_or_change_the_max_value_for').$option['name']);
+                //     // return response()->json(['errors' => Helpers::error_processor($validator)]);
+                //     // return Redirect('Vendor-panel/addon/products')->with([
+                //     //     "code"      => 0,
+                //     //     'message'   => "Please add more options or change the max value",
+                //     //     "status"    => false
+                //     // ]);
+                //     return redirect()->back()->withInput();
+                // }
+                $temp_value = [];
+
+                foreach(array_values($option['values']) as $value)
+                {
+                    if(isset($value['label'])){
+                        $temp_option['label'] = $value['label'];
+                    }
+                    $temp_option['optionPrice'] = $value['optionPrice'];
+                    array_push($temp_value,$temp_option);
+                }
+                $temp_variation['values']= $temp_value;
+                array_push($variations,$temp_variation);
+            }
+        }
+        // dd(json_encode($variations));
+        //combinations end
+        $input['variations'] = json_encode($variations);
         $input['feature_image'] = $featureImage;
         $input['add_ons'] = $request->has('add_ons') ? json_encode($request->add_ons) : json_encode([]);
         $input['badges'] = $request->has('Badge') ? json_encode($request->Badge) : json_encode([]);

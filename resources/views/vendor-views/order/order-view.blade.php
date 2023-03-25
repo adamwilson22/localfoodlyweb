@@ -1,5 +1,5 @@
 @php
-$max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
+    $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
 @endphp
 @extends('layouts.vendor.app')
 
@@ -16,12 +16,11 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
         .header-item {
             width: 10rem;
         }
-
     </style>
 @endpush
 
 @section('content')
-    {{--<?php $campaign_order = $order->details[0]->campaign ? true : false; ?>--}}
+    {{-- <?php $campaign_order = $order->details[0]->campaign ? true : false; ?> --}}
     <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header d-print-none">
@@ -78,11 +77,11 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                     class="legend-indicator bg-danger"></span>{{ str_replace('_', ' ', $order['order_status']) }}
                             </span>
                         @endif
-                        {{--@if ($campaign_order)
+                        {{-- @if ($campaign_order)
                             <span class="badge badge-soft-success ml-sm-3">
                                 <span class="legend-indicator bg-success"></span>{{ __('messages.campaign_order') }}
                             </span>
-                        @endif--}}
+                        @endif --}}
                         @if ($order->edited)
                             <span class="badge badge-soft-dark ml-sm-3">
                                 <span class="legend-indicator bg-dark"></span>{{ __('messages.edited') }}
@@ -119,7 +118,10 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                 <a class="btn btn-sm btn-primary"
                                     onclick="order_status_change_alert('{{ route('vendor.order.status', ['id' => $order['id'], 'order_status' => 'handover']) }}','Change status to ready for handover ?')"
                                     href="javascript:">{{ __('messages.make_ready_for_handover') }}</a>
-                            @elseif ($order['order_status'] == 'handover' && ($order['order_type'] == 'take_away' || \App\CentralLogics\Helpers::get_restaurant_data()->self_delivery_system))
+                            @elseif (
+                                $order['order_status'] == 'handover' &&
+                                    ($order['order_type'] == 'take_away' ||
+                                        \App\CentralLogics\Helpers::get_restaurant_data()->self_delivery_system))
                                 <a class="btn btn-sm btn-primary"
                                     onclick="order_status_change_alert('{{ route('vendor.order.status', ['id' => $order['id'], 'order_status' => 'delivered']) }}','Change status to delivered (payment status will be paid if not) ?', {{ $order_delivery_verification ? 'true' : 'false' }})"
                                     href="javascript:">{{ __('messages.maek_delivered') }}</a>
@@ -201,6 +203,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                         $product_price = 0;
                         $total_addon_price = 0;
                         ?>
+                        @dd($order->details)
                         @foreach ($order->details as $key => $detail)
                             @if (isset($detail->food_id))
                                 @php($detail->food = json_decode($detail->food_details, true))
@@ -208,9 +211,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                 <div class="media">
                                     <a class="avatar avatar-xl mr-3 cursor-pointer"
                                         href="{{ route('vendor.food.view', $detail->food['id']) }}">
-                                        <img class="img-fluid"
-                                            src="{{  $detail->food['image'] }}"
-                                            alt="Image Description">
+                                        <img class="img-fluid" src="{{ $detail->food['image'] }}" alt="Image Description">
                                     </a>
 
                                     <div class="media-body">
@@ -229,7 +230,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                                     @endforeach
                                                 @endif --}}
 
-                                                {{--@foreach (json_decode($detail['add_ons'], true) as $key2 => $addon)
+                                                {{-- @foreach (json_decode($detail['add_ons'], true) as $key2 => $addon)
                                                     @if ($key2 == 0)
                                                         <strong><u>{{ __('messages.addons') }} : </u></strong>
                                                     @endif
@@ -241,7 +242,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                                         </span>
                                                     </div>
                                                     @php($total_addon_price += $addon['price'] * $addon['quantity'])
-                                                @endforeach--}}
+                                                @endforeach --}}
                                             </div>
 
                                             <div class="col col-md-2 align-self-center">
@@ -280,7 +281,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                                 <strong>
                                                     {{ Str::limit($detail->campaign['name'], 25, '...') }}</strong><br>
 
-                                                {{--@if (count(json_decode($detail['variation'], true)) > 0)
+                                                {{-- @if (count(json_decode($detail['variation'], true)) > 0)
                                                     <strong><u>{{ __('messages.variation') }} : </u></strong>
                                                     @foreach (json_decode($detail['variation'], true)[0] as $key1 => $variation)
                                                         <div class="font-size-sm text-body">
@@ -289,9 +290,9 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                                                 class="font-weight-bold">{{ Str::limit($variation, 25, '...') }}</span>
                                                         </div>
                                                     @endforeach
-                                                @endif--}}
+                                                @endif --}}
 
-                                                {{--@foreach (json_decode($detail['add_ons'], true) as $key2 => $addon)
+                                                {{-- @foreach (json_decode($detail['add_ons'], true) as $key2 => $addon)
                                                     @if ($key2 == 0)
                                                         <strong><u>{{ __('messages.addons') }} : </u></strong>
                                                     @endif
@@ -303,7 +304,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                                                         </span>
                                                     </div>
                                                     @php($total_addon_price += $addon['price'] * $addon['quantity'])
-                                                @endforeach--}}
+                                                @endforeach --}}
                                             </div>
 
                                             <div class="col col-md-2 align-self-center">
@@ -328,15 +329,15 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                             @endif
                         @endforeach
                         <?php
-
+                        
                         $coupon_discount_amount = $order['coupon_discount_amount'];
-
+                        
                         $total_price = $product_price + $total_addon_price - $restaurant_discount_amount - $coupon_discount_amount;
-
+                        
                         $total_tax_amount = $order['total_tax_amount'];
-
+                        
                         $restaurant_discount_amount = $order['restaurant_discount_amount'];
-
+                        
                         ?>
                         <div class="row justify-content-md-end mb-3">
                             <div class="col-md-9 col-lg-8">
@@ -503,86 +504,86 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                     <!-- End Header -->
 
                     <!-- Body -->
-                    
-                        <div class="card-body">
-                            @if ($order->customer)    
-                                <div class="media align-items-center" href="javascript:">
-                                    <div class="avatar avatar-circle mr-3">
-                                        <img class="avatar-img" style="width: 50px; height:50px; border-radius:50%"
-                                            onerror="this.src='{{ asset('public/images/vendor/placeholder_profile.jpg') }}'"
-                                            src="{{ asset('public/images/vendor' . $order->customer->image) }}"
-                                            alt="Image Description">
-                                    </div>
-                                    <div class="media-body">
-                                        <span
-                                            class="text-body text-hover-primary">{{ $order->customer['f_name'] . ' ' . $order->customer['l_name'] }}</span>
-                                    </div>
-                                    <div class="media-body text-right">
-                                        {{-- <i class="tio-chevron-right text-body"></i> --}}
-                                    </div>
+
+                    <div class="card-body">
+                        @if ($order->customer)
+                            <div class="media align-items-center" href="javascript:">
+                                <div class="avatar avatar-circle mr-3">
+                                    <img class="avatar-img" style="width: 50px; height:50px; border-radius:50%"
+                                        onerror="this.src='{{ asset('public/images/vendor/placeholder_profile.jpg') }}'"
+                                        src="{{ asset('public/images/vendor' . $order->customer->image) }}"
+                                        alt="Image Description">
                                 </div>
-
-                                <hr>
-
-                                <div class="media align-items-center" href="javascript:">
-                                    <div class="icon icon-soft-info icon-circle mr-3">
-                                        <i class="tio-shopping-basket-outlined"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <span class="text-body text-hover-primary">{{ $order->customer->orders_count }}
-                                            orders</span>
-                                    </div>
-                                    <div class="media-body text-right">
-                                        {{-- <i class="tio-chevron-right text-body"></i> --}}
-                                    </div>
+                                <div class="media-body">
+                                    <span
+                                        class="text-body text-hover-primary">{{ $order->customer['f_name'] . ' ' . $order->customer['l_name'] }}</span>
                                 </div>
-
-                                <hr>
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5>{{ __('messages.contact') }} {{ __('messages.info') }}</h5>
+                                <div class="media-body text-right">
+                                    {{-- <i class="tio-chevron-right text-body"></i> --}}
                                 </div>
+                            </div>
 
-                                <ul class="list-unstyled list-unstyled-py-2">
-                                    <li>
-                                        <i class="tio-online mr-2"></i>
-                                        {{ $order->customer['email'] }}
-                                    </li>
-                                    <li>
-                                        <a class="deco-none" href="tel:{{ $order->customer['phone'] }}">
-                                            <i class="tio-android-phone-vs mr-2"></i>
-                                            {{ $order->customer['phone'] }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            @else
-                            {{translate('messages.customer_not_found')}}
-                            @endif
-                            @if ($order->delivery_address)
-                                <hr>
-                                @php($address = json_decode($order->delivery_address, true))
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5>{{ __('messages.delivery') }} {{ __('messages.info') }}</h5>
-                                    @if (isset($address))
-                                        {{-- <a class="link" data-toggle="modal" data-target="#shipping-address-modal"
-                                           href="javascript:">{{__('messages.edit')}}</a> --}}
-                                    @endif
+                            <hr>
+
+                            <div class="media align-items-center" href="javascript:">
+                                <div class="icon icon-soft-info icon-circle mr-3">
+                                    <i class="tio-shopping-basket-outlined"></i>
                                 </div>
-                                <span class="d-block">
-                                            {{$order->delivery_address}}
-                                </span>
+                                <div class="media-body">
+                                    <span class="text-body text-hover-primary">{{ $order->customer->orders_count }}
+                                        orders</span>
+                                </div>
+                                <div class="media-body text-right">
+                                    {{-- <i class="tio-chevron-right text-body"></i> --}}
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5>{{ __('messages.contact') }} {{ __('messages.info') }}</h5>
+                            </div>
+
+                            <ul class="list-unstyled list-unstyled-py-2">
+                                <li>
+                                    <i class="tio-online mr-2"></i>
+                                    {{ $order->customer['email'] }}
+                                </li>
+                                <li>
+                                    <a class="deco-none" href="tel:{{ $order->customer['phone'] }}">
+                                        <i class="tio-android-phone-vs mr-2"></i>
+                                        {{ $order->customer['phone'] }}
+                                    </a>
+                                </li>
+                            </ul>
+                        @else
+                            {{ translate('messages.customer_not_found') }}
+                        @endif
+                        @if ($order->delivery_address)
+                            <hr>
+                            @php($address = json_decode($order->delivery_address, true))
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5>{{ __('messages.delivery') }} {{ __('messages.info') }}</h5>
                                 @if (isset($address))
+                                    {{-- <a class="link" data-toggle="modal" data-target="#shipping-address-modal"
+                                           href="javascript:">{{__('messages.edit')}}</a> --}}
+                                @endif
+                            </div>
+                            <span class="d-block">
+                                {{ $order->delivery_address }}
+                            </span>
+                            @if (isset($address))
                                 <span class="d-block">
                                     {{ __('messages.name') }}: {{ $address['contact_person_name'] }}<br>
                                     {{ __('messages.contact') }}:<a class="deco-none"
                                         href="tel:{{ $address['contact_person_number'] }}">
                                         {{ $address['contact_person_number'] }}</a><br>
-                                        {{ translate('Road') }}:
-                                        {{ isset($address['road']) ? $address['road'] : '' }}<br>
-                                        {{ translate('House') }}:
-                                        {{ isset($address['house']) ? $address['house'] : '' }}<br>
-                                        {{ translate('Floor') }}:
-                                        {{ isset($address['floor']) ? $address['floor'] : '' }}<br>
+                                    {{ translate('Road') }}:
+                                    {{ isset($address['road']) ? $address['road'] : '' }}<br>
+                                    {{ translate('House') }}:
+                                    {{ isset($address['house']) ? $address['house'] : '' }}<br>
+                                    {{ translate('Floor') }}:
+                                    {{ isset($address['floor']) ? $address['floor'] : '' }}<br>
                                     @if ($order['order_type'] != 'take_away' && isset($address['address']))
                                         @if (isset($address['latitude']) && isset($address['longitude']))
                                             <a target="_blank"
@@ -595,9 +596,9 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
 
                                     @endif
                                 </span>
-                                @endif
                             @endif
-                        </div>
+                        @endif
+                    </div>
 
                     <!-- End Body -->
                 </div>
@@ -766,7 +767,7 @@ $max_processing_time = explode('-', $order['restaurant']['delivery_time'])[0];
                     confirmButtonText: 'Submit',
                     inputPlaceholder: "Enter processing time",
                     input: 'text',
-                    html: message + '<br/>'+'<label>Enter Processing time in minutes</label>',
+                    html: message + '<br/>' + '<label>Enter Processing time in minutes</label>',
                     inputValue: processing,
                     preConfirm: (processing_time) => {
                         location.href = route + '&processing_time=' + processing_time;
