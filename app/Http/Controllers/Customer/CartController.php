@@ -40,17 +40,40 @@ class CartController extends Controller
         $cart = session()->get('cart');
 
         if (!$cart) {
+            // dd($food->toArray());
+            if($food->product_type == "preorder"){
+                if($addMoreQuantity <= $food->unit)
+                {
+                    $cart = [
+                        $id => [
+                            "name" => $food->name,
+                            "restaurant_id" => $food->restaurant_id,
+                            "quantity" => $addMoreQuantity,
+                            "product_type" => $food->product_type,
+                            "qty" =>$food->unit,
+                            "price" => $food->price,
+                            "photo" => $food->image
+                            // "variants" => $food_variants
+                        ]
+                    ];
+                } else {
+                    return response()->json(['msg' => 'Food not added to cart successfully!']);
+                }
+            } else {
+                $cart = [
+                    $id => [
+                        "name" => $food->name,
+                        "restaurant_id" => $food->restaurant_id,
+                        "quantity" => $addMoreQuantity,
+                        "product_type" => $food->product_type,
+                        "qty" =>$food->unit,
+                        "price" => $food->price,
+                        "photo" => $food->image
+                        // "variants" => $food_variants
+                    ]
+                ];
+            }
 
-            $cart = [
-                $id => [
-                    "name" => $food->name,
-                    "restaurant_id" => $food->restaurant_id,
-                    "quantity" => $addMoreQuantity,
-                    "price" => $food->price,
-                    "photo" => $food->image
-                    // "variants" => $food_variants
-                ]
-            ];
 
             session()->put('cart', $cart);
 
@@ -62,8 +85,17 @@ class CartController extends Controller
         }
 
         if (isset($cart[$id])) {
+            if($food->product_type == "preorder"){
+                if($addMoreQuantity <= $food->unit)
+                {
+                    $cart[$id]['quantity']++;
+                } else {
+                    return response()->json(['msg' => 'Food not added to cart successfully!']);
+                }
+            } else {
+                $cart[$id]['quantity']++;
+            }
 
-            $cart[$id]['quantity']++;
 
             session()->put('cart', $cart);
 
@@ -75,10 +107,42 @@ class CartController extends Controller
 
         }
 
+
+        if($food->product_type == "preorder"){
+            if($addMoreQuantity <= $food->unit)
+            {
+                $cart[$id] = [
+                    "name" => $food->name,
+                    "restaurant_id" => $food->restaurant_id,
+                    "quantity" => $addMoreQuantity,
+                    "product_type" => $food->product_type,
+                    "qty" =>$food->unit,
+                    "price" => $food->price,
+                    "photo" => $food->image
+                ];
+
+            } else {
+                return response()->json(['msg' => 'Food not added to cart successfully!']);
+            }
+        } else {
+            $cart[$id] = [
+                "name" => $food->name,
+                "restaurant_id" => $food->restaurant_id,
+                "quantity" => $addMoreQuantity,
+                "product_type" => $food->product_type,
+                "qty" =>$food->unit,
+                "price" => $food->price,
+                "photo" => $food->image
+            ];
+
+        }
+
         $cart[$id] = [
             "name" => $food->name,
             "restaurant_id" => $food->restaurant_id,
             "quantity" => $addMoreQuantity,
+            "product_type" => $food->product_type,
+            "qty" =>$food->unit,
             "price" => $food->price,
             "photo" => $food->image
         ];

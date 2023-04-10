@@ -165,7 +165,7 @@
                     </div>
                     <!-- End Header -->
 
-
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
@@ -247,6 +247,7 @@
                         </div>
                     </div>
                     <!-- End Table -->
+                    </div>
                 </div>
                 <!-- End Card -->
             </div>

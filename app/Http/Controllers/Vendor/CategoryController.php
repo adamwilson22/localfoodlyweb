@@ -112,6 +112,10 @@ class CategoryController extends Controller
 
         $resturantID = Helpers::get_restaurant_id();
         // dd($resturantID);
+        if($resturantID == 0){
+            Toastr::error("Please create your store first from settings");
+            return back();
+        }
 
         $rules = [
             "name"  => "required|unique:categories",

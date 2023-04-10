@@ -59,10 +59,9 @@
                                                             <td>
                                                                 <div class="invoice">
                                                                     <p>{{ $order->order_id }}</p>
-                                                                    <h6 data-toggle="modal"
-                                                                        data-target="{{ route('vendor.order.details', ['id' => $order->order_id]) }}">
-                                                                        View
-                                                                        Invoice</h6>
+                                                                    <h6><a
+                                                                            href="{{ route('vendor.order.details', ['id' => $order->order_id]) }}">View
+                                                                            Invoice</a></h6>
                                                                 </div>
                                                             </td>
                                                             <td><span
@@ -134,10 +133,9 @@
                                                             <td>
                                                                 <div class="invoice">
                                                                     <p>{{ $order->order_id }}</p>
-                                                                    <h6 data-toggle="modal"
-                                                                        data-target="{{ route('vendor.order.details', ['id' => $order->order_id]) }}">
-                                                                        View
-                                                                        Invoice</h6>
+                                                                    <h6><a
+                                                                            href="{{ route('vendor.order.details', ['id' => $order->order_id]) }}">View
+                                                                            Invoice</a></h6>
                                                                 </div>
                                                             </td>
                                                             <td><span
@@ -186,10 +184,9 @@
                                                             <td>
                                                                 <div class="invoice">
                                                                     <p>{{ $order->order_id }}</p>
-                                                                    <h6 data-toggle="modal"
-                                                                        data-target="{{ route('vendor.order.details', ['id' => $order->order_id]) }}">
-                                                                        View
-                                                                        Invoice</h6>
+                                                                    <h6><a
+                                                                            href="{{ route('vendor.order.details', ['id' => $order->order_id]) }}">View
+                                                                            Invoice</a></h6>
                                                                 </div>
                                                             </td>
                                                             <td><span

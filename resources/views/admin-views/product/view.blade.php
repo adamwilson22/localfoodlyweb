@@ -182,92 +182,93 @@
             <div class="card-header">
             {{__('messages.product')}} {{__('messages.reviews')}}
             </div>
-            <!-- Table -->
-            <div class="table-responsive datatable-custom">
-                <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
-                       data-hs-datatables-options='{
-                     "columnDefs": [{
-                        "targets": [0, 3, 6],
-                        "orderable": false
-                      }],
-                     "order": [],
-                     "info": {
-                       "totalQty": "#datatableWithPaginationInfoTotalQty"
-                     },
-                     "search": "#datatableSearch",
-                     "entries": "#datatableEntries",
-                     "pageLength": 25,
-                     "isResponsive": false,
-                     "isShowPaging": false,
-                     "pagination": "datatablePagination"
-                   }'>
-                    <thead class="thead-light">
-                    <tr>
-                        <th>{{__('messages.reviewer')}}</th>
-                        <th>{{__('messages.review')}}</th>
-                        <th>{{__('messages.date')}}</th>
-                        <th>{{__('messages.status')}}</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-
-                    @foreach($reviews as $review)
+            <div class="card-body">
+                <!-- Table -->
+                <div class="table-responsive datatable-custom">
+                    <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
+                        data-hs-datatables-options='{
+                        "columnDefs": [{
+                            "targets": [0, 3, 6],
+                            "orderable": false
+                        }],
+                        "order": [],
+                        "info": {
+                        "totalQty": "#datatableWithPaginationInfoTotalQty"
+                        },
+                        "search": "#datatableSearch",
+                        "entries": "#datatableEntries",
+                        "pageLength": 25,
+                        "isResponsive": false,
+                        "isShowPaging": false,
+                        "pagination": "datatablePagination"
+                    }'>
+                        <thead class="thead-light">
                         <tr>
-                            <td>
-                                @if ($review->customer)
-                                    <a class="d-flex align-items-center"
-                                    href="{{route('admin.customer.view',[$review['user_id']])}}">
-                                        <div class="avatar avatar-circle">
-                                            <img class="avatar-img" width="75" height="75"
-                                                onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                                src="{{asset('storage/app/public/profile/'.$review->customer->image)}}"
-                                                alt="Image Description">
-                                        </div>
-                                        <div class="ml-3">
-                                        <span class="d-block h5 text-hover-primary mb-0">{{$review->customer['f_name']." ".$review->customer['l_name']}} <i
-                                                class="tio-verified text-primary" data-toggle="tooltip" data-placement="top"
-                                                title="Verified Customer"></i></span>
-                                            <span class="d-block font-size-sm text-body">{{$review->customer->email}}</span>
-                                        </div>
-                                    </a>
-                                @else
-                                {{__('messages.customer_not_found')}}
-                                @endif
-                            </td>
-                            <td>
-                                <div class="text-wrap" style="width: 18rem;">
-                                    <div class="d-flex mb-2">
-                                        <label class="badge badge-soft-info">
-                                            {{$review->rating}} <i class="tio-star"></i>
-                                        </label>
-                                    </div>
-
-                                    <p>
-                                        {{$review['comment']}}
-                                    </p>
-                                </div>
-                            </td>
-                            <td>
-                                {{date('d M Y '.config('timeformat'),strtotime($review['created_at']))}}
-                            </td>
-                            <td>
-                                <label class="toggle-switch toggle-switch-sm" for="reviewCheckbox{{$review->id}}">
-                                    <input type="checkbox" onclick="status_form_alert('status-{{$review['id']}}','{{$review->status?__('messages.you_want_to_hide_this_review_for_customer'):__('messages.you_want_to_show_this_review_for_customer')}}', event)" class="toggle-switch-input" id="reviewCheckbox{{$review->id}}" {{$review->status?'checked':''}}>
-                                    <span class="toggle-switch-label">
-                                        <span class="toggle-switch-indicator"></span>
-                                    </span>
-                                </label>
-                                <form action="{{route('admin.food.reviews.status',[$review['id'],$review->status?0:1])}}" method="get" id="status-{{$review['id']}}">
-                                </form>
-                            </td>
+                            <th>{{__('messages.reviewer')}}</th>
+                            <th>{{__('messages.review')}}</th>
+                            <th>{{__('messages.date')}}</th>
+                            <th>{{__('messages.status')}}</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <!-- End Table -->
+                        </thead>
 
+                        <tbody>
+
+                        @foreach($reviews as $review)
+                            <tr>
+                                <td>
+                                    @if ($review->customer)
+                                        <a class="d-flex align-items-center"
+                                        href="{{route('admin.customer.view',[$review['user_id']])}}">
+                                            <div class="avatar avatar-circle">
+                                                <img class="avatar-img" width="75" height="75"
+                                                    onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
+                                                    src="{{asset('storage/app/public/profile/'.$review->customer->image)}}"
+                                                    alt="Image Description">
+                                            </div>
+                                            <div class="ml-3">
+                                            <span class="d-block h5 text-hover-primary mb-0">{{$review->customer['f_name']." ".$review->customer['l_name']}} <i
+                                                    class="tio-verified text-primary" data-toggle="tooltip" data-placement="top"
+                                                    title="Verified Customer"></i></span>
+                                                <span class="d-block font-size-sm text-body">{{$review->customer->email}}</span>
+                                            </div>
+                                        </a>
+                                    @else
+                                    {{__('messages.customer_not_found')}}
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="text-wrap" style="width: 18rem;">
+                                        <div class="d-flex mb-2">
+                                            <label class="badge badge-soft-info">
+                                                {{$review->rating}} <i class="tio-star"></i>
+                                            </label>
+                                        </div>
+
+                                        <p>
+                                            {{$review['comment']}}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{date('d M Y '.config('timeformat'),strtotime($review['created_at']))}}
+                                </td>
+                                <td>
+                                    <label class="toggle-switch toggle-switch-sm" for="reviewCheckbox{{$review->id}}">
+                                        <input type="checkbox" onclick="status_form_alert('status-{{$review['id']}}','{{$review->status?__('messages.you_want_to_hide_this_review_for_customer'):__('messages.you_want_to_show_this_review_for_customer')}}', event)" class="toggle-switch-input" id="reviewCheckbox{{$review->id}}" {{$review->status?'checked':''}}>
+                                        <span class="toggle-switch-label">
+                                            <span class="toggle-switch-indicator"></span>
+                                        </span>
+                                    </label>
+                                    <form action="{{route('admin.food.reviews.status',[$review['id'],$review->status?0:1])}}" method="get" id="status-{{$review['id']}}">
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End Table -->
+            </div>
             <!-- Footer -->
             <div class="card-footer">
                 <!-- Pagination -->

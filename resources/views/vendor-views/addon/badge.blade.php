@@ -44,6 +44,7 @@
                                 id="itemCount">{{ $badges->total() }}</span></h5>
                     </div>
                     <!-- Table -->
+                    <div class="card-body">
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
                             class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
@@ -93,6 +94,7 @@
                                 {!! $badges->links() !!}
                             </tfoot>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>

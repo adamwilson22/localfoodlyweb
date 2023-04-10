@@ -214,7 +214,7 @@
                 <!-- End Row -->
             </div>
             <!-- End Header -->
-
+            <div class="card-body">
             <!-- Table -->
             <div class="table-responsive datatable-custom">
                 <table id="datatable"
@@ -291,7 +291,7 @@
                 </table>
             </div>
             <!-- End Table -->
-
+            </div>
             <!-- Footer -->
             <div class="card-footer">
                 <!-- Pagination -->

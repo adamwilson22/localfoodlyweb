@@ -32,10 +32,63 @@
                                                 <tr>
                                                     <td>
                                                         <div class="info">
-                                                            <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(6).png') }}"
+                                                            <img src="{{ asset('assets/admin/img/NoPath---Copy-(6).png') }}"
                                                                 alt="">
                                                             <span>
-                                                                <h4>{{ $order->ful_name ?? '' }} </h4>
+                                                                <h4>{{ $order->f_name . ' ' . $order->l_name ?? '' }} </h4>
+                                                                <p>{{ $order->delivery_address }}</p>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="invoice">
+                                                            <p>Order #</p>
+                                                            <h6>{{ $order->id }}</h6>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="invoice">
+                                                            <p>Amount</p>
+                                                            <h6>{{ $order->order_amount }}</h6>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="invoice">
+                                                            <p>Time</p>
+                                                            <h6>{{ humanTiming(strtotime($order->created_at)) }}Ago </h6>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div style=" display:flex; justify-content: flex-end;">
+                                <a style="max-width:200px; display:flex; justify-content: center;" class="btn"
+                                    href="{{ route('vendor.order.list', ['status' => 'pending']) }}">All Pending Orders</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="title">Pre Orders</h4>
+                            <div class="small-table">
+                                <div class="table-responsive">
+                                    <table id="columnSearchDatatable"
+                                        class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                                        <tbody>
+
+                                            @foreach ($preOrders as $order)
+                                                <tr>
+                                                    <td>
+                                                        <div class="info">
+                                                            <img src="{{ asset('assets/admin/img/NoPath---Copy-(6).png') }}"
+                                                                alt="">
+                                                            <span>
+                                                                <h4>{{ $order->customer->f_name . ' ' . $order->customer->l_name ?? '' }}
+                                                                </h4>
                                                                 <p>{{ $order->delivery_address }}</p>
                                                             </span>
                                                         </div>
@@ -118,10 +171,10 @@
                                                 <tr>
                                                     <td>
                                                         <div class="info">
-                                                            <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(6).png') }}"
+                                                            <img src="{{ asset('assets/admin/img/NoPath---Copy-(6).png') }}"
                                                                 alt="">
                                                             <span>
-                                                                <h4>{{ $order->ful_name }}</h4>
+                                                                <h4>{{ $order->f_name . ' ' . $order->l_name }}</h4>
                                                                 <p>{{ $order->delivery_address }}</p>
                                                             </span>
                                                         </div>
@@ -158,8 +211,7 @@
                                 @foreach ($orders as $order)
                                     <li class="list-group-item">
                                         <div class="info">
-                                            <img src="{{ asset('public/assets/admin/img/top-selling/top1.png') }}"
-                                                alt="">
+                                            <img src="{{ asset('assets/admin/img/top-selling/top1.png') }}" alt="">
                                             <span>
                                                 <h4>{{ $order->customer->f_name ?? '' }}
                                                     {{ $order->customer->l_name ?? '' }}</h4>
@@ -186,73 +238,73 @@
                         </div>
                     </div>
                     <!-- <div class="card">
-                                                                                            <div class="card-body seller-card">
-                                                                                                <h4 class="title">Orders Confirmation</h4>
-                                                                                                <ul class="list-group list-group-flush selling-list">
-                                                                                                    <li class="list-group-item">
-                                                                                                        <div class="info">
-                                                                                                            <img src="{{ asset('public/assets/admin/img/top-selling/top1.png') }}" alt="">
-                                                                                                            <span>
-                                                                                                                <h4>Pizza Margherita</h4>
-                                                                                                                <p>Lorem ipsum dolor sit</p>
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                        <div class="price">
-                                                                                                            <p class="">$35.24</p>
-                                                                                                        </div>
-                                                                                                    </li>
-                                                                                                    <li class="list-group-item">
-                                                                                                        <div class="info">
-                                                                                                            <img src="{{ asset('public/assets/admin/img/top-selling/top2.png') }}" alt="">
-                                                                                                            <span>
-                                                                                                                <h4>Classic Salad</h4>
-                                                                                                                <p>Lorem ipsum dolor sit</p>
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                        <div class="price">
-                                                                                                            <p class="">$35.24</p>
-                                                                                                        </div>
-                                                                                                    </li>
-                                                                                                    <li class="list-group-item">
-                                                                                                        <div class="info">
-                                                                                                            <img src="{{ asset('public/assets/admin/img/top-selling/top3.png') }}" alt="">
-                                                                                                            <span>
-                                                                                                                <h4>Egg Sandwich</h4>
-                                                                                                                <p>Lorem ipsum dolor sit</p>
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                        <div class="price">
-                                                                                                            <p class="">$35.24</p>
-                                                                                                        </div>
-                                                                                                    </li>
-                                                                                                    <li class="list-group-item">
-                                                                                                        <div class="info">
-                                                                                                            <img src="{{ asset('public/assets/admin/img/top-selling/top4.png') }}" alt="">
-                                                                                                            <span>
-                                                                                                                <h4>Muesil Mango</h4>
-                                                                                                                <p>Lorem ipsum dolor sit</p>
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                        <div class="price">
-                                                                                                            <p class="">$35.24</p>
-                                                                                                        </div>
-                                                                                                    </li>
-                                                                                                    <li class="list-group-item">
-                                                                                                        <div class="info">
-                                                                                                            <img src="{{ asset('public/assets/admin/img/top-selling/top2.png') }}" alt="">
-                                                                                                            <span>
-                                                                                                                <h4>Classic Salad</h4>
-                                                                                                                <p>Lorem ipsum dolor sit</p>
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                        <div class="price">
-                                                                                                            <p class="">$35.24</p>
-                                                                                                        </div>
-                                                                                                    </li>
+                                                                                                <div class="card-body seller-card">
+                                                                                                    <h4 class="title">Orders Confirmation</h4>
+                                                                                                    <ul class="list-group list-group-flush selling-list">
+                                                                                                        <li class="list-group-item">
+                                                                                                            <div class="info">
+                                                                                                                <img src="{{ asset('assets/admin/img/top-selling/top1.png') }}" alt="">
+                                                                                                                <span>
+                                                                                                                    <h4>Pizza Margherita</h4>
+                                                                                                                    <p>Lorem ipsum dolor sit</p>
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                            <div class="price">
+                                                                                                                <p class="">$35.24</p>
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li class="list-group-item">
+                                                                                                            <div class="info">
+                                                                                                                <img src="{{ asset('assets/admin/img/top-selling/top2.png') }}" alt="">
+                                                                                                                <span>
+                                                                                                                    <h4>Classic Salad</h4>
+                                                                                                                    <p>Lorem ipsum dolor sit</p>
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                            <div class="price">
+                                                                                                                <p class="">$35.24</p>
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li class="list-group-item">
+                                                                                                            <div class="info">
+                                                                                                                <img src="{{ asset('assets/admin/img/top-selling/top3.png') }}" alt="">
+                                                                                                                <span>
+                                                                                                                    <h4>Egg Sandwich</h4>
+                                                                                                                    <p>Lorem ipsum dolor sit</p>
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                            <div class="price">
+                                                                                                                <p class="">$35.24</p>
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li class="list-group-item">
+                                                                                                            <div class="info">
+                                                                                                                <img src="{{ asset('assets/admin/img/top-selling/top4.png') }}" alt="">
+                                                                                                                <span>
+                                                                                                                    <h4>Muesil Mango</h4>
+                                                                                                                    <p>Lorem ipsum dolor sit</p>
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                            <div class="price">
+                                                                                                                <p class="">$35.24</p>
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li class="list-group-item">
+                                                                                                            <div class="info">
+                                                                                                                <img src="{{ asset('assets/admin/img/top-selling/top2.png') }}" alt="">
+                                                                                                                <span>
+                                                                                                                    <h4>Classic Salad</h4>
+                                                                                                                    <p>Lorem ipsum dolor sit</p>
+                                                                                                                </span>
+                                                                                                            </div>
+                                                                                                            <div class="price">
+                                                                                                                <p class="">$35.24</p>
+                                                                                                            </div>
+                                                                                                        </li>
 
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </div> -->
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            </div> -->
                 </div>
             </div>
 
@@ -310,73 +362,73 @@
                                 <tbody id="modal-table">
 
                                     <!-- <tr>
-                                                                                                            <td>
-                                                                                                                <div class="info">
-                                                                                                                    <img src="{{ asset('public/assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
-                                                                                                                    <span>
-                                                                                                                        <h4>Pizza Margherita</h4>
-                                                                                                                        <p>Lorem ipsum dolor sit</p>
-                                                                                                                    </span>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <div class="">
-                                                                                                                    <p class="mb-0 text-dark">12 min Ago</p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <div class="">
-                                                                                                                    <p class="mb-0 text-dark">(02)</p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                           
-                                                                                                        </tr>
-                                                                                                       
-                                                                                                        <tr>
-                                                                                                            <td>
-                                                                                                                <div class="info">
-                                                                                                                    <img src="{{ asset('public/assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
-                                                                                                                    <span>
-                                                                                                                        <h4>Pizza Margherita</h4>
-                                                                                                                        <p>Lorem ipsum dolor sit</p>
-                                                                                                                    </span>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <div class="">
-                                                                                                                    <p class="mb-0 text-dark">12 min Ago</p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <div class="">
-                                                                                                                    <p class="mb-0 text-dark">(02)</p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                           
-                                                                                                        </tr>
-                                                                                                       
-                                                                                                        <tr>
-                                                                                                            <td>
-                                                                                                                <div class="info">
-                                                                                                                    <img src="{{ asset('public/assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
-                                                                                                                    <span>
-                                                                                                                        <h4>Pizza Margherita</h4>
-                                                                                                                        <p>Lorem ipsum dolor sit</p>
-                                                                                                                    </span>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <div class="">
-                                                                                                                    <p class="mb-0 text-dark">12 min Ago</p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                <div class="">
-                                                                                                                    <p class="mb-0 text-dark">(02)</p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                           
-                                                                                                        </tr> -->
+                                                                                                                <td>
+                                                                                                                    <div class="info">
+                                                                                                                        <img src="{{ asset('assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
+                                                                                                                        <span>
+                                                                                                                            <h4>Pizza Margherita</h4>
+                                                                                                                            <p>Lorem ipsum dolor sit</p>
+                                                                                                                        </span>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="">
+                                                                                                                        <p class="mb-0 text-dark">12 min Ago</p>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="">
+                                                                                                                        <p class="mb-0 text-dark">(02)</p>
+                                                                                                                    </div>
+                                                                                                                </td>
+
+                                                                                                            </tr>
+
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <div class="info">
+                                                                                                                        <img src="{{ asset('assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
+                                                                                                                        <span>
+                                                                                                                            <h4>Pizza Margherita</h4>
+                                                                                                                            <p>Lorem ipsum dolor sit</p>
+                                                                                                                        </span>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="">
+                                                                                                                        <p class="mb-0 text-dark">12 min Ago</p>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="">
+                                                                                                                        <p class="mb-0 text-dark">(02)</p>
+                                                                                                                    </div>
+                                                                                                                </td>
+
+                                                                                                            </tr>
+
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <div class="info">
+                                                                                                                        <img src="{{ asset('assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
+                                                                                                                        <span>
+                                                                                                                            <h4>Pizza Margherita</h4>
+                                                                                                                            <p>Lorem ipsum dolor sit</p>
+                                                                                                                        </span>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="">
+                                                                                                                        <p class="mb-0 text-dark">12 min Ago</p>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="">
+                                                                                                                        <p class="mb-0 text-dark">(02)</p>
+                                                                                                                    </div>
+                                                                                                                </td>
+
+                                                                                                            </tr> -->
 
                                 </tbody>
                             </table>
@@ -395,7 +447,7 @@
     <script>
         $(document).ready(function() {
             $('.edit').click(function(e) {
-                // e.preventDefault();  
+                // e.preventDefault();
                 var orderId = $(this).data('id');
                 $.ajax({
                     url: "/vendor-panel/order/detailsAjax/" + orderId,
@@ -419,7 +471,7 @@
                         <tr>
                             <td>
                             <div class="info">
-                                <img src="{{ asset('public/assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
+                                <img src="{{ asset('assets/admin/img/pexels-ana-madeleine-uribe-27629423.png') }}" alt="">
                                 <span>
                                     <h4>${record.food.name}</h4>
                                     <p>${record.food.description}</p>

@@ -42,7 +42,7 @@
                         </form>
                     </div>
                     <!-- End Header -->
-
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
@@ -110,6 +110,7 @@
 
                     </div>
                     <!-- End Table -->
+                    </div>
                 </div>
                 <!-- End Card -->
             </div>

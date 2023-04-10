@@ -846,7 +846,14 @@ div#notiNavbarDropdown {
     color: #fff;
 }
 .btn-group-lg > .btn, .btn-lg {
-    padding: 16px 28px;
+    padding: 14px 28px;
+}
+.btn-outline-primary.btn:before {
+    background: #006aff;
+}
+.btn-outline-primary:focus {
+    color: #ffffff;
+    border-color: #006AFF;
 }
 /* product detail */
 .product-detail .product-big .slick-slide {
@@ -1117,7 +1124,8 @@ div#notiNavbarDropdown {
     padding-right: 0;
 }
 .card td {
-    padding: 14px;
+    padding: 12px;
+    font-size: 14px;
 }
 
 .card td:first-child {
@@ -1165,6 +1173,7 @@ div#notiNavbarDropdown {
 .small-table {
     max-height: 260px;
     overflow: auto;
+    padding-right: 14px;
 }
 
 /*.navbar-vertical-aside .navbar-brand-logo,.authpg .logo img {*/
@@ -1254,8 +1263,11 @@ div#notiNavbarDropdown {
 }
 
 .customer .detail .info img {
-    width: 60px;
-    min-width: 60px;
+    width: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    object-fit: cover;
 }
 
 .customer .detail .info h4 {
@@ -1281,6 +1293,15 @@ div#notiNavbarDropdown {
     position: relative;
     margin-right: 14px;
 }
+
+.kitchenimg {
+    width: 270px;
+    display: inline-block;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
 .customer .detail h6 {
     margin-bottom: 0;
     font-size: 16px;
@@ -1717,9 +1738,9 @@ h1.title {
 
 .card-table thead th {
     border: none;
-    color: #000000;
-    font-size: 18px;
-    font-weight: 700;
+    color: #000000 !important;
+    font-size: 16px;
+    font-weight: 500;
     text-transform: none;
 }
 
@@ -2319,7 +2340,9 @@ body.matchespg footer {
     background-color: #ffffff !important;
     padding-right: 6px !important;
 }
-
+.input-group-flush .custom-select:focus, .input-group-flush .form-control:focus {
+    box-shadow: none;
+}
 @media (max-width: 1599px) {
     .customer .detail .points {
         text-align: left;
@@ -2339,6 +2362,78 @@ body.matchespg footer {
     }
 }
 @media (max-width: 1399px) {
+    .customer p, .customer a {
+        font-size: 14px;
+    }
+    .customer .contact a {
+        margin-bottom: 10px;
+    }
+    .single-detail .contact p {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    .single-detail h4 {
+        font-size: 16px;
+    }
+    .single-detail h1 {
+        font-size: 28px;
+    }
+    h1.title {
+        font-size: 34px;
+        margin: 10px 0;
+    }
+    .customer .customer-checkbox {
+        margin-top: 16px;
+    }
+    .navbar {
+        padding: 20px 0;
+    }
+    .page-header-title {
+        font-size: 30px;
+    }
+    .record-card .icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    .card-table .badge {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+    .record-card h1 {
+        font-size: 34px;
+    }
+    .record-card p {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+    .selling-list .list-group-item .action-btn a {
+        width: 35px;
+        height: 35px;
+        padding: 8px;
+        font-size: 14px;
+    }
+    .card-table .info img {
+        width: 40px;
+        height: 40px;
+    }
+    .card-table .info h4 {
+        font-size: 14px;
+    }
+    .card-table .info p {
+        font-size: 12px;
+    }
+    .card-table .invoice h6 {
+        font-size: 14px;
+    }
+    .row {
+        margin-right: -7px;
+        margin-left: -7px;
+    }
+    .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto, .col-xxl, .col-xxl-1, .col-xxl-10, .col-xxl-11, .col-xxl-12, .col-xxl-2, .col-xxl-3, .col-xxl-4, .col-xxl-5, .col-xxl-6, .col-xxl-7, .col-xxl-8, .col-xxl-9, .col-xxl-auto {
+        padding-right: 7px;
+        padding-left: 7px
+    }
     .product-cards .card {
         margin-bottom: 16px;
     }

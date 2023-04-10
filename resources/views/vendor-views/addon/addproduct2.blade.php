@@ -586,16 +586,67 @@
                                     </div>
                                 </div> --}}
 
-                                     <div class=" form-group">
-                                        <label class="input-label" for="addons">Unit Serve</label>
-                                        <select name="unit_serve" class="custom-select custom-select-lg" data-placeholder="Select Unit Serve">
-                                            <option value="KG" @if(old('unit_serve') == 'KG') selected @endif>KG</option>
-                                            <option value="DAZAN" @if(old('unit_serve') == 'DAZAN') selected @endif>DAZAN</option>
-                                            <option value="LENGTH" @if(old('unit_serve') == 'LENGTH') selected @endif>LENGTH</option>
-                                          </select>
-                                        <label class="input-label" for="">Unit</label>
-                                        <input type="number" class="form-control form-control-lg" name="unit" placeholder="Please enter the quantity or size" value="{{ old('unit') }}">
+                                <div class=" form-group">
+                                    <label class="input-label" for="addons">Serving Unit</label>
+                                    {{-- Modal for adding new Units for Food --}}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#unitsModal">
+                                        Add Units
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="unitsModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            {{-- <form method="POST" action="{{ route('vendor.addon.add-unit') }}">
+                                                @csrf --}}
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Add a Unit</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <!-- Form fields go here -->
+                                                    <div class="form-group">
+                                                        <input id="unitnametextbox" type="text" name="unitname"
+                                                            class="form-control form-control-lg"
+                                                            placeholder="Unit name">
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button id="unitnamesubmit" type="submit"
+                                                        class="btn btn-primary">Save </button>
+                                                </div>
+                                                {{-- </form> --}}
+
+                                            </div>
+                                        </div>
                                     </div>
+                                    {{-- Modal for adding new Units for Food --}}
+                                    <select id="unitsdropdown" name="unit_serve"
+                                        class="custom-select custom-select-lg" data-placeholder="Select Unit Serve">
+                                        @foreach ($units as $item)
+                                            <option value="{{ $item->unit_name }}">{{ $item->unit_name }}
+                                            </option>
+                                        @endforeach
+                                        {{-- <option value="Kg" @if (old('unit_serve') == 'KG') selected @endif>Kg
+                                        </option>
+                                        <option value="Dozen" @if (old('unit_serve') == 'DAZAN') selected @endif>Dozen
+                                        </option>
+                                        <option value="Length" @if (old('unit_serve') == 'LENGTH') selected @endif>Length
+                                        </option> --}}
+                                    </select>
+                                    <label class="input-label" for="">Unit</label>
+                                    <input type="number" class="form-control form-control-lg" name="unit"
+                                        placeholder="Please enter the quantity or size" value="{{ old('unit') }}">
+                                </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Add-On</label>
                                         <select class="addonDropdown" name="add_ons[]" multiple="multiple">
@@ -604,9 +655,13 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class=" form-group">
-                                        <a href="{{ route('vendor.addon.add-new') }}">Create More Add-On</a>
-                                    </div>
+                                    <div class="form-group">
+                                        <a href="#" data-toggle="modal"
+                                       data-target="#createAddon" >Create More
+                                           Add-Ons</a>
+                                       {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
+                                           Add-On</a> --}}
+                                   </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Badge</label>
                                         <select class="badgesDropdown" name="Badge[]" multiple="multiple">
@@ -616,7 +671,10 @@
                                         </select>
                                     </div>
                                     <div class=" form-group">
-                                        <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
+                                        <a href="#" data-toggle="modal"
+                                        data-target="#createBadge" >Create More
+                                            Badges</a>
+                                        {{-- <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a> --}}
                                     </div>
                                     
                                     <div class=" form-group">
@@ -908,6 +966,74 @@
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="createAddon" tabindex="-1" role="dialog"
+        aria-labelledby="createAddonTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="{{ route('vendor.addon.store') }}" id="addon_form" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+
+                            @csrf
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Addon</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="form-group">
+                        <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                        <input type="file" name="addon_image" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                        <input type="text" name="name" class="form-control"
+                            placeholder="{{ __('messages.new_addon') }}" value="{{ old('name') }}" required
+                            maxlength="191">
+                    </div>
+                    <div class="form-group">
+                        <label class="input-label" for="exampleFormControlInput1">{{ __('messages.price') }}</label>
+                        <input type="number" min="0" max="999999999999.99" name="price" step="0.01"
+                            class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<div class="modal fade" id="createBadge" tabindex="-1" role="dialog"
+        aria-labelledby="createBadgeTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="{{ route('vendor.badge.store') }}" id="badge_form" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+
+                            @csrf
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Badge</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                         </div>
+                        <div class="form-group">
+                            <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                            <input type="file" name="badge_image" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                            <input type="text" name="name" class="form-control"
+                                placeholder="{{ __('messages.new_badge') }}" value="{{ old('name') }}" required
+                                maxlength="191">
+                        </div>
+    
+                        <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
     @endsection
 </body>
 
@@ -1038,6 +1164,30 @@
 
             reader.readAsDataURL(files[0]);
         });
+// Create Addon and Badge
+        $("#addon_form , #badge_form").submit(function(e) {
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var actionUrl = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $("#createAddon , #createBadge").modal('hide');
+                    toastr.success(
+                        'Added successfully', {
+                            CloseButton: true,
+                            ProgressBar: true
+                        });// show response from the php script.
+                }
+            });
+
+            });
     </script>
     <script>
        

@@ -54,53 +54,55 @@
                             <!-- End Search -->
                         </form>
                     </div>
-                    <!-- Table -->
-                    <div class="table-responsive datatable-custom">
-                        <table id="columnSearchDatatable"
-                               class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
-                               data-hs-datatables-options='{
-                                 "order": [],
-                                 "orderCellsTop": true,
-                                 "paging":false
-                               }'>
-                            <thead class="thead-light">
-                            <tr>
-                                <th>{{__('messages.#')}}</th>
-                                <th style="width: 50%">{{__('messages.name')}}</th>
-                                <th style="width: 10%">{{__('messages.action')}}</th>
-                            </tr>
-                            
-                            </thead>
-
-                            <tbody id="set-rows">
-                            @foreach($attributes as $key=>$attribute)
+                    <div class="card-body">
+                        <!-- Table -->
+                        <div class="table-responsive datatable-custom">
+                            <table id="columnSearchDatatable"
+                                   class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+                                   data-hs-datatables-options='{
+                                     "order": [],
+                                     "orderCellsTop": true,
+                                     "paging":false
+                                   }'>
+                                <thead class="thead-light">
                                 <tr>
-                                    <td>{{$key+$attributes->firstItem()}}</td>
-                                    <td>
-                                    <span class="d-block font-size-sm text-body">
-                                        {{Str::limit($attribute['name'],20,'...')}}
-                                    </span>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-sm btn-white" href="{{route('admin.attribute.edit',[$attribute['id']])}}" title="{{__('messages.edit')}}"><i class="tio-edit"></i>
-                                        </a>
-                                        <a class="btn btn-sm btn-white" href="javascript:" onclick="form_alert('attribute-{{$attribute['id']}}','Want to delete this attribute ?')" title="{{__('messages.delete')}}"><i class="tio-delete-outlined"></i>
-                                        </a>
-                                        <form action="{{route('admin.attribute.delete',[$attribute['id']])}}"
-                                                method="post" id="attribute-{{$attribute['id']}}">
-                                            @csrf @method('delete')
-                                        </form>
-                                    </td>
+                                    <th>{{__('messages.#')}}</th>
+                                    <th style="width: 50%">{{__('messages.name')}}</th>
+                                    <th style="width: 10%">{{__('messages.action')}}</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        <hr>
-                        <table class="page-area">
-                            <tfoot>
-                            {!! $attributes->links() !!}
-                            </tfoot>
-                        </table>
+                                
+                                </thead>
+    
+                                <tbody id="set-rows">
+                                @foreach($attributes as $key=>$attribute)
+                                    <tr>
+                                        <td>{{$key+$attributes->firstItem()}}</td>
+                                        <td>
+                                        <span class="d-block font-size-sm text-body">
+                                            {{Str::limit($attribute['name'],20,'...')}}
+                                        </span>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm btn-white" href="{{route('admin.attribute.edit',[$attribute['id']])}}" title="{{__('messages.edit')}}"><i class="tio-edit"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-white" href="javascript:" onclick="form_alert('attribute-{{$attribute['id']}}','Want to delete this attribute ?')" title="{{__('messages.delete')}}"><i class="tio-delete-outlined"></i>
+                                            </a>
+                                            <form action="{{route('admin.attribute.delete',[$attribute['id']])}}"
+                                                    method="post" id="attribute-{{$attribute['id']}}">
+                                                @csrf @method('delete')
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <hr>
+                            <table class="page-area">
+                                <tfoot>
+                                {!! $attributes->links() !!}
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

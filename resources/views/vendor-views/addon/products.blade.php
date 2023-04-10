@@ -49,7 +49,7 @@
 
         <div class="row">
             <div class="col-xl-4 col-lg-6">
-                <div class="inline-select">
+                <div class="inline-select mt-2">
                     <label for="" class="">Sort by</label>
                     <select id="" class="custom-select custom-select-lg">
                         <option selected>Best Seller</option>
@@ -58,10 +58,10 @@
                 </div>
             </div>
             <div class="col-xl-8 col-lg-6 mt-lg-0 mt-3 text-lg-right">
-                <a href="#" class="btn btn-secondary btn-lg bulk-action mb-2">Bulk Select</a>
-                <a href="{{ route('vendor.addon.categories') }}" class="btn btn-secondary btn-lg sltcateg">View All
+                <a href="#" class="btn btn-secondary btn-lg bulk-action mt-2">Bulk Select</a>
+                <a href="{{ route('vendor.addon.categories') }}" class="btn btn-secondary btn-lg sltcateg  ml-sm-3 mt-2">View All
                     Categories</a>
-                <a href="" class="btn btn-primary btn-lg ml-sm-3 mt-lg-0 mt-2" data-toggle="modal"
+                <a href="" class="btn btn-primary btn-lg ml-sm-3 mt-2" data-toggle="modal"
                     data-target="#addproductModalCenter">Add More Products</a>
             </div>
         </div>

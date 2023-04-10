@@ -184,7 +184,10 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('order', 'OrderController@index')->name('order');
             Route::get('invoices', 'AddOnController@invoices')->name('invoices');
             Route::get('massage', 'AddOnController@massage')->name('massage');
+
+            Route::post('/save-review', 'AddOnController@savereview');
             Route::get('review', 'AddOnController@review')->name('review');
+            
             Route::get('coupon', 'AddOnController@coupon')->name('coupon');
             Route::get('product-detail/{id}', 'ProductController@show')->name('product-detail');
             Route::get('product-pre-order', 'AddOnController@product_pre_order')->name('product-pre-order');

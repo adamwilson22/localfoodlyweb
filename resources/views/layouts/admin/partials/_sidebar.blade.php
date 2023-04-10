@@ -1,5 +1,3 @@
-
-
 <div id="sidebarMain" class="d-none">
     <aside
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  ">
@@ -9,11 +7,9 @@
                 @php($restaurant_logo = \App\Models\BusinessSetting::where(['key' => 'logo'])->first()->value)
                 <a class="navbar-brand" href="{{ route('admin.dashboard') }}" aria-label="Front">
                     <img class="navbar-brand-logo"
-                        
                         onerror="this.src='{{ asset('public/assets/admin/img/160x160/img2.jpg') }}'"
                         src="{{ asset('storage/app/public/business/' . $restaurant_logo) }}" alt="Logo">
                     <img class="navbar-brand-logo-mini"
-                        
                         onerror="this.src='{{ asset('public/assets/admin/img/160x160/img2.jpg') }}'"
                         src="{{ asset('storage/app/public/business/' . $restaurant_logo) }}" alt="Logo">
                 </a>
@@ -121,8 +117,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li
-                                    class="nav-item {{ Request::is('admin/order/list/processing') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('admin/order/list/processing') ? 'active' : '' }}">
                                     <a class="nav-link " href="{{ route('admin.order.list', ['processing']) }}"
                                         title="{{ __('messages.preparingInRestaurants') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
@@ -251,8 +246,7 @@
                                 </li>
                                 <li
                                     class="nav-item {{ Request::is('admin/dispatch/list/on_going') ? 'active' : '' }}">
-                                    <a class="nav-link "
-                                        href="{{ route('admin.dispatch.list', ['on_going']) }}"
+                                    <a class="nav-link " href="{{ route('admin.dispatch.list', ['on_going']) }}"
                                         title="{{ __('messages.ongoingOrders') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span class="text-truncate">
@@ -278,8 +272,7 @@
                     </li>
 
                     @if (\App\CentralLogics\Helpers::module_permission_check('zone'))
-                        <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/zone*') ? 'active' : '' }}">
+                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/zone*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                 href="{{ route('admin.zone.home') }}" title="{{ __('messages.zone') }}">
                                 <i class="tio-city nav-icon"></i>
@@ -386,8 +379,7 @@
                                         <span class="text-truncate">Sub-Sub-Category</span>
                                     </a>
                                 </li> --}}
-                                <li
-                                    class="nav-item {{ Request::is('admin/category/bulk-import') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('admin/category/bulk-import') ? 'active' : '' }}">
                                     <a class="nav-link " href="{{ route('admin.category.bulk-import') }}"
                                         title="{{ __('messages.bulk_import') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
@@ -395,10 +387,8 @@
                                             class="text-truncate text-capitalize">{{ __('messages.bulk_import') }}</span>
                                     </a>
                                 </li>
-                                <li
-                                    class="nav-item {{ Request::is('admin/category/bulk-export') ? 'active' : '' }}">
-                                    <a class="nav-link "
-                                        href="{{ route('admin.category.bulk-export-index') }}"
+                                <li class="nav-item {{ Request::is('admin/category/bulk-export') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.category.bulk-export-index') }}"
                                         title="{{ __('messages.bukl_export') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span
@@ -428,8 +418,7 @@
 
                     <!-- AddOn -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('addon'))
-                        <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/addon*') ? 'active' : '' }}">
+                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/addon*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
                                 title="{{ __('messages.addons') }}">
                                 <i class="tio-add-circle-outlined nav-icon"></i>
@@ -468,8 +457,7 @@
                     <!-- End AddOn -->
                     <!-- Food -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('food'))
-                        <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/food*') ? 'active' : '' }}">
+                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/food*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
                                 title="{{ __('messages.food') }}">
                                 <i class="tio-premium-outlined nav-icon"></i>
@@ -618,17 +606,7 @@
                     @endif
                     <!-- End Banner -->
                     <!-- Coupon -->
-                    @if (\App\CentralLogics\Helpers::module_permission_check('coupon'))
-                        <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/coupon*') ? 'active' : '' }}">
-                            <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.coupon.add-new') }}" title="{{ __('messages.coupon') }}">
-                                <i class="tio-gift nav-icon"></i>
-                                <span
-                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ __('messages.coupons') }}</span>
-                            </a>
-                        </li>
-                    @endif
+
                     <!-- End Coupon -->
                     <!-- Notification -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('notification'))
@@ -658,8 +636,7 @@
                         <li
                             class="navbar-vertical-aside-has-menu {{ Request::is('admin/customer/list') || Request::is('admin/customer/view*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.customer.list') }}"
-                                title="{{ __('messages.customers') }}">
+                                href="{{ route('admin.customer.list') }}" title="{{ __('messages.customers') }}">
                                 <i class="tio-poi-user nav-icon"></i>
                                 <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                     {{ __('messages.customer') }} {{ __('messages.list') }}
@@ -718,8 +695,7 @@
                                 style="display: {{ Request::is('admin/customer/loyalty-point*') ? 'block' : 'none' }}">
                                 <li
                                     class="nav-item {{ Request::is('admin/customer/loyalty-point/report*') ? 'active' : '' }}">
-                                    <a class="nav-link "
-                                        href="{{ route('admin.customer.loyalty-point.report') }}"
+                                    <a class="nav-link " href="{{ route('admin.customer.loyalty-point.report') }}"
                                         title="{{ __('messages.report') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span
@@ -830,8 +806,7 @@
 
                         <li
                             class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/social-media') ? 'active' : '' }}">
-                            <a class="nav-link "
-                                href="{{ route('admin.business-settings.social-media.index') }}"
+                            <a class="nav-link " href="{{ route('admin.business-settings.social-media.index') }}"
                                 title="{{ __('messages.Social Media') }}">
                                 <span class="tio-facebook nav-icon"></span>
                                 <span class="text-truncate">{{ __('messages.Social Media') }}</span>
@@ -939,8 +914,7 @@
                                         href="{{ route('admin.business-settings.terms-and-conditions') }}"
                                         title="{{ __('messages.terms_and_condition') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
-                                        <span
-                                            class="text-truncate">{{ __('messages.terms_and_condition') }}</span>
+                                        <span class="text-truncate">{{ __('messages.terms_and_condition') }}</span>
                                     </a>
                                 </li>
 
@@ -956,8 +930,7 @@
 
                                 <li
                                     class="nav-item {{ Request::is('admin/business-settings/pages/about-us') ? 'active' : '' }}">
-                                    <a class="nav-link "
-                                        href="{{ route('admin.business-settings.about-us') }}"
+                                    <a class="nav-link " href="{{ route('admin.business-settings.about-us') }}"
                                         title="{{ __('messages.about_us') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span class="text-truncate">{{ __('messages.about_us') }}</span>

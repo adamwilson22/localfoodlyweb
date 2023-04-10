@@ -624,17 +624,21 @@
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Add-On</label>
 
-
-                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple">
+                                        <div id="addDropdownDiv"> 
+                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple" id="addDropdown">
                                             @foreach ($addon as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+                                    </div>
                                     <br>
                                     <div class="form-group">
-                                        <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
+                                         <a href="#" data-toggle="modal"
+                                        data-target="#createAddon" >Create More
                                             Add-On</a>
+                                        {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
+                                            Add-On</a> --}}
                                     </div>
                                     <div class="form-group">
                                         <label class="input-label" for="badges">Badge</label>
@@ -652,7 +656,10 @@
                                         </select>
                                     </div>
                                     <div class=" form-group">
-                                        <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
+                                        <a href="#" data-toggle="modal"
+                                        data-target="#createBadge" >Create More
+                                            Badges</a>
+                                        {{-- <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a> --}}
                                     </div>
 
 
@@ -948,6 +955,74 @@
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="createAddon" tabindex="-1" role="dialog"
+                aria-labelledby="createAddonTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="{{ route('vendor.addon.store') }}" id="addon_form" method="post" enctype="multipart/form-data">
+                            <div class="modal-header">
+
+                                    @csrf
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add Addon</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                                <input type="file" name="addon_image" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="{{ __('messages.new_addon') }}" value="{{ old('name') }}" required
+                                    maxlength="191">
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{ __('messages.price') }}</label>
+                                <input type="number" min="0" max="999999999999.99" name="price" step="0.01"
+                                    class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                        </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        <div class="modal fade" id="createBadge" tabindex="-1" role="dialog"
+                aria-labelledby="createBadgeTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="{{ route('vendor.badge.store') }}" id="badge_form" method="post" enctype="multipart/form-data">
+                                <div class="modal-header">
+
+                                    @csrf
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add Badge</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                                    <input type="file" name="badge_image" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                                    <input type="text" name="name" class="form-control"
+                                        placeholder="{{ __('messages.new_badge') }}" value="{{ old('name') }}" required
+                                        maxlength="191">
+                                </div>
+            
+                                <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
     @endsection
 </body>
 
@@ -957,8 +1032,27 @@
 
     <script>
         $(document).ready(function() {
+            console.log("Dropdown Event Triggered 1");
+            $('#addDropdownDiv').click(function() {
+        // Your event handler code here
+        console.log('Div clicked!');
+               // $.ajax({
+        //     url: '/get-data',
+        //     type: 'GET',
+        //     dataType: 'json',
+        //     success: function(data) {
+        //         $.each(data, function(key, value) {
+        //             $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+        //         });
+        //     }
+        // });
+    });
+            
             $('.addonDropdown').select2();
             $('.badgesDropdown').select2();
+
+      
+
             $(window).keydown(function(event) {
                 if (event.keyCode == 13) {
                     event.preventDefault();
@@ -966,6 +1060,29 @@
                 }
             });
         });
+        $("#addon_form , #badge_form").submit(function(e) {
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var actionUrl = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $("#createAddon , #createBadge").modal('hide');
+                    toastr.success(
+                        'Added successfully', {
+                            CloseButton: true,
+                            ProgressBar: true
+                        });// show response from the php script.
+                }
+            });
+
+            });
         $(function() {
             // Multiple images preview with JavaScript
             var previewImages = function(input, imgPreviewPlaceholder) {

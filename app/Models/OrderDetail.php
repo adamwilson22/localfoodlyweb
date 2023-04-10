@@ -37,7 +37,7 @@ class OrderDetail extends Model
     }
     public function food()
     {
-        return $this->belongsTo(Food::class,'food_id');
+        return $this->belongsTo(Food::class,'food_id','id');
     }
     public function campaign()
     {

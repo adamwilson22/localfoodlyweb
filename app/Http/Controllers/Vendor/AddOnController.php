@@ -34,15 +34,22 @@ class AddOnController extends Controller
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
-        $products = Food::where('restaurant_id', $restaurant->id)->get();
-        foreach ($products as $product) {
-            $product->image = unserialize($product->image);
-            $images = [];
-            // foreach ($product->image as $img) {
-            //     # code...
-            //     $images[] = asset('images/'.$img);
-            // }
-            $product->image =  asset('images/' . $product->image[0]);
+        if(!$restaurant){
+            Toastr::error("Please create your store first from settings");
+            return back();
+            $products = "";
+        }
+        else{
+            $products = Food::where('restaurant_id', $restaurant->id)->get();
+            foreach ($products as $product) {
+                $product->image = unserialize($product->image);
+                $images = [];
+                // foreach ($product->image as $img) {
+                //     # code...
+                //     $images[] = asset('images/'.$img);
+                // }
+                $product->image =  asset('images/' . $product->image[0]);
+            }
         }
         return view('vendor-views.addon.profile', compact('restaurant', 'products'));
     }
@@ -62,6 +69,11 @@ class AddOnController extends Controller
         // dd($restaurantID);
          $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        if(!$restaurant)
+        {
+            Toastr::error("Please create your store first from settings");
+            return back();
+        }
         $category = Category::where('restaurant_id', Helpers::get_restaurant_id())->get();
         $addon = AddOn::all();
         $badges = Badge::where('restaurant_id', $restaurant->id)->get();
@@ -97,12 +109,18 @@ class AddOnController extends Controller
     {
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        if(!$restaurant)
+        {
+            Toastr::error("Please create your store first from settings");
+            return back();
+        }
         $category = Category::all();
         $addon = AddOn::all();
         $addon = AddOn::all();
         $badges = Badge::where('restaurant_id', $restaurant->id)->get();
+        $units = Units::where('restaurant_id',Helpers::get_restaurant_id())->get();
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.addproduct2', compact(["category", "addon", "badges"]));
+        return view('vendor-views.addon.addproduct2', compact(["category", "addon", "badges", "units"]));
     }
     public function pizza_products()
     {
@@ -146,6 +164,13 @@ class AddOnController extends Controller
 
     public function addcategory()
     {
+        $vendor = auth('vendor')->user()->id;
+        $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        if(!$restaurant)
+        {
+            Toastr::error("Please create your store first from settings");
+            return back();
+        }
         return view('vendor-views.addon.addcategory');
     }
 
@@ -304,9 +329,59 @@ class AddOnController extends Controller
     }
     public function review()
     {
-        $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.review');
+        $customerReviews = DB::table('reviews as rr')
+        ->Join('users as uu', 'uu.id', '=', 'rr.user_id')
+        ->Join('food as ff', 'ff.id', '=', 'rr.food_id')
+        ->where('rr.restaurant_id' , '=', Helpers::get_restaurant_id())
+        ->select('rr.id as review_id','uu.f_name','uu.image as customer_image','uu.email','rr.comment as comment','ff.name as food_name','ff.image as food_image',
+        'ff.description as food_desc','rr.rating')
+        ->orderByDesc('rr.id')
+        ->get();
+
+        foreach ($customerReviews as $product) {
+            // dd(asset($product->customer_image));
+            $product->food_image = unserialize($product->food_image);
+            $product->food_image =  asset('public/images/' . $product->food_image[0]);
+            $product->customer_image =  asset('public/assets/admin/img/' . $product->customer_image);
+        }
+
+        $repliedReviews = DB::table('reviews as rr')
+        ->Join('users as uu', 'uu.id', '=', 'rr.user_id')
+        ->Join('food as ff', 'ff.id', '=', 'rr.food_id')
+        ->where('rr.restaurant_id' , '=', Helpers::get_restaurant_id())
+        ->where('rr.replied' , '=', 1)
+        ->select('rr.id as review_id','uu.f_name','uu.image as customer_image','uu.email','rr.comment as comment','ff.name as food_name','ff.image as food_image',
+        'ff.description as food_desc','rr.rating','rr.seller_reply')
+        ->orderByDesc('rr.id')
+        ->get();
+
+        foreach ($repliedReviews as $product) {
+            // dd(asset($product->customer_image));
+            $product->food_image = unserialize($product->food_image);
+            $product->food_image =  asset('public/images/' . $product->food_image[0]);
+            $product->customer_image =  asset('public/assets/admin/img/' . $product->customer_image);
+        }
+
+        // dd($repliedReviews);
+        
+        // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
+        return view('vendor-views.addon.review', compact('customerReviews', 'repliedReviews'));
     }
+
+    public function savereview(Request $request){
+        // dd($request);
+
+        DB::table('reviews')
+        ->where('id', $request->reviewID)
+        ->update(['seller_reply' => $request->sellerComment, 'replied' => 1]);
+
+        return Redirect('vendor-panel/addon/review')->with([
+            "message" => "Reply Sent Successfully!",
+            "code"      => 1,
+            "status"    => true
+        ]);
+    }
+
     public function coupon()
     {
         $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));

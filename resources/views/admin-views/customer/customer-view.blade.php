@@ -91,6 +91,7 @@
                     <div class="card-header">
                         <h5 class="card-header-title"></h5>
                     </div>
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
@@ -148,6 +149,7 @@
                         <!-- End Pagination -->
                         </div>
                         <!-- End Footer -->
+                    </div>
                     </div>
                 </div>
             </div>

@@ -23,7 +23,12 @@ class SettingsController extends Controller
         $user = auth('vendor')->user()->id;
         $data = Vendor::where('id',$user)->first();
         $restaurant = Restaurant::where('vendor_id',$user)->first();
-        $kitchengallery = KitchenGallery::where('restaurant_id', $restaurant->id)->get();
+        if(!$restaurant){
+            $kitchengallery = "";
+        }
+        else{
+            $kitchengallery = KitchenGallery::where('restaurant_id', $restaurant->id)->get();
+        }
         // foreach ($kitchengallery as $g) {
         //     # code...
         //     dd($g->id);

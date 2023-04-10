@@ -146,6 +146,7 @@
                             <!-- End Search -->
                         </form>
                     </div>
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom" id="table-div">
                         <table id="columnSearchDatatable"
@@ -223,6 +224,7 @@
                             {!! $coupons->links() !!}
                             </tfoot>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>

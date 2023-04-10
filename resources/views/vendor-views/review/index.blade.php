@@ -1,9 +1,8 @@
 @extends('layouts.vendor.app')
 
-@section('title','Review List')
+@section('title', 'Review List')
 
 @push('css_or_js')
-
 @endpush
 
 @section('content')
@@ -12,7 +11,7 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col-sm mb-2 mb-sm-0">
-                    <h1 class="page-header-title">{{__('messages.customers')}} {{__('messages.reviews')}}</h1>
+                    <h1 class="page-header-title">{{ __('messages.customers') }} {{ __('messages.reviews') }}</h1>
                 </div>
             </div>
         </div>
@@ -26,29 +25,29 @@
                         <h5 class="card-header-title"></h5>
                     </div>
                     <!-- End Header -->
-
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
-                               class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
-                               data-hs-datatables-options='{
+                            class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+                            data-hs-datatables-options='{
                                  "order": [],
                                  "orderCellsTop": true,
                                  "paging": false
                                }'>
                             <thead class="thead-light">
-                            <tr>
-                                <th>{{__('messages.#')}}</th>
-                                <th>{{__('messages.food')}}</th>
-                                <th>{{__('messages.reviewer')}}</th>
-                                <th>{{__('messages.review')}}</th>
-                                <th>{{__('messages.rating')}}</th>
-                                <th>{{__('messages.date')}}</th>
-                            </tr>
+                                <tr>
+                                    <th>{{ __('messages.#') }}</th>
+                                    <th>{{ __('messages.food') }}</th>
+                                    <th>{{ __('messages.reviewer') }}</th>
+                                    <th>{{ __('messages.review') }}</th>
+                                    <th>{{ __('messages.rating') }}</th>
+                                    <th>{{ __('messages.date') }}</th>
+                                </tr>
                             </thead>
 
                             <tbody>
-                            @foreach($reviews as $key=>$review)
+                                {{-- @foreach ($reviews as $key => $review)
                                 <tr>
                                     <td>{{$key+$reviews->firstItem()}}</td>
                                     <td>
@@ -65,7 +64,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if($review->customer)
+                                        @if ($review->customer)
                                         <div class="d-flex align-items-center">
                                             <div class="avatar avatar-circle">
                                                 <img class="avatar-img" width="75" height="75"
@@ -104,17 +103,18 @@
                                         {{date('d M Y '.config('timeformat'),strtotime($review['created_at']))}}
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                             </tbody>
                         </table>
                         <hr>
                         <table>
                             <tfoot>
-                            {!! $reviews->links() !!}
+                                {{-- {!! $reviews->links() !!} --}}
                             </tfoot>
                         </table>
                     </div>
                     <!-- End Table -->
+                    </div>
                 </div>
                 <!-- End Card -->
             </div>
@@ -125,7 +125,7 @@
 
 @push('script_2')
     <script>
-        $(document).on('ready', function () {
+        $(document).on('ready', function() {
             // INITIALIZATION OF DATATABLES
             // =======================================================
             var datatable = $.HSCore.components.HSDatatables.init($('#columnSearchDatatable'));

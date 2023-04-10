@@ -98,6 +98,7 @@
                             </div>
                         </div>                        
                     </div>
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
@@ -176,6 +177,7 @@
                             {!! $notifications->links() !!}
                             </tfoot>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>

@@ -85,6 +85,7 @@
                             <a href="{{route('admin.food.add-new')}}" class="btn btn-primary pull-right"><i
                                         class="tio-add-circle"></i> {{__('messages.add')}} {{__('messages.new')}} {{__('messages.food')}}</a>
                         </div>
+                        <div class="card-body">
                         <div class="table-responsive datatable-custom">
                             <table id="columnSearchDatatable"
                                     class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
@@ -155,6 +156,7 @@
                                     </tfoot>
                                 </table>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

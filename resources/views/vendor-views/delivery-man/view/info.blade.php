@@ -205,6 +205,7 @@
 
         <!-- Card -->
         <div class="card">
+            <div class="card-body">
             <!-- Table -->
             <div class="table-responsive datatable-custom">
                 <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
@@ -284,7 +285,7 @@
                 </table>
             </div>
             <!-- End Table -->
-
+            </div>
             <!-- Footer -->
             <div class="card-footer">
                 <!-- Pagination -->

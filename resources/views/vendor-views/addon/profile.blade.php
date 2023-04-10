@@ -9,7 +9,7 @@
     @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->
-        <div style="background-image: url('{{ asset('public/images') }}/{{ $restaurant->cover_photo }}');" class="cover-banner">
+        <div style="background-image: url('{{ asset('public/images') }}/{{ empty($restaurant->cover_photo) ? '' : $restaurant->cover_photo  }}');" class="cover-banner">
 
         </div>
         <div class="row">
@@ -17,7 +17,7 @@
                 <div class="profile-info">
                     <div class="inner-info">
                         <div class="img">
-                            <img src="{{ asset('public/images') .'/'. $restaurant->logo }}" alt="">
+                            <img src="{{ asset('public/images') .'/'. empty($restaurant->logo) ? '' : $restaurant->logo}}" alt="">
                         </div>
                         <span>
                             <h4>{{$restaurant->name}}</h4>

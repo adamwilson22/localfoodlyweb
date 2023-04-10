@@ -1,10 +1,10 @@
-
 <div id="sidebarMain" class="d-none">
     <aside
         class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered">
         <div class="navbar-vertical-container">
-            <!-- <div class="navbar-brand-wrapper justify-content-center" onclick="location.href='{{route('vendor.dashboard')}}'" style="cursor: pointer;font-weight: bold;font-size: 15px"> -->
-            <div class="navbar-brand-wrapper justify-content-center"  style="cursor: pointer;font-weight: bold;font-size: 15px">
+            <!-- <div class="navbar-brand-wrapper justify-content-center" onclick="location.href='{{ route('vendor.dashboard') }}'" style="cursor: pointer;font-weight: bold;font-size: 15px"> -->
+            <div class="navbar-brand-wrapper justify-content-center"
+                style="cursor: pointer;font-weight: bold;font-size: 15px">
                 <!-- Logo -->
 
                 {{-- @php($restaurant_data=\App\CentralLogics\Helpers::get_restaurant_data())
@@ -20,17 +20,17 @@
                          src="{{asset('storage/app/public/restaurant/'.$restaurant_data->logo)}}" alt="Logo">
                 </a>
                 {{\Illuminate\Support\Str::limit($restaurant_data->name,15)}} --}}
-                <a class="navbar-brand" href="{{route('vendor.dashboard')}}" aria-label="Front" style="padding-top: 0!important;padding-bottom: 0!important;">
-                    <img class="navbar-brand-logo"
-                         style="" src="{{asset('public/assets/admin/img/logo.png')}}"
-                         alt="Logo">
-                
+                <a class="navbar-brand" href="{{ route('vendor.dashboard') }}" aria-label="Front"
+                    style="padding-top: 0!important;padding-bottom: 0!important;">
+                    <img class="navbar-brand-logo" style="" src="{{ asset('public/assets/admin/img/logo.png') }}"
+                        alt="Logo">
+
                 </a>
                 <!-- End Logo -->
 
                 <!-- Navbar Vertical Toggle -->
                 <button type="button"
-                        class="js-navbar-vertical-aside-toggle-invoker navbar-vertical-aside-toggle btn btn-icon btn-xs btn-ghost-dark">
+                    class="js-navbar-vertical-aside-toggle-invoker navbar-vertical-aside-toggle btn btn-icon btn-xs btn-ghost-dark">
                     <i class="tio-clear tio-lg"></i>
                 </button>
                 <!-- End Navbar Vertical Toggle -->
@@ -40,21 +40,21 @@
             <div class="navbar-vertical-content text-capitalize">
                 <ul class="navbar-nav navbar-nav-lg nav-tabs">
                     <!-- Dashboards -->
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel')?'show':''}}">
-                        <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.dashboard')}}" title="{{__('messages.dashboard')}}">
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel') ? 'show' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('vendor.dashboard') }}"
+                            title="{{ __('messages.dashboard') }}">
                             <i class="icon-home nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                                {{__('messages.dashboard')}}
+                                {{ __('messages.dashboard') }}
                             </span>
                         </a>
                     </li>
                     <!-- End Dashboards -->
 
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/profile')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/profile') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.profile')}}"
-                        >
+                            href="{{ route('vendor.addon.profile') }}">
                             <i class="icon-profile nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Profile
@@ -62,10 +62,10 @@
                         </a>
                     </li>
 
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/categories')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/categories') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.categories')}}"
-                        >
+                            href="{{ route('vendor.addon.categories') }}">
                             <i class="icon-menu nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Categories
@@ -73,77 +73,77 @@
                         </a>
                     </li>
 
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/products')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/products') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.products')}}"
-                        >
+                            href="{{ route('vendor.addon.products') }}">
                             <i class="icon-menu nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Products
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/order')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/order') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.order')}}"
-                        >
+                            href="{{ route('vendor.addon.order') }}">
                             <i class="icon-orders nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Orders
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/customer')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/customer') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.customer')}}"
-                        >
+                            href="{{ route('vendor.addon.customer') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Customer
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/invoices')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/invoices') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.invoices')}}"
-                        >
+                            href="{{ route('vendor.addon.invoices') }}">
                             <i class="icon-calculator nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Invoices
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/loyalty')?'active':''}}"style="pointer-events: none;">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/loyalty') ? 'active' : '' }}"style="pointer-events: none;">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.add-new')}}"
-                        >
+                            href="{{ route('vendor.addon.add-new') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Loyalty Program
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/coupon')?'active':''}}"style="pointer-events: none;">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/coupon') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.coupon')}}"
-                        >
+                            href="{{ route('vendor.addon.coupon') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                            Coupon
+                                Coupon
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/review')?'active':''}}">
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/review') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.review')}}"
-                        >
+                            href="{{ route('vendor.addon.review') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                            Review
+                                Review
                             </span>
                         </a>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/Blog')?'active':''}}"style="pointer-events: none;">
+                    {{-- <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/Blog')?'active':''}}"style="pointer-events: none;">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
                             href="{{route('vendor.addon.add-new')}}"
                         >
@@ -152,22 +152,21 @@
                             Blog
                             </span>
                         </a>
-                    </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/massage')?'active':''}}">
+                    </li> --}}
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/massage') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.addon.massage')}}"
-                        >
+                            href="{{ route('vendor.addon.massage') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                            Message
+                                Message
                             </span>
                         </a>
                     </li>
-                 
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon/settings')?'active':''}}">
-                        <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{route('vendor.settings')}}"
-                        >
+
+                    <li
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/settings') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('vendor.settings') }}">
                             <i class="icon-setting nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Settings
@@ -175,8 +174,8 @@
                         </a>
                     </li>
 
-{{-- 
-                    @if(\App\CentralLogics\Helpers::employee_module_permission_check('order'))
+                    {{-- 
+                    @if (\App\CentralLogics\Helpers::employee_module_permission_check('order'))
                     <li class="nav-item">   
                         <small class="nav-subtitle" title="{{__('messages.order')}} {{__('messages.section')}}">{{__('messages.order')}} {{__('messages.section')}}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -199,7 +198,7 @@
                                     <span class="text-truncate">
                                         {{__('messages.pending')}} {{(config('order_confirmation_model') == 'restaurant' || \App\CentralLogics\Helpers::get_restaurant_data()->self_delivery_system)?'':__('messages.take_away')}}
                                             <span class="badge badge-soft-success badge-pill ml-1">
-                                            @if(config('order_confirmation_model') == 'restaurant' || \App\CentralLogics\Helpers::get_restaurant_data()->self_delivery_system)
+                                            @if (config('order_confirmation_model') == 'restaurant' || \App\CentralLogics\Helpers::get_restaurant_data()->self_delivery_system)
                                             {{\App\Models\Order::where(['order_status'=>'pending','restaurant_id'=>\App\CentralLogics\Helpers::get_restaurant_id()])->Notpos()->OrderScheduledIn(30)->count()}}
                                             @else
                                             {{\App\Models\Order::where(['order_status'=>'pending','restaurant_id'=>\App\CentralLogics\Helpers::get_restaurant_id(), 'order_type'=>'take_away'])->Notpos()->OrderScheduledIn(30)->count()}}
@@ -320,15 +319,15 @@
                     </li> --}}
                     <!-- End Order -->
                     {{-- @endif --}}
-                    
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('pos'))
+
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('pos'))
                     <li class="nav-item">
                         <small
                             class="nav-subtitle">{{__('messages.pos')}} {{__('messages.system')}}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li> --}}
-                    
-                    
+
+
                     <!-- POS -->
                     {{-- <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/pos/*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
@@ -368,7 +367,7 @@
                     </li> --}}
 
                     <!-- AddOn -->
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('addon'))
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('addon'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/addon*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
                             href="{{route('vendor.addon.add-new')}}" title="{{__('messages.addons')}}"
@@ -381,7 +380,7 @@
                     </li>
                     @endif --}}
                     <!-- End AddOn -->
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('food')) --}}
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('food')) --}}
                     <!-- Food -->
                     {{-- <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/food*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
@@ -406,7 +405,7 @@
                                     <span class="text-truncate">{{__('messages.list')}}</span>
                                 </a>
                             </li>
-                            @if(\App\CentralLogics\Helpers::get_restaurant_data()->food_section)
+                            @if (\App\CentralLogics\Helpers::get_restaurant_data()->food_section)
                             <li class="nav-item {{Request::is('vendor-panel/food/bulk-import')?'active':''}}">
                                 <a class="nav-link " href="{{route('vendor.food.bulk-import')}}"
                                     title="{{__('messages.bulk_import')}}">
@@ -455,7 +454,7 @@
                     @endif --}}
 
                     <!-- DeliveryMan -->
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('deliveryman'))
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('deliveryman'))
                         <li class="nav-item">
                             <small class="nav-subtitle"
                                    title="{{__('messages.deliveryman')}} {{__('messages.section')}}">{{__('messages.deliveryman')}} {{__('messages.section')}}</small>
@@ -485,7 +484,7 @@
                             </a>
                         </li> --}}
 
-                        {{--<li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/delivery-man/reviews/list')?'active':''}}">
+                    {{-- <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/delivery-man/reviews/list')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                href="{{route('vendor.delivery-man.reviews.list')}}" title="{{__('messages.reviews')}}"
                             >
@@ -494,9 +493,9 @@
                                     {{__('messages.reviews')}}
                                 </span>
                             </a>
-                        </li>--}}
+                        </li> --}}
                     {{-- @endif --}}
-                <!-- End DeliveryMan -->
+                    <!-- End DeliveryMan -->
 
                     {{-- <li class="nav-item">
                         <small
@@ -504,7 +503,7 @@
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li> --}}
                     <!-- Campaign -->
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('campaign'))
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('campaign'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/campaign*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
                             <i class="tio-image nav-icon"></i>
@@ -530,7 +529,7 @@
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
 
-                    @if(\App\CentralLogics\Helpers::employee_module_permission_check('restaurant_setup'))
+                    @if (\App\CentralLogics\Helpers::employee_module_permission_check('restaurant_setup'))
                     <li class="nav-item {{Request::is('vendor-panel/business-settings/restaurant-setup')?'active':''}}">
                         <a class="nav-link " href="{{route('vendor.business-settings.restaurant-setup')}}" title="{{__('messages.restaurant')}} {{__('messages.config')}}"
                         >
@@ -541,7 +540,7 @@
                     </li>
                     @endif --}}
 
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('my_shop'))
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('my_shop'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor/restaurant/*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
                             href="{{route('vendor.shop.view')}}"
@@ -553,7 +552,7 @@
                         </a>
                     </li>
                     @endif
-                    @if(\App\CentralLogics\Helpers::employee_module_permission_check('bank_info'))
+                    @if (\App\CentralLogics\Helpers::employee_module_permission_check('bank_info'))
                     <!-- Business Settings -->
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor/profile*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
@@ -568,7 +567,7 @@
                     @endif --}}
 
 
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('wallet')) --}}
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('wallet')) --}}
                     <!-- RestaurantWallet -->
                     {{-- <li class="navbar-vertical-aside-has-menu {{Request::is('vendor/wallet*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{route('vendor.wallet.index')}}" title="{{__('messages.my')}} {{__('messages.wallet')}}"
@@ -580,7 +579,7 @@
                     </li>
                     @endif --}}
                     <!-- End RestaurantWallet -->
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('reviews'))
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('reviews'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/reviews')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
                             href="{{route('vendor.reviews')}}" title="{{__('messages.reviews')}}"
@@ -600,7 +599,7 @@
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
 
-                    @if(\App\CentralLogics\Helpers::employee_module_permission_check('custom_role'))
+                    @if (\App\CentralLogics\Helpers::employee_module_permission_check('custom_role'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/custom-role*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{route('vendor.custom-role.create')}}"
                         title="{{__('messages.employee')}} {{__('messages.Role')}}">
@@ -611,7 +610,7 @@
                     </li>
                     @endif --}}
 
-                    {{-- @if(\App\CentralLogics\Helpers::employee_module_permission_check('employee'))
+                    {{-- @if (\App\CentralLogics\Helpers::employee_module_permission_check('employee'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('vendor-panel/employee*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
                         title="{{__('messages.employees')}}">
@@ -641,7 +640,7 @@
 
                     <li class="navbar-vertical-aside-has-menu">
                         <a class="js-navbar-vertical-aside-menu-link nav-link" href="javascript:"
-                        onclick="Swal.fire({
+                            onclick="Swal.fire({
                             title: 'Do you want to logout?',
                             showDenyButton: true,
                             showCancelButton: true,
@@ -652,18 +651,17 @@
                         }).then((result) => {
                             if (result.value) {
                                 @if (auth('vendor')->check())
-                                location.href='{{ route('vendor.auth.logout') }}';
-                                @elseif (auth('vendor_employee')->check())
-                                location.href='{{ route('vendor.auth.employee.logout') }}';
-                                @endif
+location.href='{{ route('vendor.auth.logout') }}';
+@elseif (auth('vendor_employee')->check())
+location.href='{{ route('vendor.auth.employee.logout') }}';
+@endif
                             } else{
                                 Swal.fire('Canceled', '', 'info')
                             }
                         })">
                             <i class="icon-logout nav-icon"></i>
-                        <span class="text-truncate pr-2"
-                            title="">Logout</span>
-                    </a>
+                            <span class="text-truncate pr-2" title="">Logout</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -677,10 +675,10 @@
 </div>
 
 
-{{--<script>
+{{-- <script>
     $(document).ready(function () {
         $('.navbar-vertical-content').animate({
             scrollTop: $('#scroll-here').offset().top
         }, 'slow');
     });
-</script>--}}
+</script> --}}

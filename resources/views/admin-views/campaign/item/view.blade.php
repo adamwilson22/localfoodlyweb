@@ -195,6 +195,7 @@
         @php($orders = $campaign->orderdetails()->paginate(config('default_pagination')))
         <!-- Card -->
         <div class="card">
+            <div class="card-body">
             <div class="table-responsive datatable-custom">
                 <table id="datatable"
                        class="table table-hover table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
@@ -296,6 +297,7 @@
                     @endforeach
                     </tbody>
                 </table>
+            </div>
             </div>
             <!-- Footer -->
             <div class="card-footer">

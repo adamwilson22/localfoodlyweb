@@ -553,9 +553,13 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class=" form-group">
-                                    <a href="{{ route('vendor.addon.add-new') }}">Create More Add-On</a>
-                                </div>
+                                <div class="form-group">
+                                    <a href="#" data-toggle="modal"
+                                   data-target="#createAddon" >Create More
+                                       Add-On</a>
+                                   {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
+                                       Add-On</a> --}}
+                               </div>
                                 <div class=" form-group">
                                     <label class="input-label" for="addons">Badge</label>
                                     <select class="badgesDropdown" name="Badge[]" multiple="multiple">
@@ -570,51 +574,57 @@
                                     </select>
                                 </div>
                                 <div class=" form-group">
-                                    <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a>
+                                    <a href="#" data-toggle="modal"
+                                    data-target="#createBadge" >Create More
+                                        Badges</a>
+                                    {{-- <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a> --}}
                                 </div>
-                                
-                                <div class="col-lg-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="card-title">
-                                                <span class="card-header-icon">
-                                                    <i class="tio-canvas-text"></i>
-                                                </span>
-                                                <span> {{ translate('messages.food_variations') }}</span>
-                                            </h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row g-2">
-                                                <div class="col-md-12" >
-                                                    <div id="add_new_option">
-                                                    @if (isset($product->variations))
-                                                        @foreach (json_decode($product->variations,true) as $key_choice_options=>$item)
-                                                            {{-- {{ dd($item['price']) }} --}}
-        
-                                                            @if (isset($item["price"]))
-                                                                <div class="col-md-12">
-                                                                    <div class="variant_combination" id="variant_combination">
-                                                                        @include(
-                                                                            'admin-views.product.partials._edit-combinations',
-                                                                            [
-                                                                                'combinations' => json_decode(
-                                                                                    $product['variations'],
-                                                                                    true
-                                                                                ),
-                                                                            ]
-                                                                        )
-                                                                    </div>
-                                                                </div>
-                                                                @break
-                                                            @else
-                                                                @include('admin-views.product.partials._new_variations',['item'=>$item,'key'=>$key_choice_options+1])
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                    </div>
+                                <div class=" form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="">
+                                                <div class="">
+                                                    <h5 class="card-title">
+                                                        <span class="card-header-icon">
+                                                            <i class="tio-canvas-text"></i>
+                                                        </span>
+                                                        <span> {{ translate('messages.food_variations') }}</span>
+                                                    </h5>
                                                 </div>
-                                                <div class="mt-2">
-                                                    <button type="button" class="btn btn-outline-success" id="add_new_option_button">{{translate('add_new_variation')}}</button>
+                                                <div class="">
+                                                    <div class="row g-2">
+                                                        <div class="col-md-12" >
+                                                            <div id="add_new_option">
+                                                            @if (isset($product->variations))
+                                                                @foreach (json_decode($product->variations,true) as $key_choice_options=>$item)
+                                                                    {{-- {{ dd($item['price']) }} --}}
+                
+                                                                    @if (isset($item["price"]))
+                                                                        <div class="col-md-12">
+                                                                            <div class="variant_combination" id="variant_combination">
+                                                                                @include(
+                                                                                    'admin-views.product.partials._edit-combinations',
+                                                                                    [
+                                                                                        'combinations' => json_decode(
+                                                                                            $product['variations'],
+                                                                                            true
+                                                                                        ),
+                                                                                    ]
+                                                                                )
+                                                                            </div>
+                                                                        </div>
+                                                                        @break
+                                                                    @else
+                                                                        @include('admin-views.product.partials._new_variations',['item'=>$item,'key'=>$key_choice_options+1])
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <button type="button" class="btn btn-outline-success" id="add_new_option_button">{{translate('add_new_variation')}}</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -874,6 +884,74 @@
             </form>
         </div>
     </div>
+    <div class="modal fade" id="createAddon" tabindex="-1" role="dialog"
+                aria-labelledby="createAddonTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="{{ route('vendor.addon.store') }}" id="addon_form" method="post" enctype="multipart/form-data">
+                            <div class="modal-header">
+
+                                    @csrf
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add Addon</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                                <input type="file" name="addon_image" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="{{ __('messages.new_addon') }}" value="{{ old('name') }}" required
+                                    maxlength="191">
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlInput1">{{ __('messages.price') }}</label>
+                                <input type="number" min="0" max="999999999999.99" name="price" step="0.01"
+                                    class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                        </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        <div class="modal fade" id="createBadge" tabindex="-1" role="dialog"
+                aria-labelledby="createBadgeTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="{{ route('vendor.badge.store') }}" id="badge_form" method="post" enctype="multipart/form-data">
+                                <div class="modal-header">
+
+                                    @csrf
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add Badge</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                                    <input type="file" name="badge_image" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                                    <input type="text" name="name" class="form-control"
+                                        placeholder="{{ __('messages.new_badge') }}" value="{{ old('name') }}" required
+                                        maxlength="191">
+                                </div>
+            
+                                <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 @endsection
 </body>
 
@@ -947,7 +1025,30 @@ function render_img(input) {
     //     `;
     // return tag;
 }
+// Create Addon and Badge
+$("#addon_form , #badge_form").submit(function(e) {
 
+e.preventDefault(); // avoid to execute the actual submit of the form.
+
+var form = $(this);
+var actionUrl = form.attr('action');
+
+$.ajax({
+    type: "POST",
+    url: actionUrl,
+    data: form.serialize(), // serializes the form's elements.
+    success: function(data)
+    {
+        $("#createAddon , #createBadge").modal('hide');
+        toastr.success(
+            'Added successfully', {
+                CloseButton: true,
+                ProgressBar: true
+            });// show response from the php script.
+    }
+});
+
+});
     </script>
 <script>
 
@@ -997,24 +1098,24 @@ function render_tag(value, id) {
         $("#add_new_option_button").click(function(e){
         count++;
         var add_option_view = `
-    <div class="card view_new_option mb-2" >
-        <div class="card-header">
+    <div class="mt-3 view_new_option mb-2" >
+        <div class="">
             <label for="" id=new_option_name_`+count+`> {{  translate('add new variation')}}</label>
         </div>
-        <div class="card-body">
+        <div class="pb-3">
             <div class="row g-2">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-12">
                     <label for="">{{ translate('name')}}</label>
                     <input required name=options[`+count+`][name] class="form-control" type="text" onkeyup="new_option_name(this.value,`+count+`)">
                 </div>
 
                 
-                <div class="col-12 col-lg-6">
+                <div class="col-12">
                     <div class="row g-2">
                         
 
-                        <div class="col-md-4">
-                            <label class="d-md-block d-none">&nbsp;</label>
+                        <div class="col">
+                            <label class=" d-none">&nbsp;</label>
                                 <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <input id="options[`+count+`][required]" name="options[`+count+`][required]" type="checkbox">
@@ -1040,11 +1141,11 @@ function render_tag(value, id) {
                 <div class="border rounded p-3 pb-0 mt-3">
                     <div  id="option_price_view_` + count + `">
                         <div class="row g-3 add_new_view_row_class mb-3">
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-sm-6">
                                 <label for="">{{ translate('Option_name') }}</label>
                                 <input class="form-control" required type="text" name="options[` + count +`][values][0][label]" id="">
                             </div>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-sm-6">
                                 <label for="">{{ translate('Additional_price') }}</label>
                                 <input class="form-control" required type="number" min="0" step="0.01" name="options[` + count + `][values][0][optionPrice]" id="">
                             </div>

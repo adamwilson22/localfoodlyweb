@@ -26,7 +26,7 @@
                         <h5 class="card-header-title"></h5>
                     </div>
                     <!-- End Header -->
-
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
@@ -99,6 +99,7 @@
                         </table>
                     </div>
                     <!-- End Table -->
+                    </div>
                 </div>
                 <!-- End Card -->
             </div>

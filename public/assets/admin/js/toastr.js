@@ -73,7 +73,7 @@
                     extendedTimeOut: 1e3,
                     iconClasses: { error: "toast-error", info: "toast-info", success: "toast-success", warning: "toast-warning" },
                     iconClass: "toast-info",
-                    positionClass: "toast-bottom-left",
+                    positionClass: "toast-top-right",
                     timeOut: 15000,
                     titleClass: "toast-title",
                     messageClass: "toast-message",

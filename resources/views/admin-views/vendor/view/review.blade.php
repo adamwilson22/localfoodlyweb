@@ -81,6 +81,7 @@
                         <div class="card-header">
                             {{__('messages.reviews')}} {{$restaurant->reviews->count()}}
                         </div>
+                        <div class="card-body">
                         <div class="table-responsive datatable-custom">
                             <table id="columnSearchDatatable"
                                     class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
@@ -173,6 +174,7 @@
                                     </tfoot>
                                 </table>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

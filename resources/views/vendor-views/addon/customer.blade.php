@@ -18,7 +18,7 @@
             </div>
             <!-- End Page Header -->
             <div class="row">
-                <div class="col-xl-4 col-lg-6">
+                <div class="col-12 mb-4">
                     <div class="inline-select">
                         <label for="" class="">Sort by</label>
                         <select id="selectCustomerGroup" class="custom-select custom-select-lg">
@@ -29,12 +29,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xl-8 col-lg-6 mt-lg-0 mt-3 text-lg-right">
-                    <a href="#" class="btn btn-secondary btn-lg mb-2">Send Coupon</a>
-                    <a href="#" class="btn btn-secondary btn-lg sltcateg mb-2">Bulk Select</a>
-                    <a id="btnMoveToGroup" href="#" class="btn btn-primary btn-lg ml-sm-3 mb-2" data-toggle="modal"
+                <div class="col-12">
+                    <a href="#" class="btn btn-secondary btn-lg ml-sm-2 mt-2">Send Coupon</a>
+                    <a href="#" class="btn btn-secondary btn-lg sltcateg ml-sm-2 mt-2">Bulk Select</a>
+                    <a id="btnMoveToGroup" href="#" class="btn btn-primary btn-lg ml-sm-2 mt-2" data-toggle="modal"
                         data-target="#customerModalCenter">Move To Group</a>
-                    <a href="#" class="btn btn-primary btn-lg ml-sm-3 mb-2" data-toggle="modal"
+                    <a href="#" class="btn btn-primary btn-lg ml-sm-2 mt-2" data-toggle="modal"
                         data-target="#createCustomerGroupModal">Add Customer Group</a>
                 </div>
             </div>
@@ -140,20 +140,21 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
+                            <form method="POST" action="{{ route('vendor.addon.addcustomergroup') }}">
                             <div class="modal-header">
-                                <form method="POST" action="{{ route('vendor.addon.addcustomergroup') }}">
+
                                     @csrf
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Customer Group Name</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Customer Group Name</h5>
                             </div>
                             <div class="form-group">
                                 <input type="text" name="name" class="form-control form-control-lg"
                                     placeholder="Customer Group Name">
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg">Save Now</button>
-                            </form>
+                        </form>
                         </div>
 
                     </div>

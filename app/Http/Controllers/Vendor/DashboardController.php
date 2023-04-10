@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Vendor;
-
+use WebReinvent\CPanel\CPanel;
 use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Food;
@@ -17,6 +17,92 @@ class DashboardController extends Controller
 {
     public function dashboard(Request $request)
     {
+     
+
+//         $cpanel_username = 'root';
+// $cpanel_api_token = '0E0TCSWGAY51Y6GX153ZEKFTRK9MQ1WD';
+// $subdomain = 'abc.thesuitchstaging.com';
+// $rootDomain = 'thesuitchstaging.com';
+// $documentRoot = '/public_html/abc';
+
+// $api_url = "https://thesuitchstaging.com:2083/cpsess{$cpanel_username}/execute/UAPI/SubDomain/addsubdomain";
+// $post_data = [
+//     'cpanel_jsonapi_apiversion' => 3,
+//     'cpanel_jsonapi_module' => 'SubDomain',
+//     'cpanel_jsonapi_func' => 'addsubdomain',
+//     'domain' => $subdomain,
+//     'rootdomain' => $rootDomain,
+//     'dir' => $documentRoot,
+// ];
+// $headers = [
+//     'Authorization: cpanel ' . $cpanel_username . ':' . $cpanel_api_token,
+//     'Content-Type: application/json'
+// ];
+
+// $ch = curl_init();
+// curl_setopt($ch, CURLOPT_URL, $api_url);
+// curl_setopt($ch, CURLOPT_POST, true);
+// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+// curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// $response = curl_exec($ch);
+// curl_close($ch);
+// dd($response);
+// echo $response;
+
+// Connect to cPanel - only do this once.
+
+    // Set the API credentials
+// $cpuser = "nice";
+// $cppass = "0E0TCSWGAY51Y6GX153ZEKFTRK9MQ1WD";
+// $domain = "thesuitchstaging.com";
+
+// // Set the subdomain name and directory
+// $subdomain = "sub1";
+// $subdir = "public_html/sub1";
+
+// // Set the API URL
+// $api_url = "https://".$domain.":2083/json-api/cpanel";
+ 
+// // Set the API function parameters
+// $params = array(
+//     "cpanel_jsonapi_user" => $cpuser,
+//     "cpanel_jsonapi_apiversion" => "2",
+//     "cpanel_jsonapi_module" => "SubDomain",
+//     "cpanel_jsonapi_func" => "addsubdomain",
+//     "domain" => $domain,
+//     "rootdomain" => $domain,
+//     "name" => $subdomain,
+//     "dir" => $subdir
+// );
+ 
+// // Convert the parameters to a JSON string
+// $json_params = json_encode($params);
+ 
+// // Send the API request to cPanel
+// $curl = curl_init();
+// curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
+// curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
+// curl_setopt($curl, CURLOPT_HEADER,0);
+// curl_setopt($curl, CURLOPT_RETURNTRANSFER,1);
+// curl_setopt($curl, CURLOPT_USERPWD, $cpuser . ":" . $cppass);
+// curl_setopt($curl, CURLOPT_POSTFIELDS, $json_params);
+// curl_setopt($curl, CURLOPT_URL, $api_url);
+// $result = curl_exec($curl);
+// curl_close($curl);
+ 
+// // Decode the JSON response
+// $response = json_decode($result);
+//  dd($response);
+// // Check if the API call was successful
+// if ($response->status == 1) {
+//     echo "Subdomain ".$subdomain." created successfully!";
+// } else {
+//     echo "Error: ".$response->statusmsg;
+// }
+
+
         $params = [
             'statistics_type' => $request['statistics_type'] ?? 'overall'
         ];
@@ -46,8 +132,28 @@ class DashboardController extends Controller
                 }
             }
         }
+        
+        // Working Fine
+        // $totalOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->get();
+        $totalOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->count();
+        
+        $paidOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('payment_status','paid')->count();
+        $unpaidOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('payment_status','unpaid')->count();
+        // Developing these Queries
+        $confirmedOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('order_status','confirmed')->count();
+        $pendingOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('order_status','pending')->count();
+        $recurringOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('order_status','recurring')->count();
 
+        $totalRevenue = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('payment_status','paid')->sum('order_amount');
+        $averageOrdersPerCustomer = Order::selectRaw('COUNT(*) / COUNT(DISTINCT user_id) as avg_orders_per_customer')->where('restaurant_id', Helpers::get_restaurant_id())
+                                 ->first()
+                                 ->avg_orders_per_customer;
 
+        // dd($averageOrdersPerCustomer);
+        // $deliveredOrders = DB::table('orders')->where('restaurant_id', Helpers::get_restaurant_id())->where('payment_status','paid')->count();
+
+            // $earning[$inc] = 0;
+            // dd($totalOrders);
         // $top_sell = Food::orderBy("order_count", 'desc')
         //     ->take(6)
         //     ->get();
@@ -57,12 +163,12 @@ class DashboardController extends Controller
         // ->get();
         // $data['top_sell'] = $top_sell;
         // $data['most_rated_foods'] = $most_rated_foods;
-        return view('vendor-views.dashboard', compact('data', 'earning', 'commission', 'params','delivery_earning'));
+        return view('vendor-views.dashboard', compact('data', 'earning', 'commission', 'params','delivery_earning','totalOrders','paidOrders','unpaidOrders','confirmedOrders','pendingOrders','recurringOrders','totalRevenue','averageOrdersPerCustomer'));
     }
 
     public function restaurant_data()
     {
-        $new_pending_order = DB::table('orders')->where(['checked' => 0])->where('restaurant_id', Helpers::get_restaurant_id())->where('order_status','pending');;
+        $new_pending_order = DB::table('orders')->where(['checked' => 0])->where('restaurant_id', Helpers::get_restaurant_id())->where('order_status','pending');
         if(config('order_confirmation_model') != 'restaurant' && !Helpers::get_restaurant_data()->self_delivery_system)
         {
             $new_pending_order = $new_pending_order->where('order_type', 'take_away');

@@ -38,7 +38,7 @@
                                         <a href={{ 'tel:' . $customerDetails->phone_number }}><i class="icon-phone"></i>
                                             {{ $customerDetails->phone_number }} </a>
 
-                                        <a href={{ 'mailto:' . $customerDetails->email }}<i class="icon-mail"></i>
+                                        <a href={{ 'mailto:' . $customerDetails->email }}><i class="icon-mail"></i>
                                             {{ $customerDetails->email }}</a>
 
                                         <p><i class="icon-map-pin"></i> {{ $customerDetails->address }}</p>

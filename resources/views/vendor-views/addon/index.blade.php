@@ -82,6 +82,7 @@
                         <h5>{{ __('messages.addon') }} {{ __('messages.list') }}<span class="badge badge-soft-dark ml-2"
                                 id="itemCount">{{ $addons->total() }}</span></h5>
                     </div>
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
@@ -146,6 +147,7 @@
                                 {!! $addons->links() !!}
                             </tfoot>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>

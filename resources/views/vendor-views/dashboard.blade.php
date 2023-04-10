@@ -121,6 +121,110 @@
                     </div>
                 </div>
             </div>
+            <h1> KPIs</h1>
+            <div class="form-row mb-4">
+                <div class="col-6">
+                    <div class="card record-card">
+                        <div class="card-body">
+                            <div class="icon icon-blue">
+                                <i class="icon-orders"></i>
+                            </div>
+                            <p>Total Revenue</p>
+                            <h1>${{ $totalRevenue }}</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="card record-card">
+                        <div class="card-body">
+                            <div class="icon icon-blue">
+                                <i class="icon-orders"></i>
+                            </div>
+                            <p>Average Orders Per Customers</p>
+                            <h1>{{ $averageOrdersPerCustomer }}</h1>
+                        </div>
+                    </div>
+                </div>
+             
+              
+            </div>
+               
+                <div class="form-row mb-4">
+                    <div class="col-4">
+                        <div class="card record-card">
+                            <div class="card-body">
+                                <div class="icon icon-blue">
+                                    <i class="icon-orders"></i>
+                                </div>
+                                <p>Total Orders</p>
+                                <h1>{{ $totalOrders }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card record-card">
+                            <div class="card-body">
+                                <div class="icon icon-green">
+                                    <i class="icon-orders"></i>
+                                </div>
+                                <p>Paid Orders</p>
+                                <h1>{{ $paidOrders }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card record-card">
+                            <div class="card-body">
+                                <div class="icon icon-yellow">
+                                    <i class="icon-orders"></i>
+                                </div>
+                                <p>Unpaid Orders</p>
+                                <h1>{{ $unpaidOrders }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             
+            
+           
+
+            <div class="form-row mb-4">
+                <div class="col-4">
+                    <div class="card record-card">
+                        <div class="card-body">
+                            <div class="icon icon-blue">
+                                <i class="icon-orders"></i>
+                            </div>
+                            <p>Confirmed Orders</p>
+                            <h1>{{ $confirmedOrders }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card record-card">
+                        <div class="card-body">
+                            <div class="icon icon-green">
+                                <i class="icon-orders"></i>
+                            </div>
+                            <p>Pending Orders</p>
+                            <h1>{{ $pendingOrders }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card record-card">
+                        <div class="card-body">
+                            <div class="icon icon-yellow">
+                                <i class="icon-orders"></i>
+                            </div>
+                            <p>Recurring Orders</p>
+                            <h1>{{ $recurringOrders }}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
            

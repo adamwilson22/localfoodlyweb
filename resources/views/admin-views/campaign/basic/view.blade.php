@@ -54,6 +54,7 @@
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <!-- Card -->
                 <div class="card">
+                    <div class="card-body">
                     <!-- Table -->
                     <div class="table-responsive datatable-custom">
                         <table id="columnSearchDatatable"
@@ -171,6 +172,7 @@
 
                     </div>
                     <!-- End Table -->
+                    </div>
                 </div>
                 <!-- End Card -->
             </div>

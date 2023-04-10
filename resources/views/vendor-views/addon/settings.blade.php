@@ -441,27 +441,31 @@ input[type="file"] {
                                 <!--end::Form-->
                                 <div class="container">
                                     <h3>Kitchen Images</h3>
-                                    @foreach ($kitchengallery as $g)
-                                    <div id="img{{$g->id}}" class="d-inline">
-                                    @if(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
-                                        
-                                        <img src="{{$g->image}}" class="kitchenimg" alt="...">
-                                    @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
-                                        {{-- <div class="document-file"> --}}
-                                            <a href="{{ asset($g->image) }}" target="_blank" style="vertical-align: middle;">{{ $g->image }}</a>
-                                        {{-- </div> --}}
-                                    @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['pdf']))
-                                        {{-- <div class="pdf-file"> --}}
-                                            <embed src="{{ asset($g->image) }}" type="application/pdf" width="auto" class="kitchenimg" height="150px" style="vertical-align: middle;"/>
-                                        {{-- </div> --}}
-                                    @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm']))
-                                        {{-- <div class="video-file"> --}}
-                                            <video src="{{ asset($g->image) }}" width="auto" height="150px" class="kitchenimg" style="vertical-align: middle;" ></video>
-                                        {{-- </div> --}}
+                                    @if(empty($kitchengallery))
+                                    <p> No Kitchen Images </p>
+                                    @else
+                                        @foreach ($kitchengallery as $g)
+                                        <div id="img{{$g->id}}" class="d-inline">
+                                        @if(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']))
+                                            
+                                            <img src="{{$g->image}}" class="kitchenimg" alt="...">
+                                        @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']))
+                                            {{-- <div class="document-file"> --}}
+                                                <a href="{{ asset($g->image) }}" target="_blank" style="vertical-align: middle;">{{ $g->image }}</a>
+                                            {{-- </div> --}}
+                                        @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['pdf']))
+                                            {{-- <div class="pdf-file"> --}}
+                                                <embed src="{{ asset($g->image) }}" type="application/pdf" width="auto" class="kitchenimg" height="150px" style="vertical-align: middle;"/>
+                                            {{-- </div> --}}
+                                        @elseif(in_array(pathinfo($g->image, PATHINFO_EXTENSION), ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm']))
+                                            {{-- <div class="video-file"> --}}
+                                                <video src="{{ asset($g->image) }}" width="auto" height="150px" class="kitchenimg" style="vertical-align: middle;" ></video>
+                                            {{-- </div> --}}
+                                        @endif
+                                            <button style="font-size:30px" type="button" id="{{$g->id}}" onclick="delete_img({{$g->id}})"><i class="icon-trash"></i></button>
+                                            </div>
+                                        @endforeach 
                                     @endif
-                                        <button style="font-size:30px" type="button" id="{{$g->id}}" onclick="delete_img({{$g->id}})"><i class="icon-trash"></i></button>
-                                        </div>
-                                    @endforeach 
                                 </div>
                             </div>
                         </div>
