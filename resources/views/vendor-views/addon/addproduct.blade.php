@@ -649,7 +649,7 @@
                                             @endforeach
                                         </select> --}}
 
-                                        <select class="badgesDropdown" name="Badge[]" multiple="multiple">
+                                        <select class="badgesDropdown" name="Badge[]" multiple="multiple" id="badgesDropdown">
                                             @foreach ($badges as $badge)
                                                 <option value="{{ $badge->id }}">{{ $badge->name }}</option>
                                             @endforeach
@@ -1031,22 +1031,10 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
+        var isAvailable = true;
         $(document).ready(function() {
             console.log("Dropdown Event Triggered 1");
-            $('#addDropdownDiv').click(function() {
-        // Your event handler code here
-        console.log('Div clicked!');
-               // $.ajax({
-        //     url: '/get-data',
-        //     type: 'GET',
-        //     dataType: 'json',
-        //     success: function(data) {
-        //         $.each(data, function(key, value) {
-        //             $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
-        //         });
-        //     }
-        // });
-    });
+         
             
             $('.addonDropdown').select2();
             $('.badgesDropdown').select2();
@@ -1079,6 +1067,42 @@
                             CloseButton: true,
                             ProgressBar: true
                         });// show response from the php script.
+                       
+                        $.ajax({
+                            url: '{{ route('vendor.addon.getAddons') }}',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log(data);
+                                $('#addDropdown').empty();
+                                $.each(data, function(key, value) {
+                                    // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                    $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                    
+                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                });
+                                
+                            }
+                 });
+
+                    $.ajax({
+                            url: '{{ route('vendor.addon.getBadges') }}',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log(data);
+                             
+                                $('#badgesDropdown').empty();
+                                $.each(data, function(key, value) {
+                                    // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                    $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                    
+                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                });
+                                
+                            }
+                       });
+
                 }
             });
 

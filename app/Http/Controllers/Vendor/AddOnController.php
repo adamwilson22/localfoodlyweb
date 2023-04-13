@@ -25,8 +25,33 @@ class AddOnController extends Controller
     {
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
-        $addons = AddOn::where('restaurant_id', $restaurant->id)->orderBy('name')->paginate(config('default_pagination'));
+        $addons = AddOn::where('restaurant_id', $restaurant->id)
+            ->orderBy('name')
+            ->paginate(config('default_pagination'));
         return view('vendor-views.addon.index', compact('addons'));
+    }
+
+    public function getAddons()
+    {
+        $vendor = auth('vendor')->user()->id;
+        $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        $addons = AddOn::where('restaurant_id', $restaurant->id)
+            ->orderBy('name')
+            ->get();
+
+        return $addons;
+    }
+    // getBadges
+
+    public function getBadges()
+    {
+      
+        $vendor = auth('vendor')->user()->id;
+        $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        $badges = Badge::where('restaurant_id', $restaurant->id)->get();
+            
+
+        return $badges;
     }
 
     public function profile()
@@ -34,12 +59,11 @@ class AddOnController extends Controller
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
-        if(!$restaurant){
-            Toastr::error("Please create your store first from settings");
+        if (!$restaurant) {
+            Toastr::error('Please create your store first from settings');
             return back();
-            $products = "";
-        }
-        else{
+            $products = '';
+        } else {
             $products = Food::where('restaurant_id', $restaurant->id)->get();
             foreach ($products as $product) {
                 $product->image = unserialize($product->image);
@@ -48,7 +72,7 @@ class AddOnController extends Controller
                 //     # code...
                 //     $images[] = asset('images/'.$img);
                 // }
-                $product->image =  asset('images/' . $product->image[0]);
+                $product->image = asset('images/' . $product->image[0]);
             }
         }
         return view('vendor-views.addon.profile', compact('restaurant', 'products'));
@@ -67,60 +91,54 @@ class AddOnController extends Controller
         // $category = Category::all();
         // $restaurantID = Helpers::get_restaurant_id();
         // dd($restaurantID);
-         $vendor = auth('vendor')->user()->id;
+        $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
-        if(!$restaurant)
-        {
-            Toastr::error("Please create your store first from settings");
+        if (!$restaurant) {
+            Toastr::error('Please create your store first from settings');
             return back();
         }
         $category = Category::where('restaurant_id', Helpers::get_restaurant_id())->get();
         $addon = AddOn::all();
         $badges = Badge::where('restaurant_id', $restaurant->id)->get();
-        $units = Units::where('restaurant_id',Helpers::get_restaurant_id())->get();
+        $units = Units::where('restaurant_id', Helpers::get_restaurant_id())->get();
         // dd( $addon);
-        return view('vendor-views.addon.addproduct', compact(["category", "type", "addon", "badges", "units"]));
+        return view('vendor-views.addon.addproduct', compact(['category', 'type', 'addon', 'badges', 'units']));
     }
 
-    public function addUnit(Request $request){
-        
+    public function addUnit(Request $request)
+    {
         $unitFound = DB::table('units')
-        ->where('unit_name', $request->unitName)
-        ->where('restaurant_id', Helpers::get_restaurant_id())
-        ->get();
-        
-        if(count($unitFound) > 0){
-            return "0";
-        }
-        else{
-        DB::table('units')->insert(
-            [
+            ->where('unit_name', $request->unitName)
+            ->where('restaurant_id', Helpers::get_restaurant_id())
+            ->get();
+
+        if (count($unitFound) > 0) {
+            return '0';
+        } else {
+            DB::table('units')->insert([
                 'unit_name' => $request->unitName,
-                'restaurant_id' => Helpers::get_restaurant_id()
-            ]
-        );
-        
-        return response()->json($request->unitName);
-    }
-        
+                'restaurant_id' => Helpers::get_restaurant_id(),
+            ]);
+
+            return response()->json($request->unitName);
+        }
     }
 
     public function addproduct2()
     {
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
-        if(!$restaurant)
-        {
-            Toastr::error("Please create your store first from settings");
+        if (!$restaurant) {
+            Toastr::error('Please create your store first from settings');
             return back();
         }
         $category = Category::all();
         $addon = AddOn::all();
         $addon = AddOn::all();
         $badges = Badge::where('restaurant_id', $restaurant->id)->get();
-        $units = Units::where('restaurant_id',Helpers::get_restaurant_id())->get();
+        $units = Units::where('restaurant_id', Helpers::get_restaurant_id())->get();
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.addproduct2', compact(["category", "addon", "badges", "units"]));
+        return view('vendor-views.addon.addproduct2', compact(['category', 'addon', 'badges', 'units']));
     }
     public function pizza_products()
     {
@@ -156,7 +174,6 @@ class AddOnController extends Controller
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
         $categories = [];
         if ($restaurant) {
-
             $categories = Category::where('restaurant_id', $restaurant->id)->get();
         }
         return view('vendor-views.addon.categories', compact('categories'));
@@ -166,9 +183,8 @@ class AddOnController extends Controller
     {
         $vendor = auth('vendor')->user()->id;
         $restaurant = Restaurant::where('vendor_id', $vendor)->first();
-        if(!$restaurant)
-        {
-            Toastr::error("Please create your store first from settings");
+        if (!$restaurant) {
+            Toastr::error('Please create your store first from settings');
             return back();
         }
         return view('vendor-views.addon.addcategory');
@@ -179,14 +195,14 @@ class AddOnController extends Controller
         return view('vendor-views.addon.addproduct');
     }
 
-    public function addcustomergroup(Request $request){
-
+    public function addcustomergroup(Request $request)
+    {
         $rules = [
-            "name"  => "required",
+            'name' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules);
-        
+
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator);
         }
@@ -199,63 +215,59 @@ class AddOnController extends Controller
         // $insert = Food::create($customerGroupFields);
         if ($insert) {
             return Redirect('vendor-panel/addon/customer')->with([
-                "message" => "Customer Group Created Successfully",
-                "code"      => 1,
-                "status"    => true
+                'message' => 'Customer Group Created Successfully',
+                'code' => 1,
+                'status' => true,
             ]);
         } else {
             return Redirect('Vendor-panel/addon/customer')->with([
-                "code"      => 0,
-                'message'   => "Customer Group Not Created",
-                "status"    => false
+                'code' => 0,
+                'message' => 'Customer Group Not Created',
+                'status' => false,
             ]);
         }
     }
 
-    public function assignGroupToCustomers(Request $request){
-       
-        $event = "";
-       
-        foreach($request->customers as $customer){
-          $customerFound = DB::table('customer_group_assigned')
-            ->where('customer_id', $customer)
-            ->get();
-             
-            if(count($customerFound) > 0){
-                $event = "updated";
-                
+    public function assignGroupToCustomers(Request $request)
+    {
+        $event = '';
+
+        foreach ($request->customers as $customer) {
+            $customerFound = DB::table('customer_group_assigned')
+                ->where('customer_id', $customer)
+                ->get();
+
+            if (count($customerFound) > 0) {
+                $event = 'updated';
+
                 DB::table('customer_group_assigned')
                     ->where('customer_id', $customer)
                     ->update(['group_id' => $request->groupID]);
-            }
-            else{
-                $event = "inserted";
-                
-                DB::table('customer_group_assigned')->insert(
-                    [
-                        'customer_id' => $request->unitName,
-                        'group_id' => $request->groupID
-                    ]
-                );
+            } else {
+                $event = 'inserted';
+
+                DB::table('customer_group_assigned')->insert([
+                    'customer_id' => $request->unitName,
+                    'group_id' => $request->groupID,
+                ]);
             }
         }
-          
+
         return Redirect('vendor-panel/addon/customer')->with([
-                "message" => "Customer Group(s) . $event . Successfully",
-                "code"      => 1,
-                "status"    => true
+            'message' => "Customer Group(s) . $event . Successfully",
+            'code' => 1,
+            'status' => true,
         ]);
     }
 
     public function customer()
     {
-
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         // $customers[] = Customer::all();
         $assignedCustomerGroups = DB::table('customers as cc')
             ->leftJoin('customer_group_assigned as cga', 'cga.customer_id', '=', 'cc.id')
             ->leftJoin('customer_groups as cg', 'cg.id', '=', 'cga.group_id')
-            ->select('cc.id as id','cc.ful_name as customer_name','cg.name as customer_group_name','cg.id as group_ID', 'cc.email','cc.phone_number','cc.address','cc.image')
+            ->select('cc.id as id', 'cc.ful_name as customer_name', 'cg.name as customer_group_name', 'cg.id as group_ID', 'cc.email', 'cc.phone_number', 'cc.address', 'cc.image')
             ->get();
         // dd($assignedCustomerGroups);
         $customerGroups = CustomerGroups::all();
@@ -267,20 +279,32 @@ class AddOnController extends Controller
         //         dd($customer->ful_name);
         //     }
         // }
-        
+                // dd($customerGroups);
         return view('vendor-views.addon.customer', compact('assignedCustomerGroups', 'customerGroups'));
+    }
+    public function filterCustomers(Request $request)
+    {
+        $groupId = $request->input('group_id');
+        // $customers = Customer::where('group_id', $groupId)->get();
+        $assignedCustomerGroups = DB::table('customers as cc')
+        ->leftJoin('customer_group_assigned as cga', 'cga.customer_id', '=', 'cc.id')
+        ->leftJoin('customer_groups as cg', 'cg.id', '=', 'cga.group_id')
+        ->select('cc.id as id', 'cc.ful_name as customer_name', 'cg.name as customer_group_name', 'cg.id as group_ID', 'cc.email', 'cc.phone_number', 'cc.address', 'cc.image')
+        ->where('cg.id' , '=' , $groupId)
+        ->get();
+        return response()->json($assignedCustomerGroups);
     }
     public function settings()
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.settings'/**/);
+        return view('vendor-views.addon.settings' /**/);
     }
     public function single_customer(Request $request)
     {
         $customerDetails = DB::table('customers as cc')
-        ->where('id', '=', $request->id)
-        ->select('cc.id as id','cc.ful_name as customer_name','cc.email','cc.phone_number','cc.address')
-        ->first();
+            ->where('id', '=', $request->id)
+            ->select('cc.id as id', 'cc.ful_name as customer_name', 'cc.email', 'cc.phone_number', 'cc.address')
+            ->first();
         // dd($customerDetails);
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         return view('vendor-views.addon.single-customer', compact('customerDetails'));
@@ -294,33 +318,33 @@ class AddOnController extends Controller
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         $orderDetails = DB::table('orders as oo')
-        ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
-        ->Join('food as ff', 'ff.id', '=', 'od.food_id')
-        ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
-        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
-        ->select('oo.id as order_id','od.id as order_details_id','oo.restaurant_id as restaurant_id','od.food_id','ff.name as food_name','uu.f_name','oo.payment_status','oo.order_amount')
-        ->get();
+            ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
+            ->Join('food as ff', 'ff.id', '=', 'od.food_id')
+            ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
+            ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+            ->select('oo.id as order_id', 'od.id as order_details_id', 'oo.restaurant_id as restaurant_id', 'od.food_id', 'ff.name as food_name', 'uu.f_name', 'oo.payment_status', 'oo.order_amount')
+            ->get();
 
         $paidInvoices = DB::table('orders as oo')
-        ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
-        ->Join('food as ff', 'ff.id', '=', 'od.food_id')
-        ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
-        ->where('oo.payment_status', 'paid')
-        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
-        ->select('oo.id as order_id','od.id as order_details_id','oo.restaurant_id as restaurant_id','od.food_id','ff.name as food_name','uu.f_name','oo.payment_status','oo.order_amount')
-        ->get();
+            ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
+            ->Join('food as ff', 'ff.id', '=', 'od.food_id')
+            ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
+            ->where('oo.payment_status', 'paid')
+            ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+            ->select('oo.id as order_id', 'od.id as order_details_id', 'oo.restaurant_id as restaurant_id', 'od.food_id', 'ff.name as food_name', 'uu.f_name', 'oo.payment_status', 'oo.order_amount')
+            ->get();
 
         $unpaidInvoices = DB::table('orders as oo')
-        ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
-        ->Join('food as ff', 'ff.id', '=', 'od.food_id')
-        ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
-        ->where('oo.restaurant_id', Helpers::get_restaurant_id())
-        ->where('oo.payment_status', 'unpaid')
-        ->select('oo.id as order_id','od.id as order_details_id','oo.restaurant_id as restaurant_id','od.food_id','ff.name as food_name','uu.f_name','oo.payment_status','oo.order_amount')
-        ->get();
+            ->Join('order_details as od', 'od.order_id', '=', 'oo.id')
+            ->Join('food as ff', 'ff.id', '=', 'od.food_id')
+            ->Join('users as uu', 'uu.id', '=', 'oo.user_id')
+            ->where('oo.restaurant_id', Helpers::get_restaurant_id())
+            ->where('oo.payment_status', 'unpaid')
+            ->select('oo.id as order_id', 'od.id as order_details_id', 'oo.restaurant_id as restaurant_id', 'od.food_id', 'ff.name as food_name', 'uu.f_name', 'oo.payment_status', 'oo.order_amount')
+            ->get();
         // dd($orderDetails);
 
-        return view('vendor-views.addon.invoices',compact('orderDetails','paidInvoices','unpaidInvoices'));
+        return view('vendor-views.addon.invoices', compact('orderDetails', 'paidInvoices', 'unpaidInvoices'));
     }
     public function massage()
     {
@@ -330,55 +354,54 @@ class AddOnController extends Controller
     public function review()
     {
         $customerReviews = DB::table('reviews as rr')
-        ->Join('users as uu', 'uu.id', '=', 'rr.user_id')
-        ->Join('food as ff', 'ff.id', '=', 'rr.food_id')
-        ->where('rr.restaurant_id' , '=', Helpers::get_restaurant_id())
-        ->select('rr.id as review_id','uu.f_name','uu.image as customer_image','uu.email','rr.comment as comment','ff.name as food_name','ff.image as food_image',
-        'ff.description as food_desc','rr.rating')
-        ->orderByDesc('rr.id')
-        ->get();
+            ->Join('users as uu', 'uu.id', '=', 'rr.user_id')
+            ->Join('food as ff', 'ff.id', '=', 'rr.food_id')
+            ->where('rr.restaurant_id', '=', Helpers::get_restaurant_id())
+            ->select('rr.id as review_id', 'uu.f_name', 'uu.image as customer_image', 'uu.email', 'rr.comment as comment', 'ff.name as food_name', 'ff.image as food_image', 'ff.description as food_desc', 'rr.rating')
+            ->orderByDesc('rr.id')
+            ->get();
 
         foreach ($customerReviews as $product) {
             // dd(asset($product->customer_image));
             $product->food_image = unserialize($product->food_image);
-            $product->food_image =  asset('public/images/' . $product->food_image[0]);
-            $product->customer_image =  asset('public/assets/admin/img/' . $product->customer_image);
+            $product->food_image = asset('public/images/' . $product->food_image[0]);
+            $product->customer_image = asset('public/assets/admin/img/' . $product->customer_image);
         }
 
         $repliedReviews = DB::table('reviews as rr')
-        ->Join('users as uu', 'uu.id', '=', 'rr.user_id')
-        ->Join('food as ff', 'ff.id', '=', 'rr.food_id')
-        ->where('rr.restaurant_id' , '=', Helpers::get_restaurant_id())
-        ->where('rr.replied' , '=', 1)
-        ->select('rr.id as review_id','uu.f_name','uu.image as customer_image','uu.email','rr.comment as comment','ff.name as food_name','ff.image as food_image',
-        'ff.description as food_desc','rr.rating','rr.seller_reply')
-        ->orderByDesc('rr.id')
-        ->get();
+            ->Join('users as uu', 'uu.id', '=', 'rr.user_id')
+            ->Join('food as ff', 'ff.id', '=', 'rr.food_id')
+            ->where('rr.restaurant_id', '=', Helpers::get_restaurant_id())
+            ->where('rr.replied', '=', 1)
+            ->select('rr.id as review_id', 'uu.f_name', 'uu.image as customer_image', 'uu.email', 'rr.comment as comment', 'ff.name as food_name', 'ff.image as food_image', 'ff.description as food_desc', 'rr.rating', 'rr.seller_reply')
+            ->orderByDesc('rr.id')
+            ->get();
 
         foreach ($repliedReviews as $product) {
             // dd(asset($product->customer_image));
             $product->food_image = unserialize($product->food_image);
-            $product->food_image =  asset('public/images/' . $product->food_image[0]);
-            $product->customer_image =  asset('public/assets/admin/img/' . $product->customer_image);
+            $product->food_image = asset('public/images/' . $product->food_image[0]);
+            $product->customer_image = asset('public/assets/admin/img/' . $product->customer_image);
         }
 
         // dd($repliedReviews);
-        
+
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         return view('vendor-views.addon.review', compact('customerReviews', 'repliedReviews'));
     }
 
-    public function savereview(Request $request){
+    public function savereview(Request $request)
+    {
         // dd($request);
 
         DB::table('reviews')
-        ->where('id', $request->reviewID)
-        ->update(['seller_reply' => $request->sellerComment, 'replied' => 1]);
+            ->where('id', $request->reviewID)
+            ->update(['seller_reply' => $request->sellerComment, 'replied' => 1]);
 
         return Redirect('vendor-panel/addon/review')->with([
-            "message" => "Reply Sent Successfully!",
-            "code"      => 1,
-            "status"    => true
+            'message' => 'Reply Sent Successfully!',
+            'code' => 1,
+            'status' => true,
         ]);
     }
 
@@ -395,21 +418,24 @@ class AddOnController extends Controller
             Toastr::warning(trans('messages.permission_denied'));
             return back();
         }
-        $request->validate([
-            'name' => 'required|',
-            // 'name.*' => 'max:191', array
-            'price' => 'required|numeric|between:0,999999999999.99',
-        ], [
-            'name.required' => trans('messages.Name is required!'),
-        ]);
+        $request->validate(
+            [
+                'name' => 'required|',
+                // 'name.*' => 'max:191', array
+                'price' => 'required|numeric|between:0,999999999999.99',
+            ],
+            [
+                'name.required' => trans('messages.Name is required!'),
+            ],
+        );
 
-        $image = "";
-        if ($request->hasfile("addon_image")) {
+        $image = '';
+        if ($request->hasfile('addon_image')) {
             $file = $request->addon_image;
             $extension = $file->getClientOriginalExtension();
-            $file_name = time() . rand(00000, 99999) . "." . $extension;
-            $file->move("public/images/", $file_name);
-            $image  = asset("public/images/" . $file_name);
+            $file_name = time() . rand(00000, 99999) . '.' . $extension;
+            $file->move('public/images/', $file_name);
+            $image = asset('public/images/' . $file_name);
         } // [array_search('en', $request->lang)]
 
         $addon = new AddOn();
@@ -454,20 +480,23 @@ class AddOnController extends Controller
             Toastr::warning(trans('messages.permission_denied'));
             return back();
         }
-        $request->validate([
-            'name' => 'required|max:191',
-            'price' => 'required|numeric|between:0,999999999999.99',
-        ], [
-            'name.required' => trans('messages.Name is required!'),
-        ]);
+        $request->validate(
+            [
+                'name' => 'required|max:191',
+                'price' => 'required|numeric|between:0,999999999999.99',
+            ],
+            [
+                'name.required' => trans('messages.Name is required!'),
+            ],
+        );
 
-        $image = "";
-        if ($request->hasfile("addon_image")) {
+        $image = '';
+        if ($request->hasfile('addon_image')) {
             $file = $request->addon_image;
             $extension = $file->getClientOriginalExtension();
-            $file_name = time() . rand(00000, 99999) . "." . $extension;
-            $file->move("public/images/", $file_name);
-            $image  = asset("public/images/" . $file_name);
+            $file_name = time() . rand(00000, 99999) . '.' . $extension;
+            $file->move('public/images/', $file_name);
+            $image = asset('public/images/' . $file_name);
         }
 
         $addon = AddOn::find($id);

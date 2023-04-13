@@ -27,6 +27,9 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
     /*authentication*/
 
     Route::group(['middleware' => ['vendor']], function () {
+
+    
+
         Route::get('/', 'DashboardController@dashboard')->name('dashboard');
         Route::get('/get-restaurant-data', 'DashboardController@restaurant_data')->name('get-restaurant-data');
         Route::post('/sortProducts', 'ProductController@sort');
@@ -180,6 +183,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             // Route::post('/customer', 'AddOnController@assignGroupToCustomers');
             Route::post('/assignGroupToCustomers', 'AddOnController@assignGroupToCustomers');
 
+
             Route::get('customer', 'AddOnController@customer')->name('customer');
             Route::get('order', 'OrderController@index')->name('order');
             Route::get('invoices', 'AddOnController@invoices')->name('invoices');
@@ -198,6 +202,14 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::post('update/{id}', 'AddOnController@update')->name('update');
             Route::delete('delete/{id}', 'AddOnController@delete')->name('delete');
             Route::post('create_product', 'ProductController@create_product')->name('create_product');
+
+            Route::get('getAddons', 'AddOnController@getAddons')->name('getAddons');
+            Route::get('getBadges', 'AddOnController@getBadges')->name('getBadges');
+            // Customer Groups Filteration
+            Route::get('/customers/filter', 'AddOnController@filterCustomers')->name('customers.filter');
+
+            // Route::get('/get-data', 'DataController@getData');
+
         });
 
         Route::get('get_all_products', [ProductController::class, "get_all_products"]);

@@ -24,7 +24,7 @@
                         <select id="selectCustomerGroup" class="custom-select custom-select-lg">
                             <option selected> Select Group </option>
                             @foreach ($customerGroups as $groups)
-                                <option>{{ $groups->name }}</option>
+                                <option id={{$groups->id}} value ={{$groups->id}} >{{ $groups->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -38,7 +38,7 @@
                         data-target="#createCustomerGroupModal">Add Customer Group</a>
                 </div>
             </div>
-
+            <div id="filtered_customers"></div>
             <div class="customer">
                 <input type='hidden' id='current_page' />
                 <input type='hidden' id='show_per_page' />
@@ -168,12 +168,30 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            console.log("osama");
+        
             selectElement = document.querySelector('#selectCustomerGroup');
             selectElement.addEventListener('change', (event) => {
+                var selectedOptionId = $(this).children('option:selected').attr('value');
+		        console.log(selectedOptionId);
+
                 selectedOption = event.target.value;
+         
                 console.log(`Selected option: ${selectedOption}`);
 
+               
+                    // var groupId = $(this).val();
+                    $.ajax({
+                        url: "{{ route('vendor.addon.customers.filter') }}",
+                        data: { group_id: selectedOption },
+                        success: function(data) {
+                            var html = '';
+                            $.each(data, function(index, customer) {
+                                html += '<p>' + customer.customer_name + '</p>';
+                            });
+                            $('#filtered_customers').html(html);
+                        }
+                    });
+              
 
                 // Perform any other actions you want to take when an option is selected
                 // API Calling for Filtering Data 
