@@ -8,226 +8,66 @@
 <body class="">
     @section('content')
     <div class="content container-fluid">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row align-items-center">
-                <div class="col-sm">
-                    <h1 class="page-header-title">Massage</h1>
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col-sm">
+                        <h1 class="page-header-title">Massage</h1>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- End Page Header -->
-        <div class="card msgcard">
-            <div class="card-body">
-                <div class="row chat-row">
-                    <div class="col-lg-4 pr-lg-0">
-                        <div class="left-side">
-                            <div class="chat-list">
-                                <ul class="chats">
-                                    <li class="active">
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Melissa</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                        <span class="unread">1</span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Helena</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Andread</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Cavin</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Gwain</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Robin</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Gwain</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="imgchat">
-                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                            <span class="online-status"></span>
-                                        </span>
-                                        <span class="chatname">
-                                            <h6>Robin</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
-                                            <span class="status">48 mins</span>
-                                        </span>
-                                    </li>
+            <!-- End Page Header -->
+            <div class="card msgcard">
+                <div class="card-body">
+                    <div class="row chat-row">
+                        <div class="col-lg-4 pr-lg-0">
+                            <div class="left-side">
+                                <div class="chat-list">
+                                    <ul class="chats">
+                                        @forelse ($conversation_lists as $conversation_list)
+                                            <li class="active toggle-btn" data-user-id="{{ $conversation_list->user1_id }}"
+                                                data-seller-id="{{ $conversation_list->user2_id }}">
+                                                <span class="imgchat">
+                                                    <img class="img-fluid"
+                                                        src="{{ asset('images/vendor/' . $conversation_list->user->image) }}"
+                                                        alt="">
+                                                    <span class="online-status"></span>
+                                                </span>
+                                                <span class="chatname">
+                                                    <h6>{{ $conversation_list->user->f_name . ' ' . $conversation_list->user->l_name }}
+                                                    </h6>
+                                                    <p>{{ $conversation_list->user->email }}</p>
+                                                    <span
+                                                        class="status">{{ $conversation_list->updated_at->diffForHumans() }}</span>
+                                                </span>
+                                                {{-- <span class="unread">1</span> --}}
+                                            </li>
+                                        @empty
+                                            <li class="active">
+                                                <span class="imgchat">
+                                                    {{ __('NOT FOUND') }}
+                                                </span>
+                                                {{-- <span class="unread">1</span> --}}
+                                            </li>
+                                        @endforelse
 
-                                </ul>
+                                    </ul>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-8 pl-lg-0">
-                        <div class="right-side">
-                            <div class="chat-header">
-                                <div class="profile-info">
-                                    <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                    <h4>Elina Jayson</h4>
-                                </div>
-                                <div class="menu">
-                                    <div class="dropdown show">
-                                        <a class="menu-link" href="#" role="button" id="MenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="icon-setting"></i>
-                                        </a>
+                        <div class="col-lg-8 pl-lg-0">
+                            <div class="right-side" id="chatDetails">
 
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="MenuLink">
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="massages">
-                                <div class="receive-msg">
-                                    <div class="profile-info">
-                                        <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <div class="msg">
-                                            <p>Hey Mellisa, whst's up?</p>
-                                        </div>
-                                        <div class="time">
-                                            <p>10:45 AM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-time">
-                                    <p>Jan 31, 8:07 PM</p>
-                                </div>
-                                <div class="send-msg">
-                                    <div class="profile-info">
-                                        <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <div class="msg">
-                                            <p>Hi Billy, where are you?</p>
-                                        </div>
-                                        <div class="time">
-                                            <p>10:45 AM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="receive-msg">
-                                    <div class="profile-info">
-                                        <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <div class="msg">
-                                            <p>Hey Mellisa, whst's up?</p>
-                                        </div>
-                                        <div class="time">
-                                            <p>10:45 AM</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-time">
-                                    <p>Jan 31, 8:07 PM</p>
-                                </div>
-                                <div class="send-msg">
-                                    <div class="profile-info">
-                                        <img src="{{ asset('public/assets/admin/img/NoPath---Copy-(65).png') }}" alt="">
-                                    </div>
-                                    <div>
-                                        <div class="msg">
-                                            <p>Hi Billy, where are you?</p>
-                                        </div>
-                                        <div class="time">
-                                            <p>10:45 AM</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
-                            </div>
-                            <div class="chat-footer">
-                                <div class="typemsg">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-
-                                            <i class="icon-happy_alt_icon"></i>
-                                        </div>
-                                        <input type="text" class="form-control" aria-label="" placeholder="Start Message....">
-                                        <div class="input-group-prepend">
-                                            <i class="icon-send1"></i>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
         </div>
-
-
-
-    </div>
     <!-- Modal -->
     <div class="modal fade" id="customerModalCenter" tabindex="-1" role="dialog" aria-labelledby="customerModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -357,3 +197,263 @@
     </div>
     @endsection
 </body>
+
+
+@section('script')
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+        var sent_user_id = '';
+        $(document).ready(function() {
+            $(".toggle-btn").click(function() {
+                var UserId = $(this).attr("data-user-id");
+                var SellerId = $(this).attr("data-seller-id");
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ route('vendor.addon.fetch.messages') }}",
+                    data: {
+                        UserId: UserId,
+                        SellerId: SellerId,
+                    },
+                    success: (data) => {
+                        console.log(data);
+                        var appendChat = '';
+                        if (data.status == true) {
+                            sent_user_id = data.User.id;
+                            appendChat += `
+                                <div class="chat-header">
+                                    <div class="profile-info">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                            alt="">
+                                        <h4>${data.User.f_name}  ${data.User.l_name}</h4>
+                                    </div>
+                                    <div class="menu">
+                                        <div class="dropdown show">
+                                            <a class="menu-link" href="#" role="button" id="MenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-setting"></i>
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="MenuLink">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="massages" id="fetch-last-text">
+                            `;
+                            $.each(data.chatlists, function(index, ChatData) {
+                                // console.log(ChatData);
+                                // console.log(ChatData.type == 'seller');
+                                if (ChatData.type == 'customer') {
+                                    appendChat += `
+                                        <div class="receive-msg">
+                                            <div class="profile-info">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                                    alt="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp">
+                                            </div>
+                                            <div>
+                                                <div class="msg">
+                                                    <p>${ChatData.reply}</p>
+                                                </div>
+                                                <div class="time">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                if (ChatData.type == 'seller') {
+                                    appendChat += `
+                                        <div class="send-msg">
+                                            <div class="profile-info">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                                    alt="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp">
+                                            </div>
+                                            <div>
+                                                <div class="msg">
+                                                    <p>${ChatData.reply}</p>
+                                                </div>
+                                                <div class="time">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            });
+                            appendChat += `
+                                </div>
+                                <div class="chat-footer">
+                                    <div class="typemsg">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <i class="icon-happy_alt_icon"></i>
+                                            </div>
+                                            <input type="text" id="sending-text" class="form-control" aria-label=""
+                                                placeholder="Start Message....">
+                                            <div class="input-group-prepend" onclick="send_message(${data.User.id})">
+                                                <i class="icon-send1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            $('#chatDetails').html(appendChat);
+                        }
+                    }
+                });
+                // alert(SellerId + ' ' + UserId);
+            });
+        });
+
+        Pusher.logToConsole = true;
+        var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+            cluster: "ap2",
+        });
+        var channel = pusher.subscribe("local.chat");
+
+        channel.bind("seller-Chat", function(data) {
+            console.log(data.conservationData);
+            console.log(sent_user_id);
+            console.log(data.conservationData.recieved_user);
+            console.log(data.conservationData.recieved_user == sent_user_id);
+            console.log(data.conservationData.type == 'customer');
+            var appendChat = '';
+            if (data.conservationData.recieved_user == sent_user_id) {
+                if (data.conservationData.type == 'customer') {
+                    appendChat += `
+                    <div class="receive-msg">
+                        <div class="profile-info">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                alt="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp">
+                        </div>
+                        <div>
+                            <div class="msg">
+                                <p>${data.conservationData.message}</p>
+                            </div>
+                            <div class="time">
+
+                            </div>
+                        </div>
+                    </div>
+                        <br>
+                    `;
+                }
+                $('#fetch-last-text').append(appendChat);
+            }
+        });
+
+        function send_message(id) {
+            var submit_message = $('#sending-text').val();
+            var type = "seller";
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('vendor.addon.send.message') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    submit_message: submit_message,
+                    type: type,
+                    receiver_id: id
+                },
+                success: (data) => {
+                    $('#sending-text').val('');
+                    toastr.success(data.message);
+                    console.log(data);
+                    var appendChat = '';
+                    if (data.status == true) {
+                        appendChat += `
+                                <div class="chat-header">
+                                    <div class="profile-info">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                            alt="">
+                                        <h4>${data.User.f_name}  ${data.User.l_name}</h4>
+                                    </div>
+                                    <div class="menu">
+                                        <div class="dropdown show">
+                                            <a class="menu-link" href="#" role="button" id="MenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-setting"></i>
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="MenuLink">
+                                                <a class="dropdown-item" href="#">Action</a>
+                                                <a class="dropdown-item" href="#">Another action</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="massages">
+                            `;
+                        $.each(data.chatlists, function(index, ChatData) {
+                            console.log(ChatData);
+                            console.log(ChatData.type == 'seller');
+                            if (ChatData.type == 'customer') {
+                                appendChat += `
+                                        <div class="receive-msg">
+                                            <div class="profile-info">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                                    alt="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp">
+                                            </div>
+                                            <div>
+                                                <div class="msg">
+                                                    <p>${ChatData.reply}</p>
+                                                </div>
+                                                <div class="time">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                            }
+                            if (ChatData.type == 'seller') {
+                                appendChat += `
+                                        <div class="send-msg">
+                                            <div class="profile-info">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                                                    alt="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp">
+                                            </div>
+                                            <div>
+                                                <div class="msg">
+                                                    <p>${ChatData.reply}</p>
+                                                </div>
+                                                <div class="time">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                            }
+                        });
+                        appendChat += `
+                                </div>
+                                <div class="chat-footer">
+                                    <div class="typemsg">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <i class="icon-happy_alt_icon"></i>
+                                            </div>
+                                            <input type="text" id="sending-text" class="form-control" aria-label=""
+                                                placeholder="Start Message....">
+                                            <div class="input-group-prepend" onclick="send_message(${data.User.id})">
+                                                <i class="icon-send1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        $('#chatDetails').html(appendChat);
+                    }
+
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                    $('#btnsave').html('Save Changes');
+                }
+            });
+        }
+    </script>
+@endsection

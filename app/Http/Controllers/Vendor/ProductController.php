@@ -12,6 +12,8 @@ use Redirect;
 use App\Models\Food;
 use App\Models\Category;
 use App\Models\Restaurant;
+use App\Models\Units;
+use Brian2694\Toastr\Facades\Toastr;
 
 class ProductController extends Controller
 {
@@ -34,10 +36,12 @@ class ProductController extends Controller
                 // }
                 $product->image =  asset('public/images/' . $product->image[0]);
             }
+
+            $categories = Category::where('restaurant_id', $restaurant->id)->orderBy('position', 'asc')->orderBy('id', 'asc')->get();
         }
 
         // dd($products);
-        return view('vendor-views.addon.products', compact('products'));
+        return view('vendor-views.addon.products', compact('products', 'categories'));
     }
     public function create_product(Request $request)
     {
@@ -195,6 +199,10 @@ class ProductController extends Controller
                 $input[$key] = $value;
             }
         }
+        // $test = [];
+        // $test[]= $data;
+        // $test[]= $input;
+        // dd($test);
         // $input = $request->all();
         if ($request->has('images')) {
 
@@ -328,6 +336,34 @@ class ProductController extends Controller
         }
     }
 
+    public function deleteProduct($productID){
+        $product = Food::findOrFail($productID);
+        $product->delete();
+        Toastr::success('Product removed!');
+        
+        $vendor = auth('vendor')->user()->id;
+        $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        $products = [];
+        if ($restaurant) {
+
+            $products = Food::where('restaurant_id', $restaurant->id)->orderBy('position', 'asc')->orderBy('id', 'asc')->get();
+            foreach ($products as $product) {
+                $product->image = unserialize($product->image);
+                $images = [];
+                // foreach ($product->image as $img) {
+                //     # code...
+                //     $images[] = asset('images/'.$img);
+                // }
+                $product->image =  asset('public/images/' . $product->image[0]);
+            }
+
+            $categories = Category::where('restaurant_id', $restaurant->id)->orderBy('position', 'asc')->orderBy('id', 'asc')->get();
+        }
+
+        // dd($products);
+        return view('vendor-views.addon.products', compact('products', 'categories'));
+    }
+
     public function show($id)
     {
         $product = Food::where('id', $id)->first();
@@ -372,12 +408,12 @@ class ProductController extends Controller
         $related_tags = explode(",", $product->related_tags);
         // dd ($related_tags);
         // dd($product);
-
+        $units = Units::where('restaurant_id', Helpers::get_restaurant_id())->get();
         if ($product->product_type != "preorder") {
             # code...
-            return view('vendor-views.product.edit', compact('product', 'category', 'ingredients', 'allergens', 'related_tags', 'addon', 'badges'));
+            return view('vendor-views.product.edit', compact('product', 'category', 'ingredients', 'allergens', 'related_tags', 'addon', 'badges', 'units'));
         } else {
-            return view('vendor-views.product.edit2', compact('product', 'category', 'ingredients', 'allergens', 'related_tags', 'addon', 'badges'));
+            return view('vendor-views.product.edit2', compact('product', 'category', 'ingredients', 'allergens', 'related_tags', 'addon', 'badges', 'units'));
         }
     }
 
@@ -643,6 +679,8 @@ class ProductController extends Controller
         $input['feature_image'] = $featureImage;
         $input['add_ons'] = $request->has('add_ons') ? json_encode($request->add_ons) : json_encode([]);
         $input['badges'] = $request->has('Badge') ? json_encode($request->Badge) : json_encode([]);
+        $input['allow_subscription'] = $request->has('allow_subscription') ? 1 : 0;
+        $input['in_stock'] = $request->has('in_stock') ? 0 : 1;
         $update = Food::where("id", $id)->first();
         
         $update->update($input);

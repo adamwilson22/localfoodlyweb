@@ -42,7 +42,7 @@ class CartController extends Controller
         if (!$cart) {
             // dd($food->toArray());
             if($food->product_type == "preorder"){
-                if($addMoreQuantity <= $food->unit)
+                if($addMoreQuantity <= $food->pre_order_quantity_limit)
                 {
                     $cart = [
                         $id => [
@@ -86,7 +86,7 @@ class CartController extends Controller
 
         if (isset($cart[$id])) {
             if($food->product_type == "preorder"){
-                if($addMoreQuantity <= $food->unit)
+                if($cart[$id]['quantity'] < $food->pre_order_quantity_limit)
                 {
                     $cart[$id]['quantity']++;
                 } else {
@@ -109,7 +109,7 @@ class CartController extends Controller
 
 
         if($food->product_type == "preorder"){
-            if($addMoreQuantity <= $food->unit)
+            if($addMoreQuantity <= $food->pre_order_quantity_limit)
             {
                 $cart[$id] = [
                     "name" => $food->name,

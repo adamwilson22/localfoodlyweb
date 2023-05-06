@@ -381,7 +381,7 @@
                                         <a href="#"><i class="icon-document"></i>Duplicate</a>
                                     </div>
                                 </div>
-                                <form action="{{ route('vendor.addon.create_product') }}" method="POST"
+                                <form id="product_form" action="{{ route('vendor.addon.create_product') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <!-- Form Group -->
@@ -1409,6 +1409,44 @@
                 element = $(e);
                 element.parents('.view_new_option').remove();
             }
+        </script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            function closeModal() {
+            let modal = document.getElementById("unitsModal").style.display = "none";
+            // modal.classList.remove(".modal-backdrop.show");
+            $(".modal-backdrop").remove();
+            $('body').removeClass('modal-open');
+        }
+            document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('unitnamesubmit').addEventListener('click', function() {
+                let unitNameValue = document.getElementById('unitnametextbox').value;
+                console.log(unitNameValue);
+                if (unitNameValue && unitNameValue.trim()) {
+                    axios.post('/vendor-panel/addon/add_unit', {
+                            unitName: unitNameValue
+                        })
+                        .then(function(response) {
+                            if (response.data != "0") {
+                                var dropdown = document.getElementById('unitsdropdown');
+                                var optionElement = document.createElement('option');
+                                optionElement.value = response.data;
+                                optionElement.text = response.data;
+                                dropdown.add(optionElement);
+                            }
+                            console.log(response);
+                            closeModal();
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                } else {
+                    alert('Please enter unit name!');
+                }
+
+            });
+        });
         </script>
     {{-- <script>
         var count = 0;

@@ -327,7 +327,7 @@
                                     <a href="#"><i class="icon-document"></i>Duplicate</a>
                                 </div> --}}
                             </div>
-                            <form action="{{ route('vendor.addon.product.update', ['id' => $product->id]) }}" method="POST" enctype="multipart/form-data">
+                            <form id="test" action="{{ route('vendor.addon.product.update', ['id' => $product->id]) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <!-- Form Group -->
                                 <div class=" form-group">
@@ -541,6 +541,62 @@
                                 
                                 ?>
                                 <div class=" form-group">
+                                    <label class="input-label" for="addons">Serving Unit</label>
+                                    {{-- Modal for adding new Units for Food --}}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#unitsModal">
+                                        Add Units
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="unitsModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            {{-- <form method="POST" action="{{ route('vendor.addon.add-unit') }}">
+                                                @csrf --}}
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Add a Unit</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <!-- Form fields go here -->
+                                                    <div class="form-group">
+                                                        <input id="unitnametextbox" type="text" name="unitname"
+                                                            class="form-control form-control-lg"
+                                                            placeholder="Unit name">
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button id="unitnamesubmit" type="submit"
+                                                        class="btn btn-primary">Save </button>
+                                                </div>
+                                                {{-- </form> --}}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Modal for adding new Units for Food --}}
+                                    <select id="unitsdropdown" name="unit_serve"
+                                        class="custom-select custom-select-lg" data-placeholder="Select Unit Serve">
+                                        @foreach ($units as $item)
+                                            <option value="{{ $item->unit_name }}" {{$product->unit_serve == $item->unit_name ? 'selected' :'' }}>{{ $item->unit_name }}</option>
+
+                                        @endforeach
+                                        {{-- <option value="Kg" @if (old('unit_serve') == 'KG') selected @endif>Kg
+                                        </option>
+                                        <option value="Dozen" @if (old('unit_serve') == 'DAZAN') selected @endif>Dozen
+                                        </option>
+                                        <option value="Length" @if (old('unit_serve') == 'LENGTH') selected @endif>Length
+                                        </option> --}}
+                                    </select>
                                     <label class="input-label" for="">Unit</label>
                                     <input type="number" class="form-control form-control-lg" name="unit" value="{{$product->unit}}" placeholder="Please enter the quantity or size">
                                 </div>
@@ -760,11 +816,20 @@
                                         class="form-control" />
                                 </div> --}}
 
+                                @if ($product->product_type == "MealKits")
                                 <div class=" form-group">
                                     <div class="custom-control custom-checkbox">
-                                        <input name="instock" type="checkbox" class="custom-control-input"
-                                            id="customControlInline">
-                                        <label class="custom-control-label" for="customControlInline">Product Is Out
+                                        <input name="allow_subscription" type="checkbox" class="custom-control-input"
+                                            id="customControlInline" value="1" {{$product->allow_subscription == 1 ? 'checked' : ''}}>
+                                        <label class="custom-control-label" for="customControlInline">Available for Subscription</label>
+                                    </div>
+                                </div>
+                                @endif
+                                <div class=" form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="in_stock" type="checkbox" class="custom-control-input"
+                                            id="customControlInline2" value="0" {{$product->in_stock == 0 ? 'checked' : ''}}>
+                                        <label class="custom-control-label" for="customControlInline2">Product Is Out
                                             Of Stock</label>
                                     </div>
                                 </div>
@@ -1053,7 +1118,7 @@ function render_img(input) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     
-                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    
                                 });
                                 
                             }
@@ -1071,7 +1136,7 @@ function render_img(input) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     
-                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    
                                 });
                                 
                             }
@@ -1304,5 +1369,43 @@ function render_tag(value, id) {
             }
         });
     }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    function closeModal() {
+            let modal = document.getElementById("unitsModal").style.display = "none";
+            // modal.classList.remove(".modal-backdrop.show");
+            $(".modal-backdrop").remove();
+            $('body').removeClass('modal-open');
+        }
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('unitnamesubmit').addEventListener('click', function() {
+        let unitNameValue = document.getElementById('unitnametextbox').value;
+        console.log(unitNameValue);
+        if (unitNameValue && unitNameValue.trim()) {
+            axios.post('/vendor-panel/addon/add_unit', {
+                    unitName: unitNameValue
+                })
+                .then(function(response) {
+                    if (response.data != "0") {
+                        var dropdown = document.getElementById('unitsdropdown');
+                        var optionElement = document.createElement('option');
+                        optionElement.value = response.data;
+                        optionElement.text = response.data;
+                        dropdown.add(optionElement);
+                    }
+                    console.log(response);
+                    closeModal();
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        } else {
+            alert('Please enter unit name!');
+        }
+
+    });
+});
 </script>
 @endpush

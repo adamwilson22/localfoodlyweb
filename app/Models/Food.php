@@ -45,7 +45,8 @@ class Food extends Model
         "fulfillment_type",
         "pre_order_quantity_limit",
         'featured_image',
-        'position'
+        'position',
+        'allow_subscription'
     ];
 
     protected $casts = [

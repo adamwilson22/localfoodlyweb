@@ -2238,12 +2238,16 @@ body.matchespg footer {
 #sortable-list {
 }
 
-#sortable-list .card {
+/* #sortable-list .card {
+    width: 31.66%;
+    display: inline-block;
+    margin: 15px 6px 0;
+} */
+#sortable-list .custom-checkbox.product-checkbox.pcheck {
     width: 31.66%;
     display: inline-block;
     margin: 15px 6px 0;
 }
-
 
 #sortable-list .card .product-img img,#sortable-list .card .product-img video {
     width: 100%;

@@ -7,20 +7,44 @@ use App\Models\AddOn;
 use App\Models\Restaurant;
 use App\Models\Food;
 use App\Models\Badge;
+use Pusher\Pusher;
 use Redirect;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\CentralLogics\Helpers;
 use App\Models\Translation;
 use App\Models\Category;
+use App\Models\Conversation;
 use App\Models\Customer;
 use App\Models\CustomerGroupAssigned;
 use App\Models\CustomerGroups;
 use App\Models\Units;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use DB;
 class AddOnController extends Controller
 {
+    private $pusher = null;
+
+    /**
+     * __construct
+     *-----------------------------------------------------------------------*/
+    public function __construct()
+    {
+        $pusherAppId     = env('PUSHER_APP_ID');
+        $pusherKey         = env('PUSHER_APP_KEY', 'eb48d91d4024959f20e0');
+        $pusherSecret   = env('PUSHER_APP_SECRET');
+        // Pusher call
+        $this->pusher = new Pusher(
+            $pusherKey,
+            $pusherSecret,
+            $pusherAppId,
+            [
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS' => true
+            ]
+        );
+    }
     public function index()
     {
         $vendor = auth('vendor')->user()->id;
@@ -228,11 +252,54 @@ class AddOnController extends Controller
         }
     }
 
+    public function updateProductStatusAndCategory(Request $request)
+    {
+        $catID = (int)$request->categoryID;
+
+        foreach ($request->products as $productID) {
+            if($catID != 0){
+                DB::table('food')
+                ->where('id', $productID)
+                ->where('restaurant_id', Helpers::get_restaurant_id())
+                ->update(['category_id' => $catID, 'status' => $request->productStatus]);
+            }
+            else{
+                // dd('else');
+                DB::table('food')
+                ->where('id', $productID)
+                ->where('restaurant_id', Helpers::get_restaurant_id())
+                ->update(['status' => $request->productStatus]);
+            }
+        }
+
+        return Redirect('vendor-panel/addon/products')->with([
+            'message' => "Product Status OR Category updated Successfully",
+            'code' => 1,
+            'status' => true,
+        ]);
+    }
+
+    public function deleteBulkProducts(Request $request)
+    {
+        foreach ($request->products as $productID) {
+        DB::table('food')
+            ->where('id', $productID)
+            ->where('restaurant_id', Helpers::get_restaurant_id())
+            ->delete();
+        }
+
+        return Redirect('vendor-panel/addon/products')->with([
+            'message' => "Product Deleted Successfully",
+            'code' => 1,
+            'status' => true,
+        ]);
+    }
+
     public function assignGroupToCustomers(Request $request)
     {
         $event = '';
-
         foreach ($request->customers as $customer) {
+            // dd($customer);
             $customerFound = DB::table('customer_group_assigned')
                 ->where('customer_id', $customer)
                 ->get();
@@ -247,7 +314,7 @@ class AddOnController extends Controller
                 $event = 'inserted';
 
                 DB::table('customer_group_assigned')->insert([
-                    'customer_id' => $request->unitName,
+                    'customer_id' => $customer,
                     'group_id' => $request->groupID,
                 ]);
             }
@@ -348,8 +415,90 @@ class AddOnController extends Controller
     }
     public function massage()
     {
-        $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.massage');
+        // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
+        // dd(Helpers::get_restaurant_id());
+        $conversation_lists = Conversation::with('user')->where('user2_id', Helpers::get_restaurant_id())->get()->unique('user1_id');
+        // dd($conversation_lists->toArray());
+        return view('vendor-views.addon.massage',compact('conversation_lists'));
+    }
+    public function fetchMessage(Request $request){
+        $chatlists = Conversation::where('user2_id', $request->SellerId)
+            ->get();
+        // dd($chatlists->toArray());
+        $Seller = Restaurant::where('id', $request->SellerId)->first();
+        $User = User::where('id', $request->UserId)->first();
+
+        return [
+            "status" => true,
+            "message" => "data found",
+            "chatlists" => $chatlists,
+            "Seller" => $Seller,
+            "User" => $User,
+        ];
+    }
+
+    public function SendMessage(Request $request)
+    {
+        $conversation = new Conversation();
+        $conversation->reply = $request->submit_message;
+        $conversation->type = $request->type;
+        $conversation->user2_id = Helpers::get_restaurant_id();
+        $conversation->user1_id = $request->receiver_id;
+
+        if ($conversation->save()) {
+
+            $listConversation = Conversation::where('user1_id', $request->receiver_id)->get();
+
+            $restaurant = Restaurant::where('id', Helpers::get_restaurant_id())->first();
+
+            $restaurant = [
+                "id" => "{$restaurant->id}",
+                "name" => "{$restaurant->name}",
+                "email" => "{$restaurant->email}",
+                "address" => "{$restaurant->address}",
+                "logo" => "{$restaurant->logo}",
+            ];
+
+            $user = User::where('id', $request->receiver_id)->first();
+
+            $User = [
+                "id" => "{$user->id}",
+                "firstname" => "{$user->f_name}",
+                "lastname" => "{$user->l_name}",
+                "email" => "{$user->email}",
+                "image" => "{$user->image}",
+            ];
+
+            $chatData = [
+                "id" => "{$conversation->id}",
+                "type" => "{$conversation->type}",
+                "sent_user" => "{$conversation->user2_id}",
+                "recieved_user" => "{$conversation->user1_id}",
+                "message" => "{$conversation->reply}",
+                "MessageDateTime" => "{$conversation->created_at}",
+                "senderData" => $restaurant,
+                "User" => $User
+            ];
+
+            $pusherData =  [
+                "conservationData" => $chatData
+            ];
+
+            // $eventName = "$messageSubject-CSR";
+
+            $this->pusher->trigger('local.chat', 'customer-Chat', $pusherData);
+
+            return [
+                'status' => true,
+                'message' => 'Message Sent...!',
+                'chatlists' => $listConversation,
+                'receiver_id' => $request->receiver_id,
+                "senderData" => $restaurant,
+                "User" => $User
+            ];
+        } else {
+            return response()->json(['error' => 'Message Not Sent...!']);
+        }
     }
     public function review()
     {

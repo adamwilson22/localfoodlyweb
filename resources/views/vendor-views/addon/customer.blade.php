@@ -22,9 +22,9 @@
                     <div class="inline-select">
                         <label for="" class="">Sort by</label>
                         <select id="selectCustomerGroup" class="custom-select custom-select-lg">
-                            <option selected> Select Group </option>
+                            <option selected  value=0> All Customer Groups </option>
                             @foreach ($customerGroups as $groups)
-                                <option id={{$groups->id}} value ={{$groups->id}} >{{ $groups->name }}</option>
+                                <option id={{ $groups->id }} value={{ $groups->id }}>{{ $groups->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -38,7 +38,9 @@
                         data-target="#createCustomerGroupModal">Add Customer Group</a>
                 </div>
             </div>
-            <div id="filtered_customers"></div>
+            <div class="customer">
+                <div id="filtered_customers" class=""></div>
+            </div>
             <div class="customer">
                 <input type='hidden' id='current_page' />
                 <input type='hidden' id='show_per_page' />
@@ -48,15 +50,14 @@
                         {{-- @foreach ($item as $customer) --}}
                         <div class="col-lg-4">
                             <div class="custom-control custom-checkbox customer-checkbox">
-                                <input type="checkbox" class="custom-control-input" data-id="{{ $customer->id }}"
-                                    id="{{ 'customCheck[' . $customer->id . ']' }}">
+                                <input type="checkbox" class="custom-control-input" data-id="{{ $customer->id }}" id="{{ 'customCheck[' . $customer->id . ']' }}">
                                 <label class="custom-control-label" for="{{ 'customCheck[' . $customer->id . ']' }}">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="detail">
                                                 <div class="info">
                                                     <div class="proimg">
-                                                        <img src="{{ asset('public/assets/admin/img/' . $customer->image)}}"
+                                                        <img src="{{ asset('public/assets/admin/img/' . $customer->image) }}"
                                                             alt="">
                                                         <!-- <span class="status"></span> -->
                                                     </div>
@@ -135,26 +136,27 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal -->
             <div class="modal fade" id="createCustomerGroupModal" tabindex="-1" role="dialog"
                 aria-labelledby="createCustomerGroupModalTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
                             <form method="POST" action="{{ route('vendor.addon.addcustomergroup') }}">
-                            <div class="modal-header">
+                                <div class="modal-header">
 
                                     @csrf
                                     <h5 class="modal-title" id="exampleModalLongTitle">Customer Group Name</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="name" class="form-control form-control-lg"
-                                    placeholder="Customer Group Name">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg">Save Now</button>
-                        </form>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="name" class="form-control form-control-lg"
+                                        placeholder="Customer Group Name">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg">Save Now</button>
+                            </form>
                         </div>
 
                     </div>
@@ -167,31 +169,119 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script type="text/javascript">
+                  function handleChange(checkbox) {
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"][data-id]');
+                             if (checkbox.checked) {
+                        selectedIds.push(checkbox.dataset
+                            .id); // add data-id to array if checkbox is checked
+                    } else {
+                        const index = selectedIds.indexOf(checkbox.dataset.id);
+                        if (index !== -1) {
+                            selectedIds.splice(index,
+                                1
+                            ); // remove data-id from array if checkbox is unchecked
+                        }
+                    }
+
+                    console.log(selectedIds); // log the updated array to the console
+
+ 
+}
         $(document).ready(function() {
-        
+
             selectElement = document.querySelector('#selectCustomerGroup');
             selectElement.addEventListener('change', (event) => {
                 var selectedOptionId = $(this).children('option:selected').attr('value');
-		        console.log(selectedOptionId);
+                console.log(selectedOptionId);
 
                 selectedOption = event.target.value;
-         
+
                 console.log(`Selected option: ${selectedOption}`);
 
-               
-                    // var groupId = $(this).val();
+             
                     $.ajax({
-                        url: "{{ route('vendor.addon.customers.filter') }}",
-                        data: { group_id: selectedOption },
-                        success: function(data) {
-                            var html = '';
-                            $.each(data, function(index, customer) {
-                                html += '<p>' + customer.customer_name + '</p>';
-                            });
-                            $('#filtered_customers').html(html);
-                        }
-                    });
-              
+                    url: "{{ route('vendor.addon.customers.filter') }}",
+                    data: {
+                        group_id: selectedOption
+                    },
+                    success: function(data) {
+                        $("#pagingBox").hide();
+                        selectedIds = [];
+                        var html = '';
+                        html += ' <div class="row" id="paging2">';
+                            $.each(data, function(index, customers) {
+                                 
+                            html += ' <div class="col-lg-4">';
+                                html += ' <div class="custom-control custom-checkbox customer-checkbox">';
+                                    // html += ' <input type="checkbox" class="custom-control-input" data-id="{{ '+ $customer->id +' }}" id="{{ 'customCheck[' . $customer->id . ']' }}">' ;
+                                    html += ' <input type="checkbox" class="custom-control-input" data-id="' + customers.id + '" id="customCheck[' + customers.id + ']"  onchange="handleChange(this)">';
+                                    html += '  <label class="custom-control-label" for="customCheck[' + customers.id + ']">';
+                                        html += '  <div class="card"> ';
+                                            html += ' <div class="card-body">';
+                                                html += '  <div class="detail">';
+
+                                                    html += '<div class="info">';
+
+                                                        html += '<div class="proimg">';
+                                                            html += '<img src="{{ asset('public/assets/admin/img') }}/' + customers.image + '">';
+                                                        html += '</div>';
+
+                                                        html += '<span>';                             
+                                                            html += '<h2>' + customers.customer_name + '</h2>';                            
+                                                        html += '</span>';
+
+                                                    html += '</div>';
+                                            
+
+                                                    html += '<div class="categ">';
+                                                        html += '<h6>' + 'Group' + '</h6>';
+                                                        html += '<p>' + customers.customer_group_name + '</p>';
+                                                    html += '</div>';
+                                                html += '</div>';
+
+                                                html += '<div class="contact">';
+                                                    html += '<div class="row">';
+                                                        html += '<div class="col-lg-4">';
+                                                            html += '<p class="mb-3">' + '<i class="icon-phone mr-2"></i>' + customers.phone_number + '</p>';
+                                                        html += '</div>';
+                                                        html += '<div class="col-lg-8">';
+                                                            html += '<p class="mb-3">' + '<i class="icon-mail mr-2"></i>' + customers.email + '</p>';
+                                                        html += '</div>';
+                                                        html += '<div class="col-12">';
+                                                            html += '<p class="mb-3">' + '<i class="icon-map-pin mr-2"></i>' + customers.address + '</p>';
+                                                        html += '</div>';
+                                                    html += '</div>';
+                                                html += '</div>';
+                                                html += '<div class="detail">';
+                                                    html += '<a href="{{ route('vendor.addon.single-customer', $customer->id) }}" class="btn btn-primary btn-lg">View Profile</a>';
+                                                    html += '<div class="points">';
+                                                        html += '<h6>Loyalty Points</h6>';
+                                                        html += '<p>50 points</p>';
+                                                    html += '</div>';
+                                                    
+                                                html += '</div>';
+                                            html += '</div>';
+                                        html += '</div>';
+                                    html += '</label>';
+                                html += '</div>';
+                            html += '</div>';
+                            
+                            
+                            // html += '<p>' + customer.customer_name + '</p>';
+                        });
+                        html += '</div>';
+                        $('#filtered_customers').html(html);
+                    }
+                });
+                
+                // var groupId = $(this).val();
+               
+
+  
+
+
+
+
 
                 // Perform any other actions you want to take when an option is selected
                 // API Calling for Filtering Data 
@@ -209,7 +299,7 @@
             });
         });
 
-        const selectedIds = [];
+        var selectedIds = [];
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('btnSaveNow').addEventListener('click', function() {
 
@@ -232,8 +322,19 @@
                             })
                             .then(function(response) {
                                 console.log('Success:', response.message);
+                                $("#createAddon , #createBadge").modal('hide');
+                                toastr.success(
+                                    'Group Updated Successfully', {
+                                        CloseButton: true,
+                                        ProgressBar: true
+                                    }); // show response from the php script.   
+
+                                setTimeout(function() {
+                                    // This code will execute after a 1 second delay
+                                    console.log(response.data);
+                                }, 3000); // Delay for 1 second (1000 milliseconds)
+
                                 location.reload();
-                                // console.log('Success: Customer Group(s) assigned Successfully');
                             })
                             .catch(function(error) {
                                 console.log('Error:', error.message);

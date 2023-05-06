@@ -2881,6 +2881,10 @@ select.btn {
     left: 15px;
     color: #fff;
 }
+.res-card.filter-card .stars {
+    position: unset;
+    color: #000;
+}
 
 .res-card .img {
     position: relative;
@@ -3232,8 +3236,159 @@ button.btn-link .custom-control {
     object-fit: cover;
     border-radius: 5px;
 }
+.filter-box {
+    margin-bottom: 40px;
+}
+.filter-box .custom-control {
+    box-shadow: 0px 15px 15px #0000000D;
+    padding: 10px 14px 10px 35px;
+    margin-bottom: 14px;
+}
 
+.filter-box .custom-checkbox .custom-control-label::before {
+    width: 26px;
+    height: 26px;
+    top: 9px;
+}
 
+.filter-box .custom-checkbox .custom-control-label::after {
+    top: 9px;
+    width: 26px;
+    height: 26px;
+}
+.filter-box .custom-control.custom-radio {
+    padding: 12px;
+}
+
+.filter-box .custom-control.custom-radio input {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.filter-box .custom-radio .custom-control-label::before,.filter-box .custom-radio .custom-control-label::after {
+    opacity: 0;
+}
+
+.filter-box .custom-control.custom-radio img {
+    filter: grayscale(1);
+    width: 35px;
+    margin-right: 10px;
+}
+
+.filter-box .custom-control.custom-radio {}
+
+.filter-box .custom-radio .custom-control-input:checked~.custom-control-label img {
+    filter: none;
+}
+.filter-card {}
+
+.filter-card img {
+    border-radius: 6px;
+}
+
+.insta-card .card-body {
+    text-align: center;
+}
+
+.insta-card .card-body p {
+    color: #6C6C6C;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.insta-card .card-body .total-likes {}
+
+.insta-card .card-body .total-likes span {
+    margin: 0 10px;
+}
+
+.insta-card .card-body .total-likes span img {width: 26px;margin-right: 3px;}
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.chat-pop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 6px;
+    width: 340px;
+    box-shadow: 0 0px 15px 0px rgb(0 0 0 / 18%);
+}
+
+.chat-pop .card {
+    margin-bottom: 0;
+}
+
+.chat-pop .card .card-header:first-child {
+    border-radius: calc(6px - 1px) calc(6px - 1px) 0 0;
+}
+
+.chat-pop .card .card-header {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-pop .card .card-header h5 {
+    padding-bottom: 0;
+    font-size: 16px;
+}
+.chat-pop .card .card-body .avatar {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+}
+.chat-pop .card .card-body .textchat {
+    padding: 6px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.chat-pop .card .card-body .textchat.recieve {
+    background-color: #ebebeb;
+    margin-left: 10px;
+}
+
+.chat-pop .card .card-body .textchat.send {
+    background: #006aff;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.chat-pop .card .card-body {
+    height: 300px;
+    overflow: auto;
+    padding: 12px;
+}
+.chat-pop .card .card-body::-webkit-scrollbar {
+    width: 0;
+}
+.chat-pop .card .card-body.hide {
+    height: 0;
+}
+.chat-pop .card .card-footer {
+    padding: 12px;
+}
+
+.chat-pop .card .card-footer .form-control {
+    height: 36px;
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.chat-pop .card .card-footer button {
+    font-size: 14px;
+    padding: 2px 14px;
+    font-weight: 400;
+}
 @media (max-width: 1399px) {
     .number {
         width: 160px;

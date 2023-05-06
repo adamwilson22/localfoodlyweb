@@ -363,7 +363,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm">
                         <h1 class="page-header-title">
-                            Add Product
+                            Add Product ( {{$type}} )
                         </h1>
                     </div>
                 </div>
@@ -619,27 +619,6 @@
                                             placeholder="Please enter the quantity or size" value="{{ old('unit') }}">
                                     </div>
 
-
-
-                                    <div class=" form-group">
-                                        <label class="input-label" for="addons">Add-On</label>
-
-                                        <div id="addDropdownDiv"> 
-                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple" id="addDropdown">
-                                            @foreach ($addon as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
-                                         <a href="#" data-toggle="modal"
-                                        data-target="#createAddon" >Create More
-                                            Add-On</a>
-                                        {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
-                                            Add-On</a> --}}
-                                    </div>
                                     <div class="form-group">
                                         <label class="input-label" for="badges">Badge</label>
                                         {{-- <select name="Badge[]" class="custom-select custom-select-lg" multiple
@@ -699,7 +678,27 @@
                                             <option value="3">Item 3</option>
                                         </select>
                                     </div>
+                                    
+                                    @if ($type == "Normal")   
+                                    <div class=" form-group">
+                                        <label class="input-label" for="addons">Add-On</label>
 
+                                        <div id="addDropdownDiv"> 
+                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple" id="addDropdown">
+                                            @foreach ($addon as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                         <a href="#" data-toggle="modal"
+                                        data-target="#createAddon" >Create More
+                                            Add-On</a>
+                                        {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
+                                            Add-On</a> --}}
+                                    </div>                                 
                                     <div class="form-group">
                                         <div class="card">
                                             <div class="card-header">
@@ -728,6 +727,8 @@
 
                                         </div>
                                     </div>
+                                    @endif
+
 
                                     <div class=" form-group">
                                         <label class="input-label" for="">Add Related Tags</label>
@@ -821,11 +822,21 @@
                                             class="form-control" />
                                     </div> --}}
 
+                                    @if ($type == "MealKits")
+                                    <div class=" form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input name="allow_subscription" type="checkbox" class="custom-control-input"
+                                                id="customControlInline" value="1">
+                                            <label class="custom-control-label" for="customControlInline">Available for Subscription</label>
+                                        </div>
+                                    </div>
+                                    @endif
+
                                     <div class=" form-group">
                                         <div class="custom-control custom-checkbox">
                                             <input name="in_stock" type="checkbox" class="custom-control-input"
-                                                id="customControlInline" value="0">
-                                            <label class="custom-control-label" for="customControlInline">Product Is Out
+                                                id="customControlInline2" value="0">
+                                            <label class="custom-control-label" for="customControlInline2">Product Is Out
                                                 Of Stock</label>
                                         </div>
                                     </div>

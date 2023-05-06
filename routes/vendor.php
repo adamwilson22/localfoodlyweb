@@ -162,6 +162,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('add-new', 'AddOnController@index')->name('add-new');
             Route::get('profile', 'AddOnController@profile')->name('profile');
             Route::get('products', 'ProductController@index')->name('products');
+            Route::delete('product-detail/{id}', 'ProductController@deleteProduct')->name('product.destroy');
             
             Route::get('edit-product/{id}', 'ProductController@edit')->name('product.edit');
             Route::post('update-product/{id}', 'ProductController@update_product')->name('product.update');
@@ -182,12 +183,16 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::post('customer', 'AddOnController@addcustomergroup')->name('addcustomergroup');
             // Route::post('/customer', 'AddOnController@assignGroupToCustomers');
             Route::post('/assignGroupToCustomers', 'AddOnController@assignGroupToCustomers');
+            Route::post('/updateProductStatusAndCategory', 'AddOnController@updateProductStatusAndCategory');
+            Route::post('/deleteBulkProducts', 'AddOnController@deleteBulkProducts');
 
 
             Route::get('customer', 'AddOnController@customer')->name('customer');
             Route::get('order', 'OrderController@index')->name('order');
             Route::get('invoices', 'AddOnController@invoices')->name('invoices');
             Route::get('massage', 'AddOnController@massage')->name('massage');
+            Route::get('/fetch/message', 'AddOnController@fetchMessage')->name('fetch.messages');
+            Route::post('/send-message', 'AddOnController@SendMessage')->name('send.message');
 
             Route::post('/save-review', 'AddOnController@savereview');
             Route::get('review', 'AddOnController@review')->name('review');

@@ -90,6 +90,13 @@ $(".sltcateg, .bulk-action").click(function(){
     // $("#myDiv").toggleClass("my-class");
 });
 
+$(".select-products, .bulk-action").click(function(){
+    console.log('bulk-btn clicked');
+    // $(".product-checkbox,.customer-checkbox").addClass("active");
+    $(".product-cards").toggleClass("active");
+    // $("#myDiv").toggleClass("my-class");
+});
+
 
 $('.product-big').slick({
     slidesToShow: 1,

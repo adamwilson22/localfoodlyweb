@@ -21,9 +21,34 @@ use App\CentralLogics\Helpers;
 use App\Models\AddOn as ModelsAddOn;
 use App\Models\User;
 use App\Models\AddOn;
+use App\Models\Conversation;
+use Pusher\Pusher;
 
 class RestaurantController extends Controller
 {
+    
+     private $pusher = null;
+
+    /**
+     * __construct
+     *-----------------------------------------------------------------------*/
+    public function __construct()
+    {
+        $pusherAppId     = env('PUSHER_APP_ID');
+        $pusherKey       = env('PUSHER_APP_KEY', '8a27f6a084dc0320ada0v');
+        $pusherSecret   = env('PUSHER_APP_SECRET');
+        // Pusher call
+        $this->pusher = new Pusher(
+            $pusherKey,
+            $pusherSecret,
+            $pusherAppId,
+            [
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS' => true
+            ]
+        );
+    }
+    
     public function restaurantList(Request $request)
     {
         $listRestaurants = Restaurant::latest()->get();
@@ -35,9 +60,10 @@ class RestaurantController extends Controller
         return view('user-views.restaurant.profile', compact('user'));
     }
 
-    public function filterCategory(Request $request,$id)
+    public function filterCategory(Request $request)
     {
         $query = $request->input('category');
+        $id = $request->input('id');
         
         // dd($query);
         
@@ -45,6 +71,7 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::where('id', $id)->first();
         $foods = Food::where('restaurant_id',$id)->where('status', 1)->where('category_id', $query)->get();
         $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
+        $conversation_lists = Conversation::with('user','restaurant')->where('user2_id', $id)->get();
         $follower = Follower::where([
             ['restaurant_id', $id],
             ['customer_id', Auth::user()->id],
@@ -67,8 +94,8 @@ class RestaurantController extends Controller
         // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
         $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
         // dd($badges1);
-        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
-
+        // return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'conversation_lists', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
+        return response()->json($foods);
 
 
         // $foods = Food::where('name', 'like', "%$query%")->get();
@@ -84,6 +111,7 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::where('id', $id)->first();
         $foods = Food::where('restaurant_id',$id)->where('status', 1)->whereJsonContains('badges', [$query1])->get();
         $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
+        $conversation_lists = Conversation::with('user','restaurant')->where('user2_id', $id)->get();
         $follower = Follower::where([
             ['restaurant_id', $id],
             ['customer_id', Auth::user()->id],
@@ -106,7 +134,7 @@ class RestaurantController extends Controller
         // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
         $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
         // dd($badges1);
-        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
+        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'conversation_lists', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
 
 
         // $foods = Food::where('name', 'like', "%$query%")->get();
@@ -162,6 +190,7 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::where('id', $id)->first();
         // $foods = Food::where('restaurant_id',$id)->where('status', 1)->get();
         $foods = Food::where('restaurant_id',$id)->where('status', 1)->orderBy('position')->orderBy('id')->get();
+        $conversation_lists = Conversation::with('user','restaurant')->where('user2_id', $id)->get();
         // dd($foods);
         $vendor = Vendor::where('id',$restaurant->vendor_id)->first();
         $follower = Follower::where([
@@ -182,11 +211,12 @@ class RestaurantController extends Controller
             }
         }
         $kitchengallery = KitchenGallery::where('restaurant_id', $id)->get();
-        $categories = Category::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        $categories = Category::where('restaurant_id', $id)->get();
+        
         // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
-        $badges = Badge::where('restaurant_id', $id)->pluck('name', 'id')->all();
+        $badges = Badge::where('restaurant_id', $id)->get();
         // dd($foods);
-        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
+        return view('user-views.products.index', compact('foods' , 'restaurant', 'vendor', 'conversation_lists', 'followerCount', 'follower', 'kitchengallery','categories','badges'));
     }
 
 
@@ -287,6 +317,71 @@ class RestaurantController extends Controller
                 "message" => "you are follow this restaurant now....",
                 "data" =>  $followerCount
             ];
+        }
+    }
+    
+    
+    public function SendMessage(Request $request)
+    {
+        $conversation = new Conversation();
+        $conversation->reply = $request->submit_message;
+        $conversation->type = $request->type;
+        $conversation->user2_id = $request->seller_id;
+        $conversation->user1_id = auth()->user()->id;
+
+        if ($conversation->save()) {
+
+            $listConversation = Conversation::where('user2_id', $request->seller_id)->get();
+
+            $restaurant = Restaurant::where('id', $request->seller_id)->first();
+
+            $restaurant = [
+                "id" => "{$restaurant->id}",
+                "name" => "{$restaurant->name}",
+                "email" => "{$restaurant->email}",
+                "address" => "{$restaurant->address}",
+                "logo" => "{$restaurant->logo}",
+            ];
+
+            $user = User::where('id', auth()->user()->id)->first();
+
+            $User = [
+                "id" => "{$user->id}",
+                "firstname" => "{$user->f_name}",
+                "lastname" => "{$user->l_name}",
+                "email" => "{$user->email}",
+                "image" => "{$user->image}",
+            ];
+
+            $chatData = [
+                "id" => "{$conversation->id}",
+                "type" => "{$conversation->type}",
+                "sent_user" => "{$conversation->user2_id}",
+                "recieved_user" => "{$conversation->user1_id}",
+                "message" => "{$conversation->reply}",
+                "MessageDateTime" => "{$conversation->created_at}",
+                "senderData" => $restaurant,
+                "User" => $User
+            ];
+
+            $pusherData =  [
+                "conservationData" => $chatData
+            ];
+
+            // $eventName = "$messageSubject-CSR";
+
+            $this->pusher->trigger('local.chat', 'seller-Chat', $pusherData);
+
+            return [
+                'status' => true,
+                'message' => 'Message Sent...!',
+                'chatlists' => $listConversation,
+                'receiver_id' => $request->seller_id,
+                "senderData" => $restaurant,
+                "User" => $User
+            ];
+        } else {
+            return response()->json(['error' => 'Message Not Sent...!']);
         }
     }
 }

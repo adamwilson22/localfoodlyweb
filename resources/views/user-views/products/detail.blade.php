@@ -206,7 +206,7 @@
                         </div>
 
 
-                        <h4 class="title">{{ $food->name }}</h4>
+                        <h4 class="title">{{$food->product_type != 'MealKits' ? $food->name : $food->name . ' (MealKit)' }}</h4>
                         <h6 id="product_price" class="price" value="{{ $food->price }}">${{ $food->price }}</h6>
                         <div class="imgs-icon">
 
@@ -231,9 +231,16 @@
                                 </p>
                             @endif
                         </div>
+                        @if ($food->product_type != 'MealKits')
                         <div class="container">
                             <h4 class="heading pb-0">Variants</h4>
                         </div>
+                        @endif
+                        @if ($food->allow_subscription == 1)
+                        <div class="container">
+                            <h3 class="pb-0">Available for Subscription</h4>
+                        </div>
+                        @endif
                         <hr>
                         <div class="container" id="variants">
                             @if (!empty($variations))

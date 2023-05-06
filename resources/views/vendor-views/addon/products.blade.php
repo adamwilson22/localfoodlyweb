@@ -7,16 +7,16 @@
         .drophere {
             float: left;
             /* margin-left: 100px;
-                    width: 200px;
-                    height: 50px; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            width: 200px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            height: 50px; */
             /* border: 1px solid red; */
             padding: 5px;
         }
 
         .draghere {
             /* width: 200px;
-                    height: 50px;
-                    background: green; */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            height: 50px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            background: green; */
             text-align: center;
             line-height: 50px;
         }
@@ -26,9 +26,9 @@
         }
 
         /* .hoverClass {
-                    border: 2px solid red;
-                    background: black;
-                } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            border: 2px solid red;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            background: black;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
     </style>
 @endpush
 
@@ -58,70 +58,112 @@
                 </div>
             </div>
             <div class="col-xl-8 col-lg-6 mt-lg-0 mt-3 text-lg-right">
-                <a href="#" class="btn btn-secondary btn-lg bulk-action mt-2">Bulk Select</a>
-                <a href="{{ route('vendor.addon.categories') }}" class="btn btn-secondary btn-lg sltcateg  ml-sm-3 mt-2">View All
+                <a href="#" class="btn btn-secondary select-products btn-lg bulk-action mt-2">Bulk Select</a>
+                <a id="btnMoveToGroup" href="#" class="btn btn-primary btn-lg ml-sm-2 mt-2" data-toggle="modal"
+                    data-target="#productModalCenter">Bulk Action</a>
+                <a href="{{ route('vendor.addon.categories') }}"
+                    class="btn btn-secondary btn-lg sltcateg  ml-sm-3 mt-2">View All
                     Categories</a>
                 <a href="" class="btn btn-primary btn-lg ml-sm-3 mt-2" data-toggle="modal"
                     data-target="#addproductModalCenter">Add More Products</a>
             </div>
         </div>
+        <!-- Modal -->
+        <div style="" class="modal fade" id="productModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="productModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Bulk Actions</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="">Product Status</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="productSwitch" checked>
+                                <label id="lblproductstatus" class="custom-control-label" for="productSwitch">Active</label>
+                            </div>
+                            <div class="inline-select mt-3">
+                                <label for="" class="">Select Category</label>
+                                <select id="modalSelectProductGroup" class="custom-select custom-select-lg">
+                                    <option cat-id="0" selected> Select Category </option>
+                                    @foreach ($categories as $category)
+                                        <option cat-id={{ $category->id }} value={{ $category->id }}>{{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <button id="btnSaveNow" type="button" class="btn btn-primary btn-lg">Save Now</button>
+                        <button id="btnDelete" type="button" class="btn btn-primary btn-danger btn-lg">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
 
         <div id="sortable-list" class="row">
             @foreach ($products as $product)
-                <div class="card"data-id="{{ $product->id }}">
+                <div class="custom-control custom-checkbox product-checkbox pcheck">
+                    {{-- <input type="checkbox" class="custom-control-input" id="customCheck1"> --}}
+                    <input type="checkbox" class="custom-control-input" data-id="{{ $product->id }}"
+                        id="{{ 'customCheck[' . $product->id . ']' }}">
+                    <label class="custom-control-label" for="{{ 'customCheck[' . $product->id . ']' }}">
+                        <div class="card"data-id="{{ $product->id }}">
 
-                    <div class="card-body">
-                        <div class="product-img">
-                            {{-- <img src="{{ asset('public/assets/admin/img/pizza.png') }}" alt=""> --}}
-                            @if (!empty($product->feature_video))
-                                <video src="{{ $product->feature_video }}"
-                                    
-                                    controls></video>
-                            @elseif (!empty($product->feature_image))
-                                <img src="{{ $product->feature_image }}"
-                                  
-                                    alt="">
-                            @else
-                                <img src="{{ $product->image }}"
-                                    alt="">
-                            @endif
-                        </div>
-                        <div class="content">
-                            <div class="name-price">
-                                <a href="{{ route('vendor.addon.product-detail', ['id' => $product->id]) }}">
-                                    <h4>{{ $product->name }}</h4>
-                                </a>
-                                <p>${{ $product->price }}</p>
-                            </div>
-                            <div class="star">
-                                <i class="icon-star_icon"></i>
-                                <i class="icon-star_icon"></i>
-                                <i class="icon-star_icon"></i>
-                                <i class="icon-star_icon"></i>
-                                <i class="icon-star_icon"></i>
-                                (07)
-                            </div>
-                            <div class="sltoption">
-                                <!--<img src="{{ asset('public/assets/admin/img/vegan.png') }}" alt="">-->
-                                <!--<img src="{{ asset('public/assets/admin/img/madetoorder.png') }}" alt="">-->
-                                <!--<img src="{{ asset('public/assets/admin/img/nutfree.png') }}" alt="">-->
-                                @php
-                                    $badgeImages = json_decode($product?->badges);
-                                @endphp
-                                @if (!empty($badgeImages))
-                                    @foreach ($badgeImages as $items)
-                                        {{ $items }}
-                                    @endforeach
-                                @endif
-                            </div>
+                            <div class="card-body">
+                                <div class="product-img">
+                                    {{-- <img src="{{ asset('public/assets/admin/img/pizza.png') }}" alt=""> --}}
+                                    @if (!empty($product->feature_video))
+                                        <video src="{{ $product->feature_video }}" controls></video>
+                                    @elseif (!empty($product->feature_image))
+                                        <img src="{{ $product->feature_image }}" alt="">
+                                    @else
+                                        <img src="{{ $product->image }}" alt="">
+                                    @endif
+                                </div>
+                                <div class="content">
+                                    <div class="name-price">
+                                        <a href="{{ route('vendor.addon.product-detail', ['id' => $product->id]) }}">
+                                            <h4>{{ $product->name }}</h4>
+                                        </a>
+                                        <p>${{ $product->price }}</p>
+                                    </div>
+                                    <div class="star">
+                                        <i class="icon-star_icon"></i>
+                                        <i class="icon-star_icon"></i>
+                                        <i class="icon-star_icon"></i>
+                                        <i class="icon-star_icon"></i>
+                                        <i class="icon-star_icon"></i>
+                                        (07)
+                                    </div>
+                                    <div class="sltoption">
+                                        <!--<img src="{{ asset('public/assets/admin/img/vegan.png') }}" alt="">-->
+                                        <!--<img src="{{ asset('public/assets/admin/img/madetoorder.png') }}" alt="">-->
+                                        <!--<img src="{{ asset('public/assets/admin/img/nutfree.png') }}" alt="">-->
+                                        @php
+                                            $badgeImages = json_decode($product?->badges);
+                                        @endphp
+                                        @if (!empty($badgeImages))
+                                            @foreach ($badgeImages as $items)
+                                                {{ $items }}
+                                            @endforeach
+                                        @endif
+                                    </div>
 
+                                </div>
+                                <div class="action">
+                                    <a href="{{ route('vendor.addon.product.edit', ['id' => $product->id]) }}">
+                                        <i class="icon-edit_icon"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="action">
-                            <a href="{{ route('vendor.addon.product.edit', ['id' => $product->id]) }}">
-                                <i class="icon-edit_icon"></i>
-                            </a>
-                        </div>
-                    </div>
+                    </label>
                 </div>
             @endforeach
         </div>
@@ -133,10 +175,10 @@
 
                 @foreach ($products as $product)
                     <div class="col-lg-4 ">
-                        <div class="custom-control custom-checkbox product-checkbox">
+                        <div class="custom-control custom-checkbox product-checkbox pcheck">
                             {{-- <input type="checkbox" class="custom-control-input" id="customCheck1"> --}}
                             <input type="checkbox" class="custom-control-input" data-id="{{ $product->id }}"
-                                    id="{{ 'customCheck[' . $product->id . ']' }}">
+                                id="{{ 'customCheck[' . $product->id . ']' }}">
                             <label class="custom-control-label" for="{{ 'customCheck[' . $product->id . ']' }}">
                                 <div class="card item">
                                     <div class="card-body" data-id="{{ $product->id }}">
@@ -682,6 +724,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.13.0/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
 
     <script>
         var grid = document.getElementById('grid');
@@ -816,5 +861,109 @@
         //             });
         //     }
         // });
+
+        const selectedIds = [];
+        let productStatus = 1;
+        let productStatusToggle = document.getElementById('productSwitch');
+        var lblProductStatus = document.getElementById("lblproductstatus");
+
+        productStatusToggle.addEventListener('change', function() {
+            if (this.checked) {
+                productStatus = 1;
+                lblProductStatus.innerHTML = "Active";
+                console.log('Status : ' + productStatus);
+            } else {
+                productStatus = 0;
+                lblProductStatus.innerHTML = "In - Active";
+                console.log('Status : ' + productStatus);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][data-id]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    if (checkbox.checked) {
+                        selectedIds.push(checkbox.dataset
+                            .id); // add data-id to array if checkbox is checked
+                    } else {
+                        const index = selectedIds.indexOf(checkbox.dataset.id);
+                        if (index !== -1) {
+                            selectedIds.splice(index,
+                                1
+                            ); // remove data-id from array if checkbox is unchecked
+                        }
+                    }
+                    console.log(selectedIds); // log the updated array to the console
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btnSaveNow').addEventListener('click', function() {
+
+                let mySelect = document.getElementById('modalSelectProductGroup');
+                let selectedOption = mySelect.options[mySelect.selectedIndex];
+                let categoryID = selectedOption.getAttribute('cat-id');
+
+                if (selectedIds.length > 0) {
+                    axios.post('/vendor-panel/addon/updateProductStatusAndCategory', {
+                            products: selectedIds,
+                            productStatus,
+                            categoryID
+                        })
+                        .then(function(response) {
+                            console.log('Success:', response);
+                            $("#productModalCenter").modal('hide');
+                            toastr.success(
+                                'Products Status or Category Updated Successfully', {
+                                    CloseButton: true,
+                                    ProgressBar: true
+                                }); // show response from the php script.   
+
+                            setTimeout(function() {
+                                // This code will execute after a 1 second delay
+                                console.log(response.data);
+                            }, 8000); // Delay for 7 second (1000 milliseconds)
+                            location.reload();
+                        })
+                        .catch(function(error) {
+                            console.log('Error:', error.message);
+                        });
+                } else {
+                    alert('Please select any Product!');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btnDelete').addEventListener('click', function() {
+                if (selectedIds.length > 0) {
+                    axios.post('/vendor-panel/addon/deleteBulkProducts', {
+                            products: selectedIds
+                        })
+                        .then(function(response) {
+                            console.log('Success:', response);
+                            $("#productModalCenter").modal('hide');
+                            toastr.success(
+                                'Products Deleted Successfully', {
+                                    CloseButton: true,
+                                    ProgressBar: true
+                                }); // show response from the php script.   
+
+                            setTimeout(function() {
+                                // This code will execute after a 1 second delay
+                                console.log(response.data);
+                            }, 8000); // Delay for 7 second (1000 milliseconds)
+                            location.reload();
+                        })
+                        .catch(function(error) {
+                            console.log('Error:', error.message);
+                        });
+                } else {
+                    alert('Please select any Product!');
+                }
+            });
+        });
     </script>
 @endsection

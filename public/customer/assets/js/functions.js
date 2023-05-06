@@ -42,6 +42,12 @@ $(document).scroll(function () {
   }
 
 });
+
+$('.minimize-chat').on('click', function(e) {
+  $('.chat-pop .chat-body').slideToggle();
+  e.preventDefault();
+});
+
 // sticky social end
 $(document).ready(function () {
   $('.minus').click(function () {

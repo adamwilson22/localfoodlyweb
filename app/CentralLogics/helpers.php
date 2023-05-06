@@ -1085,6 +1085,7 @@ class Helpers
             }
 
             try {
+                Mail::to($order->customer->email)->send(new OrderPlaced($order->id));
                 if ($order->order_status == 'confirmed' && $order->payment_method != 'cash_on_delivery' && config('mail.status')) {
                     Mail::to($order->customer->email)->send(new OrderPlaced($order->id));
                 }
