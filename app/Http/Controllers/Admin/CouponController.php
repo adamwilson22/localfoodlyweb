@@ -12,6 +12,7 @@ class CouponController extends Controller
 {
     public function add_new()
     {
+        // dd('Hassan');
         $coupons = Coupon::latest()->paginate(config('default_pagination'));
         return view('admin-views.coupon.index', compact('coupons'));
     }

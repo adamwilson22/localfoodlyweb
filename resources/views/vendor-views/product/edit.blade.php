@@ -543,7 +543,7 @@
                                 <div class=" form-group">
                                     <label class="input-label" for="addons">Serving Unit</label>
                                     {{-- Modal for adding new Units for Food --}}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
                                         data-target="#unitsModal">
                                         Add Units
                                     </button>

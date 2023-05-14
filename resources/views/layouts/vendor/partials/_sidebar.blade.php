@@ -126,7 +126,7 @@
                     <li
                         class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/coupon') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{ route('vendor.addon.coupon') }}">
+                            href="{{ route('vendor.coupon.add-new') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Coupon

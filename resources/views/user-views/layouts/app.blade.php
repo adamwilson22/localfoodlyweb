@@ -26,7 +26,7 @@
     @yield('css')
 </head>
 
-<body class="hompg">
+<body class="hompg ">
 
     <nav class="navbar navbar-expand-lg homehead">
         <div class="container">
@@ -140,7 +140,7 @@
     <footer class="footer-main">
         <div class="footer-container">
             <div class="container">
-                <img src="{{ asset('public/customer/assets/images/logo.png') }}">
+                <img class="footlogo" src="{{ asset('public/customer/assets/images/logo.png') }}">
 
                 <ul>
                     <li>

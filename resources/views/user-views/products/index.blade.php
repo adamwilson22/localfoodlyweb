@@ -130,15 +130,17 @@
                     </div>
                     <div class="filter-box">
                         <h4>Badges</h4>
-
+                        @foreach ($badges as $badge)
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="vegan" name="Badges" class="custom-control-input">
+                            <input type="radio" id="{{ $badge->id }}" name="Badges" class="custom-control-input">
                             <label class="custom-control-label" for="vegan">
-                                <img src="{{ asset('public/customer/assets/images/vegan.png') }}" class=""
-                                    alt="..."> Vegan
+                                <img src="{{ $badge->image  }}" class=""
+                                    alt="..."> {{ $badge->name }}
                             </label>
                         </div>
-                        <div class="custom-control custom-radio">
+                        @endforeach
+
+                        {{-- <div class="custom-control custom-radio">
                             <input type="radio" id="madetoorder" name="Badges" class="custom-control-input">
                             <label class="custom-control-label" for="madetoorder">
                                 <img src="{{ asset('public/customer/assets/images/madetoorder.png') }}" class=""
@@ -158,7 +160,7 @@
                                 <img src="{{ asset('public/customer/assets/images/lowcarbs.png') }}" class=""
                                     alt="..."> Low Carb
                             </label>
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -432,12 +434,19 @@
 @section('script')
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script type="text/javascript">
-console.log("selectedIdss");
 
+// Add a new class to the body class list
+// bodyClass.add('dark-theme');
 
     $(document).ready(function() {
-        
-        
+        console.log("selectedIdss");
+
+var bodyClass = document.body.classList;
+console.log("bodyClass "  + bodyClass);
+var template = "<?php echo $restaurant->store_template; ?>";
+            console.log(template);
+            bodyClass.add(template);
+
         $('#button-addon2').on('click', function(e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -556,13 +565,28 @@ console.log("selectedIdss");
                         console.log("success");
                         console.log(data);
                         console.log("success1");
+                        
                         var foodList = "";
                             foodList += '  <div class="row"> ';
                                 $.each(data, function(index, food) {
+                                    @php
+
+                                    // $data = '<script>'+ food.image +' </script>';
+                                    $data = 'a:2:{i:0;s:46:"prod1674884910.food-banner-design-template.jpg";i:1;s:27:"prod1674884910.ninja jp.png";}';
+$json_data = json_encode(unserialize($data));
+
+
+                                // $images = unserialize(food.images);  
+                            @endphp
+                            // var data = {{$json_data}};
+                            // var decoded_data = JSON.parse(data);
+
+                                    
+                            // console.log("Images" +  $images);
                                    foodList += ' <div class="col-lg-4">'
                                        foodList += ' <div class="card res-card filter-card items-card" style=""> '
                                            foodList += ' <div class="img"> '
-                                              foodList += '  <label for="">normal</label> '
+                                              foodList += '  <label for=""> '+ food.product_type+'   </label> '
                                               foodList += '  <a href="https://testapp-dev.thesuitchstaging.com/customer/view/38/food"> '
                                                    foodList += ' <img src="https://testapp-dev.thesuitchstaging.com/public/images/prods1675984222.burgers_category.jpg" class="card-img-top" alt="..."> '
                                                foodList += ' </a> '
@@ -583,7 +607,7 @@ console.log("selectedIdss");
                                                foodList += ' <div class="bottom"> '
                                                   foodList += '  <a href="javascript:void(0);" data-id="38" class="btn btn-primary add-to-cart btn-sm" role="button"><i class="icon-shopping-cart mr-2"></i> Add To Cart</a> '
                                                    foodList += ' <i class="fa fa-circle-o-notch fa-spin btn-loading" style="font-size:24px; display: none"></i> '
-                                                   foodList += ' <a href="javascript:;" class="ml-3 fs-18">'+ food.price +'</a> '
+                                                   foodList += ' <a href="javascript:;" class="ml-3 fs-18">$'+ food.price +'</a> '
                                                foodList += ' </div> '
                                            foodList += ' </div> '
                                        foodList += ' </div> '

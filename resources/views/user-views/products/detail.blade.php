@@ -133,7 +133,7 @@
                             @foreach ($images as $image)
                                 {{-- {{ dd($image) }} --}}
                                 <li>
-                                    <img src="{{ !empty(asset('images') . '/' . $image) ? asset('images') . '/' . $image : asset('customer/assets/images/screenshot_1.png') }}"
+                                    <img src="{{ !empty(asset('public/images') . '/' . $image) ? asset('public/images') . '/' . $image : asset('customer/assets/images/screenshot_1.png') }}"
                                         class="" alt="...">
                                 </li>
                             @endforeach
@@ -167,7 +167,7 @@
                             @foreach ($images as $image)
                                 {{-- {{ dd($image) }} --}}
                                 <li>
-                                    <img src="{{ !empty(asset('images') . '/' . $image) ? asset('images') . '/' . $image : asset('customer/assets/images/screenshot_1.png') }}"
+                                    <img src="{{ !empty(asset('public/images') . '/' . $image) ? asset('public/images') . '/' . $image : asset('customer/assets/images/screenshot_1.png') }}"
                                         class="" alt="...">
                                 </li>
                             @endforeach
@@ -273,6 +273,13 @@
                         </div>
                         <button data-id="{{ $food->id }}" class="btn btn-primary add-to-cart"><i
                                 class="icon-shopping-cart"></i> Add To Cart</button>
+
+                        @if ($food->allow_subscription == 1)
+                        <a data-id="{{ $food->id }}" class="btn btn-primary" data-toggle="modal"
+                            data-target="#subscribe"><i
+                                class="icon-shopping-cart"></i> Subscribe</a>
+                        @endif
+                                
                     </div>
                 </div>
 
@@ -280,6 +287,89 @@
         </div>
     </section>
 
+    <div class="modal fade" id="subscribe" tabindex="-1" role="dialog"
+                aria-labelledby="subscribeTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="{{ route('subscribe.food')}}" id="subscribe_form" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Subscribe For This Product</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="start_date">Start Date</label>
+                                    <input type="date" name="start_date" id="start-date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="end_date">End Date</label>
+                                    <input type="date" name="end_date"  id="end-date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="frequency">Frequency</label>
+                                    <select name="frequency" id="frequency" class="custom-select custom-select-lg">
+                                        <option disabled>Select Frequency</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="biweekly">Bi-Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                    <input type="hidden" name="totalPrice" value="">
+                                    <input type="hidden" name="food_id" value={{$food->id}}>
+                                    <input type="hidden" id="food_price" name="food_price" value={{$food->price}}>
+                                    <table>
+                                        <tr>
+                                            <td class="text-right pr-1"><h5>Count of Frequency: </h5></td>
+                                            <td><h5 id="orders">0</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right pr-1"><h5>Total Amount: </h5></td>
+                                            <td><h5 id="total_price">${{$food->price}}</h5></td>
+                                        </tr>
+                                    </table>
+                                    <h2 class="heading mb-2">Stripe Details</h2>
+                                        <div class="form-row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="text" name="cardName" class="form-control"
+                                                        placeholder="Enter Your Name On Card">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="number" name="cardNumber" class="form-control"
+                                                        placeholder="Enter Your Card Number">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="number" name="cardCVC" class="form-control"
+                                                        placeholder="Enter Your CVC">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="number" name="month" class="form-control"
+                                                        placeholder="MM">
+                                                        <br>
+                                                    <input type="number" name="year" class="form-control"
+                                                        placeholder="YYYY">
+                                                </div>
+                                            </div>
+                                        </div>
+                                <button type="submit" class="btn btn-primary btn-lg pull-right">Pay Now</button>
+                            </form>
+                            
+                            {{-- <h5>Count of Frequency: 12 </h5>
+                            <h5>Total: {{$food->price}}</h5> --}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
     <section class="section-padding product pb-0">
         <div class="container">
@@ -824,7 +914,80 @@
                         }
                     });
                 });
+                // $("#subscribe_form").submit(function(e){
+                //     e.preventDefault();
+                //     var actionUrl = e.currentTarget.action;
+                //     console.log(actionUrl);
 
+                //     $.ajax({
+                //         url: actionUrl,
+                //         method: 'post',
+                //         dataType: 'json',
+                //         data: {
+                //             _token: '{{ csrf_token() }}',
+                //             $("subscribe_form").serialize()
+                //         },
+                //         success: function(response) {
+                //             console.log('success');
+                //             toastr.success("Successfully Subscribed");
+                            
+                //         }
+                //     })
+                // });
+const startDateInput = document.getElementById("start-date");
+const endDateInput = document.getElementById("end-date");
+const frequencyInput = document.getElementById("frequency");
+
+console.log(startDateInput);
+console.log(endDateInput);
+console.log(frequencyInput);
+
+function calculateOrders(startDate, endDate, frequency) {
+
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    days = Math.round(Math.abs((start - end) / oneDay));
+
+  // Calculate the number of orders based on the frequency.
+    switch (frequency) {
+        case "weekly":
+            orders = Math.ceil(days / 7);
+            console.log("weekly");
+            console.log(orders);
+            document.getElementById("orders").innerHTML = orders;
+            document.getElementById("total_price").innerHTML = orders * document.getElementById("food_price").value;
+            return;
+        case "biweekly":
+            orders = Math.ceil(days / 14);
+            console.log("biweekly");
+            console.log(orders);
+            document.getElementById("orders").innerHTML = orders;
+            document.getElementById("total_price").innerHTML = orders * document.getElementById("food_price").value;
+            return;
+        case "monthly":
+            orders = Math.ceil(days / 30);
+            console.log("monthly");
+            console.log(orders);
+            document.getElementById("orders").innerHTML = orders;
+            document.getElementById("total_price").innerHTML = orders * document.getElementById("food_price").value;
+            return;
+        default:
+            throw new Error("Invalid frequency");
+  }
+}
+$("#start-date").on("change", function(e) {
+    console.log("start-date changed");
+    calculateOrders(startDateInput.value, endDateInput.value, frequencyInput.value);
+})
+$("#end-date").on("change", function(e) {
+    console.log("end-date changed");
+    calculateOrders(startDateInput.value, endDateInput.value, frequencyInput.value);
+})
+$("#frequency").on("change", function(e) {
+    console.log("frequency changed");
+    calculateOrders(startDateInput.value, endDateInput.value, frequencyInput.value);
+})
                 // $('input[name="variants[]"]').change(updatePrice);
 
                 // function updatePrice() {

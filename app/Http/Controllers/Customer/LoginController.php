@@ -18,6 +18,7 @@ class LoginController extends Controller
     public function create()
     {
         // dd('index');
+    
         return view('user-views.login.create');
     }
 
@@ -42,6 +43,10 @@ class LoginController extends Controller
                 'title' => 'Send Email OTP Local Foodly',
                 'otp' => $otp
             ];
+            session()->start();
+            session()->put('email',  $request->email);
+            session()->put('userId',     $user->id);
+
             Mail::to($request->email)->send(new \App\Mail\OtpSendMail($details));
             return redirect()->route('customer.otp')->with('alert', 'first you verify your account');
             // return redirect()->route('login.page')->with('success', 'Your Account Created Successfully');
@@ -52,12 +57,35 @@ class LoginController extends Controller
     
     public function otp()
     {
-        return view('user-views.login.verify');
+        $email = session()->get('email');
+        // $value = session()->get('key');
+
+        return view('user-views.login.verify',compact('email'));
+    }
+
+    public function resendCustomerOtp(Request $request)
+    {
+        $email = session()->get('email');
+        $id = session()->get('userId');
+        // $value = session()->get('key');
+        $otp = rand(12,9912);
+        $userDetails = [
+          
+            'otp' => $otp,
+            'updated_at' => now()
+        ];
+
+        User::where(['id' =>$id])->update($userDetails);
+        $message = 'Resend otp send successfully.';
+        return response()->json(['success' => true, 'message' => $message]);
+
+
     }
 
     public function otpVerified(Request $request)
     {
         $user = user::where('email', $request->email)->first();
+
         $credentials = [
             'email' => $user->email,
             'password' => $user->password,
@@ -70,7 +98,8 @@ class LoginController extends Controller
             Auth::login($user);
             return redirect()->route('restaurant.list');
         } else {
-            return redirect()->back()->with('alert', 'Your Otp Invalid');
+      
+            return redirect()->back()->withErrors(['Invalid OTP']);
         }
 
     }

@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <a href="#" class="btn btn-secondary btn-lg ml-sm-2 mt-2">Send Coupon</a>
+                    <a href="#" class="btn btn-secondary btn-lg ml-sm-2 mt-2"  data-target="#createCouponModal">Send Coupon</a>
                     <a href="#" class="btn btn-secondary btn-lg sltcateg ml-sm-2 mt-2">Bulk Select</a>
                     <a id="btnMoveToGroup" href="#" class="btn btn-primary btn-lg ml-sm-2 mt-2" data-toggle="modal"
                         data-target="#customerModalCenter">Move To Group</a>
@@ -136,7 +136,33 @@
                     </div>
                 </div>
             </div>
-            <!-- Modal -->
+            <!-- Modal Customer Group -->
+            <!-- Modal Coupon -->
+            <div style="" class="modal fade" id="createCouponModal" tabindex="-1" role="dialog"
+                aria-labelledby="createCouponModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Select Coupon Code</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <select id="modalSelectCustomerGroup" class="custom-select custom-select-lg">
+                                    <option selected> Select Coupon </option>
+                                    {{-- @foreach ($customerGroups as $groups)
+                                        <option group-id="{{ $groups->id }}">{{ $groups->name }}</option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+                            <button id="btnSaveNow" type="button" class="btn btn-primary btn-lg">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Coupon -->
             <div class="modal fade" id="createCustomerGroupModal" tabindex="-1" role="dialog"
                 aria-labelledby="createCustomerGroupModalTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

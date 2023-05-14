@@ -560,7 +560,7 @@
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Serving Unit</label>
                                         {{-- Modal for adding new Units for Food --}}
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
                                             data-target="#unitsModal">
                                             Add Units
                                         </button>
@@ -636,8 +636,7 @@
                                     </div>
                                     <div class=" form-group">
                                         <a href="#" data-toggle="modal"
-                                        data-target="#createBadge" >Create More
-                                            Badges</a>
+                                        data-target="#createBadge" >Create More Badges</a>
                                         {{-- <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a> --}}
                                     </div>
 
@@ -1023,7 +1022,7 @@
                                 <div class="form-group">
                                     <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
                                     <input type="text" name="name" class="form-control"
-                                        placeholder="{{ __('messages.new_badge') }}" value="{{ old('name') }}" required
+                                        placeholder="Name" value="{{ old('name') }}" required
                                         maxlength="191">
                                 </div>
             
@@ -1090,7 +1089,7 @@
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     
-                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+
                                 });
                                 
                             }
@@ -1107,8 +1106,7 @@
                                 $.each(data, function(key, value) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                    
-                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+
                                 });
                                 
                             }

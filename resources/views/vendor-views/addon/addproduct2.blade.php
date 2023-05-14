@@ -589,7 +589,7 @@
                                 <div class=" form-group">
                                     <label class="input-label" for="addons">Serving Unit</label>
                                     {{-- Modal for adding new Units for Food --}}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
                                         data-target="#unitsModal">
                                         Add Units
                                     </button>
@@ -1196,7 +1196,7 @@
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     
-                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+
                                 });
                                 
                             }
@@ -1214,7 +1214,7 @@
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     
-                                    //   <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    
                                 });
                                 
                             }

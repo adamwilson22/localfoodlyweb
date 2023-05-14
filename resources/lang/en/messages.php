@@ -1382,4 +1382,10 @@
   'Confirm Order' => 'Confirm Order',
   'Change status to confirmed ?' => 'Change status to confirmed  ',
   'Cash ON Delivery' => 'Cash ON Delivery',
+  'Add new coupon' => 'Add new coupon',
+  'Ex :' => 'Ex :',
+  'Search by title or code' => 'Search by title or code',
+  'no_data_found' => 'no data found',
+  'No data to show' => 'No data to show',
+  'Want to delete this coupon ?' => 'Want to delete this coupon  ',
 );

@@ -24,6 +24,9 @@ Route::get('/otp', [LoginController::class, 'otp'])->name('customer.otp');
 Route::post('/otp/verified', [LoginController::class, 'otpVerified'])->name('otp.verified');
 Route::post('/loginSubmit', [LoginController::class, 'loginSubmit'])->name('login.submit');
 Route::post('/signupFrom', [LoginController::class, 'signup'])->name('signup.page');
+Route::post('/resend-otp', [LoginController::class, 'resendCustomerOtp'])->name('resend-otp');
+// Route::post('/resend-otp', 'LoginController@resendCustomerOtp')->name('resend-otp');
+
 
 Route::group(['prefix' => 'customer'], function () {
     Route::group(
@@ -53,6 +56,7 @@ Route::group(['prefix' => 'customer'], function () {
             Route::patch('update-cart', [CartController::class, 'update'])->name('updateCart.food');
             Route::delete('remove-from-cart', [CartController::class, 'remove'])->name('removeCart.food');
             Route::post('order-food', [CartController::class, 'addOrder'])->name('order.food');
+            Route::post('subscribe-food', [CartController::class, 'subscribe'])->name('subscribe.food');
             Route::get('Thank-order', [CartController::class, 'ThankOrder'])->name('thank.order');
             Route::get('/cart', [CartController::class, 'cart'])->name('cart.food');
             Route::get('/signout', [LoginController::class, 'signOut'])->name('sign.out');

@@ -1,3 +1,5 @@
+const BASE_URL = window.location.origin;
+const BASES_URL = "https://localhost/jumppace";
 // sticky header
 /*$(window).scroll(function() {    
 var scroll = $(window).scrollTop();
@@ -14,7 +16,16 @@ $("header").removeClass("stickyheader");
 // wow start
 new WOW().init();
 // wow end
-
+$(window).on('load',function () {
+  setTimeout(function() { 
+    if ($('body').hasClass('dark')) {
+      $('.navbar-brand img,.footlogo').attr('src', BASE_URL +'/public/customer/assets/images/logo-white.png')
+    } 
+    else  { 
+      $('.navbar-brand img,.footlogo').attr('src', BASE_URL +'/public/customer/assets/images/logo.png')
+    }
+  }, 500);
+});
 // sticky social
 $(document).scroll(function () {
   "use strict";

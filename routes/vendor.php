@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ProductController;
 // Route::post('sortProducts', 'ProductController@sort');
 
@@ -149,14 +150,16 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
         });
 
 
-        // Route::group(['prefix' => 'coupon', 'as' => 'coupon.', 'middleware' => ['module:coupon']], function () {
-        //     Route::get('add-new', 'CouponController@add_new')->name('add-new');
-        //     Route::post('store', 'CouponController@store')->name('store');
-        //     Route::get('update/{id}', 'CouponController@edit')->name('update');
-        //     Route::post('update/{id}', 'CouponController@update');
-        //     Route::get('status/{id}/{status}', 'CouponController@status')->name('status');
-        //     Route::delete('delete/{id}', 'CouponController@delete')->name('delete');
-        // });
+        Route::group(['prefix' => 'coupon', 'as' => 'coupon.', 'middleware' => ['module:coupon']], function () {
+            // Route::get('/', 'CouponController@index')->name('index');
+            Route::get('/', 'CouponController@add_new')->name('add-new');
+            Route::post('store', 'CouponController@store')->name('store');
+            Route::get('update/{id}', 'CouponController@edit')->name('update');
+            Route::post('update/{id}', 'CouponController@update');
+            Route::get('status/{id}/{status}', 'CouponController@status')->name('status');
+            Route::delete('delete/{id}', 'CouponController@delete')->name('delete');
+            Route::post('search', 'CouponController@search')->name('search');
+        });
 
         Route::group(['prefix' => 'addon', 'as' => 'addon.', 'middleware' => ['module:addon']], function () {
             Route::get('add-new', 'AddOnController@index')->name('add-new');

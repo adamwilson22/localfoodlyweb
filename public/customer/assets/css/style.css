@@ -3389,6 +3389,93 @@ button.btn-link .custom-control {
     padding: 2px 14px;
     font-weight: 400;
 }
+.dark {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.dark .navbar {
+    background: #1a1a1a;
+}
+
+.dark .navbar form .input-group {
+    background: #4c4c4c;
+}
+
+.dark .navbar form .input-group .form-control {
+    color: #fff;
+}
+
+.dark .navbar form .input-group .form-control::placeholder {
+    color: #ffffffa6;
+}
+
+
+.dark .navbar .nav-item .nav-link {
+    color: #fff;
+}
+
+.dark .navbar .dropdown-menu {
+    background: #4c4c4c;
+}
+
+.dark .navbar .dropdown-menu .dropdown-item {
+    color: #fff;
+}
+
+.dark .navbar .dropdown-menu .dropdown-item:hover {
+    background: #000;
+}
+
+
+.dark h3, .dark .h3, .dark h4, .dark .h4, .dark h5, .dark .h5, .dark h6, .dark .h6 {
+    color: #fff;
+}
+
+.dark .filter-box .custom-control {
+    box-shadow: 0px 15px 15px #161616;
+}
+
+.dark .card {
+    background: #2c2c2c;
+}
+
+.dark .res-card.filter-card .stars {
+    color: #fff;
+}
+
+.dark .card-text {
+    color: #ffffff7d;
+}
+
+.dark .insta-card .card-body p {
+    color: #fff;
+}
+
+.dark .insta-card .card-body .total-likes span img {
+    filter: invert(1);
+}
+
+.dark p {
+    color: #fff;
+}
+
+.dark .footer-container ul li a {
+    color: #fff;
+}
+
+.dark .chat-pop .card .card-body .textchat.recieve {
+    background: #1a1a1a !important;
+}
+
+.dark .form-control {
+    background: #2c2c2c;
+}
+
+.dark .chat-pop .card .card-footer .form-control {
+    background: #1a1a1a;
+    color: #fff;
+}
 @media (max-width: 1399px) {
     .number {
         width: 160px;
