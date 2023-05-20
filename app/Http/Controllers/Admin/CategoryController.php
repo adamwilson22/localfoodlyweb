@@ -133,15 +133,6 @@ class CategoryController extends Controller
         }
         return back();
     }
-
-    public function deleteCategory($ID){
-        dd($ID);
-        $category = Category::findOrFail($ID);
-        $category->delete();
-        Toastr::success('Category removed!');
-        return back();
-    }
-
     public function get_all(Request $request){
         $data = Category::where('name', 'like', '%'.$request->q.'%')->limit(8)->get([DB::raw('id, CONCAT(name, " (", if(position = 0, "'.trans('messages.main').'", "'.trans('messages.sub').'"),")") as text')]);
         if(isset($request->all))

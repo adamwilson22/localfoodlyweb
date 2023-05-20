@@ -292,7 +292,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <form action="{{ route('subscribe.food')}}" id="subscribe_form" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('subscribe.food')}}" id="subscribe_form" name="subscribe_form" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle">Subscribe For This Product</h5>
@@ -317,7 +317,7 @@
                                         <option value="monthly">Monthly</option>
                                     </select>
                                 </div>
-                                    <input type="hidden" name="totalPrice" value="">
+                                    <input type="hidden" name="totalPrice" id="totalPrice" value="">
                                     <input type="hidden" name="food_id" value={{$food->id}}>
                                     <input type="hidden" id="food_price" name="food_price" value={{$food->price}}>
                                     <table>
@@ -914,26 +914,27 @@
                         }
                     });
                 });
-                // $("#subscribe_form").submit(function(e){
-                //     e.preventDefault();
-                //     var actionUrl = e.currentTarget.action;
-                //     console.log(actionUrl);
-
-                //     $.ajax({
-                //         url: actionUrl,
-                //         method: 'post',
-                //         dataType: 'json',
-                //         data: {
-                //             _token: '{{ csrf_token() }}',
-                //             $("subscribe_form").serialize()
-                //         },
-                //         success: function(response) {
-                //             console.log('success');
-                //             toastr.success("Successfully Subscribed");
+                $("#subscribe_form").submit(function(e){
+                    e.preventDefault();
+                    var actionUrl = e.currentTarget.action;
+                    console.log(actionUrl);
+                    // var formData = $('form[name="subscribe_form"]').serialize();
+                    var formData = $(this);
+                    $.ajax({
+                        url: actionUrl,
+                        method: 'post',
+                        dataType: 'json',
+                        data: formData.serialize(),
+                        success: function(response) {
+                            $('#subscribe').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                            console.log('success');
+                            toastr.success(response);
                             
-                //         }
-                //     })
-                // });
+                        }
+                    })
+                });
 const startDateInput = document.getElementById("start-date");
 const endDateInput = document.getElementById("end-date");
 const frequencyInput = document.getElementById("frequency");
@@ -952,25 +953,28 @@ function calculateOrders(startDate, endDate, frequency) {
   // Calculate the number of orders based on the frequency.
     switch (frequency) {
         case "weekly":
-            orders = Math.ceil(days / 7);
+            orders = Math.ceil(days / 7) || 0;
             console.log("weekly");
             console.log(orders);
             document.getElementById("orders").innerHTML = orders;
             document.getElementById("total_price").innerHTML = orders * document.getElementById("food_price").value;
+            document.getElementById("totalPrice").value = orders * document.getElementById("food_price").value;
             return;
         case "biweekly":
-            orders = Math.ceil(days / 14);
+            orders = Math.ceil(days / 14) || 0;
             console.log("biweekly");
             console.log(orders);
             document.getElementById("orders").innerHTML = orders;
             document.getElementById("total_price").innerHTML = orders * document.getElementById("food_price").value;
+            document.getElementById("totalPrice").value = orders * document.getElementById("food_price").value;
             return;
         case "monthly":
-            orders = Math.ceil(days / 30);
+            orders = Math.ceil(days / 30) || 0;
             console.log("monthly");
             console.log(orders);
             document.getElementById("orders").innerHTML = orders;
             document.getElementById("total_price").innerHTML = orders * document.getElementById("food_price").value;
+            document.getElementById("totalPrice").value = orders * document.getElementById("food_price").value;
             return;
         default:
             throw new Error("Invalid frequency");

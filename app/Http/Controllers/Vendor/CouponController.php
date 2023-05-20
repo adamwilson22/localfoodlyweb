@@ -132,4 +132,30 @@ class CouponController extends Controller
             'count'=>$coupons->count()
         ]);
     }
+
+    public function sendCouponCodeToCustomers(Request $request)
+    {
+        // dd($request->customers);
+
+        foreach ($request->customers as $customer) {
+            
+            // Send an email to customers with their Coupon Codes
+            $customerDetails = DB::table('users')
+                 ->where('id', $customer)
+                 ->select('email','phone')
+                 ->first();
+             
+            // Send Email to Customer email ID
+            dd($customerDetails);
+ 
+            // Send SMS 
+            // Send Notifications
+        }
+
+        return Redirect('vendor-panel/addon/customer')->with([
+            // 'message' => "Coupon Code sent to customer(s)",
+            'code' => 1,
+            'status' => true,
+        ]);
+    }
 }

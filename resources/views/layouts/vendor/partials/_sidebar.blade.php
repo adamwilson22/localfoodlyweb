@@ -99,7 +99,7 @@
                             href="{{ route('vendor.addon.customer') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                                Customer
+                                Customers
                             </span>
                         </a>
                     </li>
@@ -114,9 +114,9 @@
                         </a>
                     </li>
                     <li
-                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/loyalty') ? 'active' : '' }}"style="pointer-events: none;">
+                        class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/addon/loyalty') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
-                            href="{{ route('vendor.addon.add-new') }}">
+                            href="{{ route('vendor.loyalty.index') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
                                 Loyalty Program
@@ -159,7 +159,7 @@
                             href="{{ route('vendor.addon.massage') }}">
                             <i class="icon-users nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                                Message
+                                Messages
                             </span>
                         </a>
                     </li>

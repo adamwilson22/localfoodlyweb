@@ -194,7 +194,7 @@
 
 
                                 <div class=" form-group">
-                                    <label class="input-label" for="">Default Prize</label>
+                                    <label class="input-label" for="">Default Price</label>
                                     <div class="search-form">
                                         <!-- Search -->
                                         <div class="input-group input-group-merge input-group-flush">
@@ -205,7 +205,7 @@
                                                     </div>
                                                 </button>
                                             </div>
-                                            <input id="" type="number" name="search" class="form-control" placeholder="67.00">
+                                            <input id="" type="number" name="search" class="form-control" placeholder="67.00" step="0.1">
 
                                         </div>
                                         <!-- End Search -->
@@ -263,7 +263,7 @@
                                     </div>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="inputGroupFile01">
-                                        <label class="custom-file-label" for="inputGroupFile01">Upload Images/Video <p>Select file</p></label>
+                                        <label class="custom-file-label" for="inputGroupFile01">Upload s Images/Video <p>Select file</p></label>
                                     </div>
                                 </div>
                             </div>

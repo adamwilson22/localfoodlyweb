@@ -25,7 +25,8 @@ class User extends Authenticatable
         'password',
         'login_medium',
         'ref_code',
-        'social_id'
+        'social_id',
+        'cm_firebase_token'
     ];
 
     /**

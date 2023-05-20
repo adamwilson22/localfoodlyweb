@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Vendor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Badge;
 use Hash;
 use Illuminate\Http\Request;
 use App\Models\KitchenGallery;
@@ -214,6 +215,24 @@ class SettingsController extends Controller
 
             $restaurant = new Restaurant;
             $restaurant->create($data);
+
+            // Add Default Badges while creating a store for the particular restaurant
+            $badgeNames = array("Healthy Food", "Locally Grown", "Organic");
+            $image1 = asset('public/assets/admin/img/best2.png') ;
+            $image2 = asset('public/assets/admin/img/best.png') ;
+            $image3 = asset('public/assets/admin/img/best2.png') ;
+
+            $badgeImages = array($image1,$image2,$image3);
+
+            for($i=0 ; $i < 3 ; $i++)
+            {
+                $badge = new Badge();
+                $badge->name = $badgeNames[$i];
+                $badge->image = $badgeImages[$i];
+                $badge->restaurant_id = auth('vendor')->user()->id;
+                $badge->save();
+
+            }            
             Toastr::success("Store Created");
             return back();
         }

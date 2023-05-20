@@ -38,6 +38,19 @@ class ProductController extends Controller
             }
 
             $categories = Category::where('restaurant_id', $restaurant->id)->orderBy('position', 'asc')->orderBy('id', 'asc')->get();
+            $categoriesCount = $categories->count();
+            // dd($categoriesCount);
+          if($categoriesCount==0)
+            {
+              Toastr::error('Please create your Category first');
+                    return back();
+              
+            }
+        }
+        else
+        {
+            Toastr::error('Please create your store first from settings');
+            return back();
         }
 
         // dd($products);

@@ -58,25 +58,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-5 ">
-                            <div class="uploadimgs">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="inputgroup">
-                                            {{-- <div class="input-group-prepend">
-                                                <i class="icon-plus"><i class="path1"></i><i class="path2"></i><i
-                                                        class="path3"></i></i>
-                                            </div> --}}
-                                            {{-- <div class="custom-file">
-                                                <input type="file" name="images[]" id="inputGroupFile01" multiple />
-                                                <label class="custom-file-label" for="inputGroupFile01">Upload
-                                                    Images/Video <p>Select file</p></label>
-                                            </div> --}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                
                     </div>
                 </form>
             </div>

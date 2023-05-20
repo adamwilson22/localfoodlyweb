@@ -17,7 +17,7 @@
                 <div class="profile-info">
                     <div class="inner-info">
                         <div class="img">
-                            <img src="{{ asset('public/images') .'/'. empty($restaurant->logo) ? '' : $restaurant->logo}}" alt="">
+                            <img src="{{ asset('public/images') .'/'. $restaurant->logo}}" alt="">
                         </div>
                         <span>
                             <h4>{{$restaurant->name}}</h4>
@@ -53,6 +53,7 @@
                                     </div>
                                     <div class="text">
                                         <h4>165</h4>
+                                        
                                         <p>Total Reviews</p>
                                     </div>
                                 </div>

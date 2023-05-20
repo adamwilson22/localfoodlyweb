@@ -573,7 +573,7 @@ var template = "<?php echo $restaurant->store_template; ?>";
 
                                     // $data = '<script>'+ food.image +' </script>';
                                     $data = 'a:2:{i:0;s:46:"prod1674884910.food-banner-design-template.jpg";i:1;s:27:"prod1674884910.ninja jp.png";}';
-$json_data = json_encode(unserialize($data));
+                            $json_data = json_encode(unserialize($data));
 
 
                                 // $images = unserialize(food.images);  

@@ -96,7 +96,13 @@ class AddOnController extends Controller
                 //     # code...
                 //     $images[] = asset('images/'.$img);
                 // }
-                $product->image = asset('images/' . $product->image[0]);
+                
+                // 
+                $product->image =  asset('public/images/' . $product->image[0]);               
+                
+                // $product->image = asset('images/' . $product->image[0]);
+                // 
+
             }
         }
         return view('vendor-views.addon.profile', compact('restaurant', 'products'));
@@ -106,6 +112,12 @@ class AddOnController extends Controller
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         // return view('vendor-views.addon.products');
+        $vendor = auth('vendor')->user()->id;
+        $restaurant = Restaurant::where('vendor_id', $vendor)->first();
+        if (!$restaurant) {
+            Toastr::error('Please create your store first from settings');
+            return back();
+        }
         return view('vendor-views.addon.products');
     }
 
@@ -329,25 +341,22 @@ class AddOnController extends Controller
 
     public function customer()
     {
-        // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        // $customers[] = Customer::all();
         $assignedCustomerGroups = DB::table('customers as cc')
             ->leftJoin('customer_group_assigned as cga', 'cga.customer_id', '=', 'cc.id')
             ->leftJoin('customer_groups as cg', 'cg.id', '=', 'cga.group_id')
             ->select('cc.id as id', 'cc.ful_name as customer_name', 'cg.name as customer_group_name', 'cg.id as group_ID', 'cc.email', 'cc.phone_number', 'cc.address', 'cc.image')
             ->get();
-        // dd($assignedCustomerGroups);
         $customerGroups = CustomerGroups::all();
 
-        // dd($customerGroups);
-        // $customerGroup = CustomerGroupAssigned::all();
-        // foreach($customers as $key => $item){
-        //     foreach($item as $customer){
-        //         dd($customer->ful_name);
-        //     }
-        // }
-                // dd($customerGroups);
-        return view('vendor-views.addon.customer', compact('assignedCustomerGroups', 'customerGroups'));
+        $coupons = DB::table('coupons as cc')
+        ->where('cc.status' , '=' , 1)
+        // ->where('cc.expire_date' , '<=' , date('Y-m-d'))
+        ->select('cc.id as id', 'cc.title as title')
+        ->get();
+        
+        // dd($coupons);
+
+        return view('vendor-views.addon.customer', compact('assignedCustomerGroups', 'customerGroups', 'coupons'));
     }
     public function filterCustomers(Request $request)
     {
@@ -370,11 +379,16 @@ class AddOnController extends Controller
     {
         $customerDetails = DB::table('customers as cc')
             ->where('id', '=', $request->id)
-            ->select('cc.id as id', 'cc.ful_name as customer_name', 'cc.email', 'cc.phone_number', 'cc.address')
+            ->select('cc.id as id', 'cc.ful_name as customer_name', 'cc.email', 'cc.phone_number', 'cc.address', 'cc.image')
             ->first();
+        $coupons = DB::table('coupons as cc')
+            ->where('cc.status' , '=' , 1)
+            // ->where('cc.expire_date' , '<=' , date('Y-m-d'))
+            ->select('cc.id as id', 'cc.title as title')
+            ->get();
         // dd($customerDetails);
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
-        return view('vendor-views.addon.single-customer', compact('customerDetails'));
+        return view('vendor-views.addon.single-customer', compact('customerDetails', 'coupons'));
     }
     public function order()
     {
@@ -413,13 +427,13 @@ class AddOnController extends Controller
 
         return view('vendor-views.addon.invoices', compact('orderDetails', 'paidInvoices', 'unpaidInvoices'));
     }
-    public function massage()
+    public function messages()
     {
         // $addons = AddOn::orderBy('name')->paginate(config('default_pagination'));
         // dd(Helpers::get_restaurant_id());
         $conversation_lists = Conversation::with('user')->where('user2_id', Helpers::get_restaurant_id())->get()->unique('user1_id');
         // dd($conversation_lists->toArray());
-        return view('vendor-views.addon.massage',compact('conversation_lists'));
+        return view('vendor-views.addon.messages',compact('conversation_lists'));
     }
     public function fetchMessage(Request $request){
         $chatlists = Conversation::where('user2_id', $request->SellerId)
@@ -427,7 +441,7 @@ class AddOnController extends Controller
         // dd($chatlists->toArray());
         $Seller = Restaurant::where('id', $request->SellerId)->first();
         $User = User::where('id', $request->UserId)->first();
-
+        
         return [
             "status" => true,
             "message" => "data found",

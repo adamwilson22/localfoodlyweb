@@ -209,8 +209,10 @@ class CustomerAuthController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => bcrypt($request->password),
+            'cm_firebase_token' => "abcd"
         ]);
         $user->ref_code = Helpers::generate_referer_code($user);
+    
         $user->save();
 
         $token = $user->createToken('RestaurantCustomerAuth')->accessToken;

@@ -117,8 +117,9 @@ class CategoryController extends Controller
             return back();
         }
 
+        
         $rules = [
-            "name"  => "required|unique:categories",
+            "name" => "required|unique:categories,name,NULL,id,restaurant_id," . $resturantID,
             "status" => "required",
             "image" => "required"
         ];
@@ -160,5 +161,23 @@ class CategoryController extends Controller
             
         }
 
+    }
+    public function deleteCategory(Request $request){
+        
+        $productExistInCategory = DB::table('food as ff')
+            ->where('ff.category_id' , '=' , $request->id)
+            ->get();
+
+        if ($productExistInCategory->count() > 1) 
+        {
+            return "Error";
+        }
+        
+        $category = Category::findOrFail($request->id);
+        $category->delete();
+        Toastr::success('Category removed!');
+        
+        return back();
+        
     }
 }

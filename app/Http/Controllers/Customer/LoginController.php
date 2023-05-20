@@ -33,6 +33,8 @@ class LoginController extends Controller
         ]);
         $input = $request->all();
         $input['password'] = bcrypt($request->password);
+        $input['cm_firebase_token'] = "osama";
+        // dd($input);
         $customer = User::create($input);
         if (!empty($customer)) {
             $user = user::where('email', $request->email)->first();

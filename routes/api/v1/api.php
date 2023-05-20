@@ -90,6 +90,22 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     });
     
     Route::group(['prefix' => 'vendor', 'namespace' => 'Vendor', 'middleware'=>['vendor.api']], function () {
+        //MAAZ
+        //BADGES Routes
+        Route::get('/get_all_badges', [CategoryController::class, "get_badges"]);
+        Route::post('/create_all_badges', [CategoryController::class, "create_badges"]);
+        Route::delete('/delete_all_badges/{id}', [CategoryController::class, "delete_badges"]);
+        //Maaz
+        //Units Routes
+        Route::get('/get_all_units', [CategoryController::class, "get_units"]);
+        Route::post('/create_all_units', [CategoryController::class, "create_units"]);
+        Route::delete('/delete_all_units/{id}', [CategoryController::class, "delete_units"]);
+        //MAAZ
+        //Coupons
+        Route::get('/get_all_coupons', [CategoryController::class, "get_coupons"]);
+        Route::delete('/delete_all_coupons/{id}', [CategoryController::class, "delete_coupon"]);
+        Route::post('/create_all_coupons', [CategoryController::class, "create_coupon"]);
+        Route::get('/search_all_coupons/{name}', [CategoryController::class, "search_coupon"]);
 
         // Category Routes Start
         Route::get('/get_all_categories', [CategoryController::class, "get_categories"]);

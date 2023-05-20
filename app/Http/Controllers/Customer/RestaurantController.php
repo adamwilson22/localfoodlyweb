@@ -62,6 +62,7 @@ class RestaurantController extends Controller
 
     public function filterCategory(Request $request)
     {
+        // Git Check
         $query = $request->input('category');
         $id = $request->input('id');
         $foods = Food::where('restaurant_id',$id)->where('status', 1)->where('category_id', $query)->get();

@@ -80,35 +80,41 @@
                                         class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                                         <tbody>
 
-                                            @foreach ($preOrders as $order)
+                                            @foreach ($foodPreOrders as $order)
                                                 <tr>
                                                     <td>
                                                         <div class="info">
-                                                            <img src="{{ asset('assets/admin/img/NoPath---Copy-(6).png') }}"
-                                                                alt="">
+                                                            {{-- <img src="{{ asset('assets/admin/img/NoPath---Copy-(6).png') }}"
+                                                                alt=""> --}}
                                                             <span>
-                                                                <h4>{{ $order->customer->f_name . ' ' . $order->customer->l_name ?? '' }}
+                                                                <h4>{{ $order['name'] ?? '' }}
                                                                 </h4>
-                                                                <p>{{ $order->delivery_address }}</p>
+                                                                <p>{{ $order['description'] }}</p>
                                                             </span>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="invoice">
-                                                            <p>Order #</p>
-                                                            <h6>{{ $order->id }}</h6>
+                                                            <p>Pre Order DataTime</p>
+                                                            <h6>{{ $order['pre_order_end_date'].' '.$order['pre_order_end_time'] }}</h6>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="invoice">
-                                                            <p>Amount</p>
-                                                            <h6>{{ $order->order_amount }}</h6>
+                                                            <p>Fulfillment DataTime</p>
+                                                            <h6>{{ $order['fulfillment_date'].' '.$order['fulfillment_time'] }}</h6>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="invoice">
-                                                            <p>Time</p>
-                                                            <h6>{{ humanTiming(strtotime($order->created_at)) }}Ago </h6>
+                                                            <p>Fulfillment Type</p>
+                                                            <h6>{{ $order['fulfillment_type'] }}</h6>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="invoice">
+                                                            <p>Total Order#</p>
+                                                            <h6>{{ $order['totalOrderCount'] }}</h6>
                                                         </div>
                                                     </td>
 
@@ -120,7 +126,7 @@
                             </div>
                             <div style=" display:flex; justify-content: flex-end;">
                                 <a style="max-width:200px; display:flex; justify-content: center;" class="btn"
-                                    href="{{ route('vendor.order.list', ['status' => 'pending']) }}">All Pending Orders</a>
+                                    href="{{ route('vendor.order.PreOrderlist', ['status' => 'pre_order_list']) }}">All Pending Orders</a>
                             </div>
                         </div>
                     </div>

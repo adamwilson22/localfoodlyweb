@@ -39,13 +39,45 @@ class OrderController extends Controller
             ->select('oo.*', 'cc.f_name', 'cc.l_name')
             ->get();
 
-        $preOrders = Order::with('customer', 'details.food')
-            ->whereHas('details.food', function (Builder $query) {
-                $query->where('product_type', 'preorder');
-            })
-            ->where('order_status', 'pending')
-            ->where('restaurant_id', Helpers::get_restaurant_id())
-            ->get();
+        // $preOrders = Order::with('customer', 'details.food')
+        //     ->whereHas('details.food', function (Builder $query) {
+        //         $query->where('product_type', 'preorder');
+        //     })
+        //     ->where('order_status', 'pending')
+        //     ->where('restaurant_id', Helpers::get_restaurant_id())
+        //     ->get();
+        
+        $preOrders = Food::where([
+            ['product_type', 'preorder'],
+            ['restaurant_id', Helpers::get_restaurant_id()]
+        ])->paginate(config('default_pagination'));
+
+        $foodPreOrders = [];
+
+        foreach ($preOrders as $key => $preOrder) {
+            $ordeDetails = OrderDetail::where([
+                ['restaurant_id', Helpers::get_restaurant_id()],
+                ['food_id', $preOrder->id],
+            ])->get()->count();
+
+            array_push($foodPreOrders, [
+                "id" => "{$preOrder->id}",
+                "name" => "{$preOrder->name}",
+                "description" => "{$preOrder->description}",
+                "product_type" => "{$preOrder->product_type}",
+                "image" => "{$preOrder->image}",
+                "restaurant_id" => "{$preOrder->restaurant_id}",
+                "fulfillment_date" => "{$preOrder->fulfillment_date}",
+                "fulfillment_time" => "{$preOrder->fulfillment_time}",
+                "pre_order_end_date" => "{$preOrder->pre_order_end_date}",
+                "pre_order_end_time" => "{$preOrder->pre_order_end_time}",
+                "fulfillment_type" => "{$preOrder->fulfillment_type}",
+                "pre_order_quantity_limit" => "{$preOrder->pre_order_quantity_limit}",
+                "serves" => "{$preOrder->serves}",
+                "labels" => "{$preOrder->labels}",
+                "totalOrderCount" => "{$ordeDetails}",
+            ]);
+        }
 
         // dd($preOrders->toArray());
 
@@ -66,7 +98,58 @@ class OrderController extends Controller
         // }
         // dd($pendingorders);
         // return view('vendor-views.addon.order');
-        return view('vendor-views.addon.order', compact('orders', 'pendingorders', 'recurringOrders', 'preOrders', 'delivery', 'pickup', 'curbside'));
+        return view('vendor-views.addon.order', compact('orders', 'pendingorders', 'recurringOrders', 'preOrders','foodPreOrders', 'delivery', 'pickup', 'curbside'));
+    }
+    
+    public function PreOrderlist($status)
+    {
+        Order::where(['checked' => 0])->where('restaurant_id', Helpers::get_restaurant_id())->update(['checked' => 1]);
+
+        $preOrders = Food::where([
+            ['product_type', 'preorder'],
+            ['restaurant_id', Helpers::get_restaurant_id()]
+        ])->orderBy('updated_at','desc')->get();
+
+        $foodPreOrders = [];
+
+        foreach ($preOrders as $key => $preOrder) {
+            $ordeDetails = OrderDetail::where([
+                ['restaurant_id', Helpers::get_restaurant_id()],
+                ['food_id', $preOrder->id],
+            ])->get()->count();
+
+            array_push($foodPreOrders, [
+                "id" => "{$preOrder->id}",
+                "name" => "{$preOrder->name}",
+                "description" => "{$preOrder->description}",
+                "product_type" => "{$preOrder->product_type}",
+                "image" => "{$preOrder->image}",
+                "restaurant_id" => "{$preOrder->restaurant_id}",
+                "fulfillment_date" => "{$preOrder->fulfillment_date}",
+                "fulfillment_time" => "{$preOrder->fulfillment_time}",
+                "pre_order_end_date" => "{$preOrder->pre_order_end_date}",
+                "pre_order_end_time" => "{$preOrder->pre_order_end_time}",
+                "fulfillment_type" => "{$preOrder->fulfillment_type}",
+                "pre_order_quantity_limit" => "{$preOrder->pre_order_quantity_limit}",
+                "serves" => "{$preOrder->serves}",
+                "labels" => "{$preOrder->labels}",
+                "totalOrderCount" => "{$ordeDetails}",
+            ]);
+        }
+
+        return view('vendor-views.addon.per_order', compact('preOrders','foodPreOrders'));
+
+    }
+    
+    public function PreOrderDetail($id)
+    {
+        $ordeDetails = OrderDetail::with('order.customer')->where([
+            ['restaurant_id', Helpers::get_restaurant_id()],
+            ['food_id', $id],
+        ])->paginate(config('default_pagination'));;
+
+        // dd($ordeDetails->toArray());
+        return view('vendor-views.pre_order.list', compact('ordeDetails'));
     }
 
     public function list($status)

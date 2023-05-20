@@ -30,11 +30,11 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <a href="#" class="btn btn-secondary btn-lg ml-sm-2 mt-2"  data-target="#createCouponModal">Send Coupon</a>
+                    <a href="#" class="btn btn-secondary btn-lg ml-sm-2 mt-2"  data-toggle="modal" data-target="#createCouponModal">Send Coupon</a>
                     <a href="#" class="btn btn-secondary btn-lg sltcateg ml-sm-2 mt-2">Bulk Select</a>
                     <a id="btnMoveToGroup" href="#" class="btn btn-primary btn-lg ml-sm-2 mt-2" data-toggle="modal"
                         data-target="#customerModalCenter">Move To Group</a>
-                    <a href="#" class="btn btn-primary btn-lg ml-sm-2 mt-2" data-toggle="modal"
+                    <a href="#" class="btn btn-secondary btn-lg ml-sm-2 mt-2" data-toggle="modal"
                         data-target="#createCustomerGroupModal">Add Customer Group</a>
                 </div>
             </div>
@@ -150,14 +150,14 @@
                                 </button>
                             </div>
                             <div class="form-group">
-                                <select id="modalSelectCustomerGroup" class="custom-select custom-select-lg">
+                                <select id="modalSelectCouponCode" class="custom-select custom-select-lg">
                                     <option selected> Select Coupon </option>
-                                    {{-- @foreach ($customerGroups as $groups)
-                                        <option group-id="{{ $groups->id }}">{{ $groups->name }}</option>
-                                    @endforeach --}}
+                                    @foreach ($coupons as $coupon)
+                                        <option group-id="{{ $coupon->id }}">{{ $coupon->title }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <button id="btnSaveNow" type="button" class="btn btn-primary btn-lg">Send</button>
+                            <button id="btnCouponCodeSaveNow" type="button" class="btn btn-primary btn-lg">Send</button>
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,9 @@
             });
         });
 
+        // ****** Customer Group Assign ******
         var selectedIds = [];
+        
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('btnSaveNow').addEventListener('click', function() {
 
@@ -375,6 +377,58 @@
             });
         });
 
+        // ****** Customer Group Assign ******
+
+        // ****** Coupon Code Send ******
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btnCouponCodeSaveNow').addEventListener('click', function() {
+
+                let mySelect = document.getElementById('modalSelectCouponCode');
+                let selectedOption = mySelect.options[mySelect.selectedIndex];
+                let couponId = selectedOption.getAttribute('group-id');
+
+                // let selectedText = selectedOption.textContent;
+                // let selectedValue = selectedOption.value;
+                // grpName = selectedValue;
+                // console.log(selectedIds);
+
+                if (selectedIds.length > 0) {
+                    if (mySelect.selectedIndex != 0) {
+                        axios.post('/vendor-panel/coupon/sendCouponCodeToCustomers', {
+                                customers: selectedIds,
+                                couponID: couponId
+                            })
+                            .then(function(response) {
+                                console.log('Success:', response.message);
+                                $("#createAddon , #createBadge").modal('hide');
+                                toastr.success(
+                                    'Coupon Code sent Successfully', {
+                                        CloseButton: true,
+                                        ProgressBar: true
+                                    }); // show response from the php script.   
+
+                                setTimeout(function() {
+                                    // This code will execute after a 1 second delay
+                                    console.log(response.data);
+                                }, 3000); // Delay for 1 second (1000 milliseconds)
+
+                                location.reload();
+                            })
+                            .catch(function(error) {
+                                console.log('Error:', error.message);
+                            });
+                    } else {
+                        alert('Please select a Coupon Code!');
+                    }
+                } else {
+                    alert('Please select any Customer!');
+                }
+
+            });
+        });
+
+        // ****** Coupon Code Send ******
 
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"][data-id]');

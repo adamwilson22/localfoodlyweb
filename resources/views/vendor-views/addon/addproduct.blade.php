@@ -352,6 +352,101 @@
                 transform: scale(50, 50);
             }
         }
+        .uploadimgs .form {
+            width: 500px;
+            margin: 5% auto;
+            }
+            .uploadimgs .form__container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                border: 2px dashed silver;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+                color: silver;
+                margin-bottom: 0;
+                border-radius: 6px;
+                /* z-index: 1; */
+            }
+            .uploadimgs .form__container.active {
+            background-color: rgba(192, 192, 192, 0.2);
+            }
+            .uploadimgs .form__file {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            opacity: 0;
+            }
+            .uploadimgs .form__files-container {
+            display: block;
+            width: 100%;
+            font-size: 0;
+            margin-top: 20px;
+            }
+            .uploadimgs .form__image-container {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 6px;
+            position: relative;
+            margin-right: 6px;
+            }
+
+            .uploadimgs .form__image-container:before {
+                position: absolute;
+                line-height: 1;
+                font-size: 30px;
+                margin: auto;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                text-align: center;
+                font-weight: bold;
+                color: #fff;
+                background-color: rgba(27, 109, 216, 0.6);
+                opacity: 0;
+                border-radius: 6px;
+                transition: opacity 0.2s ease-in-out;
+                content: ''
+            }
+            .uploadimgs .form__image-container:after {
+                position: absolute;
+                font-size: 25px;
+                width: 42px;
+                height: 42px;
+                margin: auto;
+                top: 50%;
+                transform: translate(0px, -50%);
+                font-family: "icomoon";
+                content: "\e912";
+                right: 0;
+                left: 0;
+                border-radius: 50%;
+                color: red;
+                text-align: center;
+                background: #fff;
+                opacity: 0;
+                transition: opacity 0.2s ease-in-out;
+            }
+            .uploadimgs .form__image-container:hover:after,.uploadimgs .form__image-container:hover:before {
+            opacity: 1;
+            cursor: pointer;
+            }
+            .uploadimgs .form__image {
+            -o-object-fit: cover;
+                object-fit: cover;
+            width: 100%;
+            height: 100%;
+            }
     </style>
 @endpush
 
@@ -753,7 +848,7 @@
 
 
                                     <div class=" form-group">
-                                        <label class="input-label" for="">Default Prize</label>
+                                        <label class="input-label" for="">Default Price</label>
                                         <div class="search-form">
                                             <!-- Search -->
                                             <div class="input-group input-group-merge input-group-flush">
@@ -764,7 +859,7 @@
                                                         </div>
                                                     </button>
                                                 </div>
-                                                <input id="price" type="number" name="price" class="form-control"
+                                                <input id="price" type="number" name="price" class="form-control" step="0.1"
                                                     placeholder="00" value="{{ old('price') }}">
                                             </div>
                                             <!-- End Search -->
@@ -845,7 +940,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-lg-5">
+                        <div class="col-lg-5">
                             <div class="uploadimgs">
                                 <div class="card">
                                     <div class="card-body">
@@ -863,57 +958,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
                         <div class="col-lg-5">
-                            <div class="uploadimgs insert-img">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="form-row images-preview-div">
-
-                                            {{-- <div class="img">
-                                                <img src="{{ asset('public/assets/admin/img/Group-173.jpg') }}" alt="">
-                                                <div class="action-btn">
-                                                    <button><i class="icon-Pin"></i></button>
-                                                    <button><i class="icon-trash"></i></button>
-                                                </div>
-                                            </div> --}}
-
-                                            {{-- <div class="img">
-                                                <img src="{{ asset('public/assets/admin/img/Group-174.jpg') }}" alt="">
-                                                <div class="action-btn">
-                                                    <button class="pinned"><i class="icon-Pin"></i></button>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="img">
-                                                <img src="{{ asset('public/assets/admin/img/Group-176.jpg') }}" alt="">
-                                                
-                                            </div>
-                                            <div class="img">
-                                                <img src="{{ asset('public/assets/admin/img/Group-177.jpg') }}" alt="">
-                                                <div class="action-btn">
-                                                    <button class="pinned"><i class="icon-Pin"></i></button>
-                                                </div>
-                                            </div> --}}
-
-
-                                        </div>
-                                        <div class="inputgroup">
-                                            <div class="input-group-prepend">
-                                                <i class="icon-plus_round_icon"></i>
-                                            </div>
-                                            <div class="custom-file">
-                                                <input type="hidden" name="fimg" id="fimg" value="">
-                                                <input type="file" name="images[]" class="custom-file-input"
-                                                    id="images" multiple required>
-                                                <label class="custom-file-label" for="inputGroupFile01">Upload
-                                                    Images/Video <p>Select file</p></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
+                           
                             <div class="uploadimgs insert-img">
                                 <div class="card">
                                     <div class="card-body">
@@ -921,7 +968,8 @@
                                         </div>
                                         <div class="inputgroup">
                                             <div class="input-group-prepend">
-                                                <i class="icon-plus_round_icon"></i>
+                                                {{-- <i class="icon-plus_round_icon"></i> --}}
+                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
                                             </div>
                                             <div class="custom-file">
                                                 <input type="file" name="featureImage" class="custom-file-input"
@@ -937,29 +985,30 @@
                                 </div>
                             </div>
                             <br>
-                            <!--<div class="uploadimgs insert-img">-->
-                            <!--    <div class="card">-->
-                            <!--        <div class="card-body">-->
-                            <!--            <div class="form-row featureVideo-preview-div">-->
+                            <div class="uploadimgs insert-img">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-row featureVideo-preview-div">
 
-                            <!--            </div>-->
-                            <!--            <div class="inputgroup">-->
-                            <!--                <div class="input-group-prepend">-->
-                            <!--                    <i class="icon-plus_round_icon"></i>-->
-                            <!--                </div>-->
-                            <!--                <div class="custom-file">-->
-                            <!--                    <input type="file" name="featureVideo" class="custom-file-input"-->
-                            <!--                        id="file-input-video">-->
-                            <!--                    <label class="custom-file-label" for="inputGroupFile01">Upload Feature-->
-                            <!--                        Video-->
-                            <!--                        Optional-->
-                            <!--                        <p>Select file</p>-->
-                            <!--                    </label>-->
-                            <!--                </div>-->
-                            <!--            </div>-->
-                            <!--        </div>-->
-                            <!--    </div>-->
-                            <!--</div>-->
+                                        </div>
+                                        <div class="inputgroup">
+                                            <div class="input-group-prepend">
+                                                {{-- <i class="icon-plus_round_icon"></i> --}}
+                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="featureVideo" class="custom-file-input"
+                                                    id="file-input-video">
+                                                <label class="custom-file-label" for="inputGroupFile01">Upload Feature
+                                                    Video
+                                                    Optional
+                                                    <p>Select file</p>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -1040,14 +1089,119 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+    {{-- <script>
+        const INPUT_FILE = document.querySelector("#upload-files");
+        const INPUT_CONTAINER = document.querySelector("#upload-container");
+        const FILES_LIST_CONTAINER = document.querySelector("#files-list-container");
+        const FILE_LIST = [];
+        let UPLOADED_FILES = [];
+
+        const multipleEvents = (element, eventNames, listener) => {
+        const events = eventNames.split(" ");
+
+            events.forEach((event) => {
+                element.addEventListener(event, listener, false);
+            });
+        };
+
+        const previewImages = () => {
+        FILES_LIST_CONTAINER.innerHTML = "";
+        if (FILE_LIST.length > 0) {
+            FILE_LIST.forEach((addedFile, index) => {
+            const content = `
+                <div class="form__image-container js-remove-image" data-index="${index}">
+                <img class="form__image" src="${addedFile.url}" alt="${addedFile.name}">
+                <div class="action-btn">
+                        <button type="button"><i class="icon-trash old-img"></i></button>
+                    </div>
+                </div>
+            `;
+            
+                $(".insert-img .inputgroup").addClass("active");
+                FILES_LIST_CONTAINER.insertAdjacentHTML("beforeEnd", content);
+            });
+            } else {
+                $(".insert-img .inputgroup").removeClass("active");
+                console.log("empty");
+                INPUT_FILE.value = "";
+        }
+        };
+
+        const fileUpload = () => {
+        if (FILES_LIST_CONTAINER) {
+            multipleEvents(INPUT_FILE, "click dragstart dragover", () => {
+            INPUT_CONTAINER.classList.add("active");
+            });
+
+            multipleEvents(INPUT_FILE, "dragleave dragend drop change blur", () => {
+            INPUT_CONTAINER.classList.remove("active");
+            });
+
+            INPUT_FILE.addEventListener("change", () => {
+            const files = [...INPUT_FILE.files];
+            console.log("changed");
+            files.forEach((file) => {
+                const fileURL = URL.createObjectURL(file);
+                const fileName = file.name;
+                if (!file.type.match("image/")) {
+                alert(file.name + " is not an image");
+                console.log(file.type);
+                } else {
+                const uploadedFiles = {
+                    name: fileName,
+                    url: fileURL
+                };
+
+                FILE_LIST.push(uploadedFiles);
+                }
+            });
+
+            console.log(FILE_LIST); //final list of uploaded files
+            previewImages();
+            UPLOADED_FILES = document.querySelectorAll(".js-remove-image");
+            removeFile();
+            });
+        }
+        };
+
+        const removeFile = () => {
+        UPLOADED_FILES = document.querySelectorAll(".js-remove-image");
+
+        if (UPLOADED_FILES) {
+            UPLOADED_FILES.forEach((image) => {
+            image.addEventListener("click", function () {
+                const fileIndex = this.getAttribute("data-index");
+
+                FILE_LIST.splice(fileIndex, 1);
+                previewImages();
+                removeFile();
+            });
+            });
+        } else {
+            [...INPUT_FILE.files] = [];
+        }
+        };
+
+        fileUpload();
+        removeFile();
+
+
+    </script> --}}
+
     <script>
+          $('.addonDropdown').select2();
+            $('.badgesDropdown').select2();
         var isAvailable = true;
         $(document).ready(function() {
+            document.getElementById('file-input1').addEventListener('click', function() {
+        document.getElementById('images').click();
+      
+    });
+
             console.log("Dropdown Event Triggered 1");
          
             
-            $('.addonDropdown').select2();
-            $('.badgesDropdown').select2();
+          
 
       
 

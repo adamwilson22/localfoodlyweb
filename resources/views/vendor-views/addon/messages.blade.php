@@ -1,6 +1,6 @@
 @extends('layouts.vendor.app')
 
-@section('title', __('Massage'))
+@section('title', __('Messages'))
 
 @push('css_or_js')
 @endpush
@@ -12,7 +12,7 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col-sm">
-                        <h1 class="page-header-title">Massage</h1>
+                        <h1 class="page-header-title">Messages</h1>
                     </div>
                 </div>
             </div>
@@ -242,7 +242,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="massages" id="fetch-last-text">
+                                <div class="Messagess" id="fetch-last-text">
                             `;
                             $.each(data.chatlists, function(index, ChatData) {
                                 // console.log(ChatData);
@@ -386,7 +386,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="massages">
+                                <div class="Messagess">
                             `;
                         $.each(data.chatlists, function(index, ChatData) {
                             console.log(ChatData);

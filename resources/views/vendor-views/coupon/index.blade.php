@@ -29,7 +29,7 @@
                                 <input id="coupon_title" type="text" name="title" class="form-control" placeholder="{{translate('messages.new_coupon')}}" required maxlength="191">
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6">
+                        {{-- <div class="col-lg-3 col-sm-6">
                             <div class="form-group">
                                 <label class="input-label" for="exampleFormControlInput1">{{translate('messages.coupon')}} {{translate('messages.type')}}</label>
                                 <select id="coupon_type" name="coupon_type" class="form-control" onchange="coupon_type_change(this.value)">
@@ -40,7 +40,7 @@
                                     @endif
                             </select>
                             </div>
-                        </div>
+                        </div> --}}
 
                         {{-- <div class="form-group col-lg-3 col-sm-6" id="customer_wise">
                             <label class="input-label" for="select_customer">{{translate('messages.select_customer')}}</label>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-lg-3 col-sm-6">
                             <div class="form-group">
-                                <label class="input-label" for="exampleFormControlInput1">{{translate('messages.limit')}} {{translate('messages.for')}} {{translate('messages.same')}} {{translate('messages.user')}}</label>
+                                <label class="input-label" for="exampleFormControlInput1"> Limit </label>
                                 <input type="number" name="limit" id="coupon_limit" class="form-control" placeholder="{{ translate('messages.Ex :') }} 10" max="100">
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                 <input type="number" step="0.01" min="1" max="999999999999.99" name="discount" id="discount" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6">
+                        {{-- <div class="col-lg-3 col-sm-6">
                             <div class="form-group">
                                 <label class="input-label" for="max_discount">{{translate('messages.max')}} {{translate('messages.discount')}}</label>
                                 <input type="number" step="0.01" min="0" value="0" max="999999999999.99" name="max_discount" id="max_discount" class="form-control" readonly>
@@ -108,7 +108,7 @@
                                 <input id="min_purchase" type="number" step="0.01" name="min_purchase" value="0" min="0" max="999999999999.99" class="form-control"
                                     placeholder="100">
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="btn--container justify-content-end">
                         <button id="reset_btn" type="button" class="btn btn--reset">{{translate('messages.reset')}}</button>
@@ -150,10 +150,10 @@
                         <th>{{ translate('messages.sl') }}</th>
                         <th>{{translate('messages.title')}}</th>
                         <th>{{translate('messages.code')}}</th>
-                        <th>{{translate('messages.type')}}</th>
+                        {{-- <th>{{translate('messages.type')}}</th> --}}
                         <th>{{translate('messages.total_uses')}}</th>
-                        <th>{{translate('messages.min')}} {{translate('messages.purchase')}}</th>
-                        <th>{{translate('messages.max')}} {{translate('messages.discount')}}</th>
+                        {{-- <th>{{translate('messages.min')}} {{translate('messages.purchase')}}</th>
+                        <th>{{translate('messages.max')}} {{translate('messages.discount')}}</th> --}}
                         <th>
                             <div class="text-center">
                                 {{translate('messages.discount')}}
@@ -179,9 +179,9 @@
                             </span>
                             </td>
                             <td>{{$coupon['code']}}</td>
-                            <td>{{translate('messages.'.$coupon->coupon_type)}}</td>
+                            {{-- <td>{{translate('messages.'.$coupon->coupon_type)}}</td> --}}
                             <td>{{$coupon->total_uses}}</td>
-                            <td>
+                            {{-- <td>
                                 <div class="text-right mw-87px">
                                     {{\App\CentralLogics\Helpers::format_currency($coupon['min_purchase'])}}
                                 </div>
@@ -190,7 +190,7 @@
                                 <div class="text-right mw-87px">
                                     {{\App\CentralLogics\Helpers::format_currency($coupon['max_discount'])}}
                                 </div>
-                            </td>
+                            </td> --}}
                             <td>
                                 <div class="text-center">
                                     {{$coupon['discount']}}

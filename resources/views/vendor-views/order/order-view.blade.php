@@ -158,6 +158,18 @@
                                         </strong>
                                     @endif
                                 </h6>
+                                <h6>
+                                    <span>Subscription :</span>
+                                    @if ($order['subscription'] == 1)
+                                        <strong class="text-success">
+                                            Yes
+                                        </strong>
+                                    @else
+                                        <strong class="text-danger">
+                                            No
+                                        </strong>
+                                    @endif
+                                </h6>
                             </div>
                         </div>
                     </div>

@@ -114,3 +114,5 @@ $('.product-big').slick({
     centerMode: false,
     focusOnSelect: true
   });
+
+

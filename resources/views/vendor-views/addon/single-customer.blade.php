@@ -22,7 +22,9 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="singleimg">
-                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/Rectangle-125.jpg') }}"
+                            {{-- <img class="img-fluid" src="{{ asset('public/assets/admin/img/Rectangle-125.jpg') }}"
+                                alt=""> --}}
+                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/'.$customerDetails->image) }}"
                                 alt="">
                         </div>
                     </div>
@@ -45,12 +47,40 @@
                                         <p><i class="icon-map-pin"></i> 25 loyalty points</p>
 
                                     </div>
-                                    <a href="#" class="btn btn-primary btn-lg">Send Coupon</a>
-
+                                    <a href="#" data-toggle="modal" data-target="#createCouponModal" class="btn btn-primary btn-lg">Send Coupon</a>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal Coupon -->
+            <div style="" class="modal fade" id="createCouponModal" tabindex="-1" role="dialog"
+            aria-labelledby="createCouponModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Select Coupon Code</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <select id="modalSelectCouponCode" class="custom-select custom-select-lg">
+                                <option selected> Select Coupon </option>
+                                @foreach ($coupons as $coupon)
+                                    <option group-id="{{ $coupon->id }}">{{ $coupon->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button id="btnCouponCodeSaveNow" type="button" class="btn btn-primary btn-lg">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Coupon -->
+
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-body seller-card">
@@ -127,7 +157,7 @@
                         </div>
                     </div>
                 </div>
-                <h1 class="title">Other Customers</h1>
+                {{-- <h1 class="title">Other Customers</h1>
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="custom-control custom-checkbox customer-checkbox">
@@ -280,8 +310,60 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
     @endsection
 </body>
+
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+    
+    // ****** Coupon Code Send ******
+    var selectedIds = [];
+    document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('btnCouponCodeSaveNow').addEventListener('click', function() {
+
+                let mySelect = document.getElementById('modalSelectCouponCode');
+                let selectedOption = mySelect.options[mySelect.selectedIndex];
+                let couponId = selectedOption.getAttribute('group-id');
+
+                // let selectedText = selectedOption.textContent;
+                // let selectedValue = selectedOption.value;
+                // grpName = selectedValue;
+                // console.log(selectedIds);
+
+                    if (mySelect.selectedIndex != 0) {
+                        axios.post('/vendor-panel/coupon/sendCouponCodeToCustomers', {
+                                customers: selectedIds,
+                                couponID: couponId
+                            })
+                            .then(function(response) {
+                                console.log('Success:', response.message);
+                                $("#createAddon , #createBadge").modal('hide');
+                                toastr.success(
+                                    'Coupon Code sent Successfully', {
+                                        CloseButton: true,
+                                        ProgressBar: true
+                                    }); // show response from the php script.   
+
+                                setTimeout(function() {
+                                    // This code will execute after a 1 second delay
+                                    console.log(response.data);
+                                }, 3000); // Delay for 1 second (1000 milliseconds)
+
+                                location.reload();
+                            })
+                            .catch(function(error) {
+                                console.log('Error:', error.message);
+                            });
+                    } else {
+                        alert('Please select a Coupon Code!');
+                    }
+            });
+        });
+
+        // ****** Coupon Code Send ******
+    </script>
+@endsection

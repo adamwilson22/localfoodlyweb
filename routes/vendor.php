@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Vendor\ProductController;
 // Route::post('sortProducts', 'ProductController@sort');
 
-Route::delete('category/{id}', 'CategoryController@deleteCategory')->name('category.destroy');
 Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
     /*authentication*/
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
@@ -70,8 +69,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('list', 'CategoryController@index')->name('add');
             Route::get('sub-category-list', 'CategoryController@sub_index')->name('add-sub-category');
             Route::post('search', 'CategoryController@search')->name('search');
-            
-            
+            Route::post('category', 'CategoryController@deleteCategory')->name('delete-category');
         });
 
         Route::group(['prefix' => 'custom-role', 'as' => 'custom-role.', 'middleware' => ['module:custom_role']], function () {
@@ -159,6 +157,11 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('status/{id}/{status}', 'CouponController@status')->name('status');
             Route::delete('delete/{id}', 'CouponController@delete')->name('delete');
             Route::post('search', 'CouponController@search')->name('search');
+            Route::post('/sendCouponCodeToCustomers', 'CouponController@sendCouponCodeToCustomers');
+        });
+
+        Route::group(['prefix' => 'loyalty', 'as' => 'loyalty.', 'middleware' => ['module:loyalty']], function () {
+            Route::get('/', 'LoyaltyController@index')->name('index');
         });
 
         Route::group(['prefix' => 'addon', 'as' => 'addon.', 'middleware' => ['module:addon']], function () {
@@ -186,6 +189,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::post('customer', 'AddOnController@addcustomergroup')->name('addcustomergroup');
             // Route::post('/customer', 'AddOnController@assignGroupToCustomers');
             Route::post('/assignGroupToCustomers', 'AddOnController@assignGroupToCustomers');
+            
             Route::post('/updateProductStatusAndCategory', 'AddOnController@updateProductStatusAndCategory');
             Route::post('/deleteBulkProducts', 'AddOnController@deleteBulkProducts');
 
@@ -193,7 +197,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('customer', 'AddOnController@customer')->name('customer');
             Route::get('order', 'OrderController@index')->name('order');
             Route::get('invoices', 'AddOnController@invoices')->name('invoices');
-            Route::get('massage', 'AddOnController@massage')->name('massage');
+            Route::get('messages', 'AddOnController@messages')->name('massage');
             Route::get('/fetch/message', 'AddOnController@fetchMessage')->name('fetch.messages');
             Route::post('/send-message', 'AddOnController@SendMessage')->name('send.message');
 
@@ -237,6 +241,8 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
 
         Route::group(['prefix' => 'order', 'as' => 'order.' , 'middleware' => ['module:order']], function () {
             Route::get('list/{status}', 'OrderController@list')->name('list');
+            Route::get('all/{status}/lists', 'OrderController@PreOrderlist')->name('PreOrderlist');
+            Route::get('single/{id}/detail', 'OrderController@PreOrderDetail')->name('PreOrderDetail');
             Route::put('status-update/{id}', 'OrderController@status')->name('status-update');
             Route::post('search', 'OrderController@search')->name('search');
             Route::post('add-to-cart', 'OrderController@add_to_cart')->name('add-to-cart');

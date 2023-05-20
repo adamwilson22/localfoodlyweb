@@ -350,7 +350,7 @@ class CartController extends Controller
                     $orderDetail = new OrderDetail();
                     $orderDetail->food_id = $food->id;
                     $orderDetail->order_id = $order->id;
-                    $orderDetail->price = $food->price;
+                    $orderDetail->price = $request->totalPrice;
                     $orderDetail->restaurant_id = $food->restaurant_id;
                     $orderDetail->tax_amount = "0";
                     $orderDetail->save();

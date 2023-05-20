@@ -29,7 +29,7 @@
 <body class="hompg ">
 
     <nav class="navbar navbar-expand-lg homehead">
-        <div class="container">
+        <div class="container test">
             <a class="navbar-brand" href="{{route('restaurant.list')}}">
                 <img src="{{ asset('public/customer/assets/images/logo.png') }}" alt="">
             </a>
@@ -175,5 +175,27 @@
 
     @yield('script')
 </body>
+<script>
+    $(document).ready(function () {
+        // Get the current URL
+        var currentUrl = window.location.href;
+        var logoPath;
+        console.log("osama1");
+        console.log(currentUrl);
+        console.log("osama2");
+        // Check the URL and set the logo path accordingly
+        if (currentUrl.includes("bronze")) {
+            logoPath = "{{ asset('public/customer/assets/images/bronze_logo.png') }}";
+        } else if (currentUrl.includes("silver")) {
+            logoPath = "{{ asset('public/customer/assets/images/silver_logo.png') }}";
+        } else if (currentUrl.includes("gold")) {
+            logoPath = "{{ asset('public/customer/assets/images/gold_logo.png') }}";
+        } else {
+            logoPath = "{{ asset('public/customer/assets/images/default_logo.png') }}";
+        }
 
+        // Update the logo source attribute
+        $(".navbar-brand img").attr("src", logoPath);
+    });
+</script>
 </html>

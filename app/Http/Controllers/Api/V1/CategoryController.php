@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Vendor;
 use App\Models\Restaurant;
+use App\Models\Food;
+use App\Models\Badge;
+use App\Models\Units;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,7 +37,11 @@ class CategoryController extends Controller
             //     ->orderBy('priority', 'desc')->get();
             $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
             $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
             $categories = Category::where('restaurant_id', $restaurant->id)->get();
+
+            $foods = Food::where('category_id', $categories[0]->id)->get();
+
             if(!$categories->isEmpty()){
                 foreach ($categories as $category) {
                 $category->image =  asset('public/images/'.$category->image);
@@ -42,7 +50,404 @@ class CategoryController extends Controller
                 return response()->json([
                     // "code" => 1,
                     "status" => true,
-                    "message" => "Categories found",
+                    "message" => "Categoriess",
+                    "body" => $categories
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Categories Not Found"
+                ], 201);
+            }
+            // return response()->json(Helpers::category_data_formatting($categories, true), 200);
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+
+//MAAZ
+//GET coupons
+
+
+
+public function get_coupons(Request $request)
+    {
+        try {
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            $coupons = Coupon::where('restaurant_id', $restaurant->id)->get();
+            if(!$coupons->isEmpty()){
+                foreach ($coupons as $category) {
+                $category->image =  asset('public/images/'.$category->image);
+                }
+            
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Coupons",
+                    "body" => $coupons
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Coupons Not Found"
+                ], 201);
+            }
+            // return response()->json(Helpers::category_data_formatting($categories, true), 200);
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+
+
+    public function create_coupon(Request $request)
+    {
+        try {
+
+
+            // return response()->json([
+            //     'title' => $request->title,
+            //     'code' => $request->code,
+            //     'limit' => $request->limit,
+            //     'startDate' => $request->startDate,
+            //     'endDate' => $request->endDate,
+            //     'discountType' => $request->discountType,
+            //     'discount' => $request->discount,
+            // ], 201);
+                
+            $validator = Validator::make($request->all(), [
+                'title' => 'required',
+                'code' => 'required',
+                'limit' => 'required',
+                'startDate' => 'required',
+                'endDate' => 'required',
+                'discountType' => 'required',
+                'discount' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            }
+
+
+            $image = "";
+        if ($request->hasfile("image")) {
+            $file = $request->image;
+            $extension = $file->getClientOriginalExtension();
+            $file_name = time() . rand(00000, 99999) . "." . $extension;
+            $file->move("images/", $file_name);
+            $image  = asset("images/" . $file_name);
+        }
+
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+            
+        $data = Coupon::insert([
+             'title' => $request->title,
+             'code' => $restaurant->code,
+             'limit' => $request->limit,
+             'startDate' => $request->startDate,
+             'endDate' => $request->endDate,
+             'discountType' => $request->discountType,
+             'discount' => $request->discount,
+         // add more columns as needed
+        ]);
+
+            if ($data) {
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Coupon created successfully"
+                ], 201);
+            } else {
+                return response()->json([
+                    // "code" => 0,
+                    "status" => false,
+                    "message" => "Coupon not created"
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => Helpers::error_processor($e)], 403);
+        }
+    }
+    public function search_coupon(Request $search)
+    {
+        try {
+            return Response()->json($search); 
+            // $validator = Validator::make($search->all(), [
+            //     'search' => 'required',
+            // ]);
+
+
+            $result = coupon::where('code', 'LIKE', '%'. 'c6123'. '%')->get();
+            if(count($result)){
+             return Response()->json($result);
+            }
+            else
+            {
+            return response()->json(['Result' => 'No Data not found'], 404);
+          }
+        
+        //     if ($validator->fails()) {
+        //         return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        //     }
+
+
+        //     $vendor = Vendor::where('auth_token', $search->bearerToken())->first();
+        //     $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+            
+        // $data = Coupon::search([
+        //      'title' => $search->search,
+        //  // add more columns as needed
+        // ]);
+
+        //     if ($data) {
+        //         return response()->json([
+        //             // "code" => 1,
+        //             "status" => true,
+        //             "Coupons" => $data
+        //         ], 201);
+        //     } else {
+        //         return response()->json([
+        //             // "code" => 0,
+        //             "status" => false,
+        //             "message" => "nothing found"
+        //         ], 200);
+        //     }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => Helpers::error_processor($e)], 403);
+        }
+    }
+    public function delete_coupon($id)
+    {
+    // return response()->json(['message' => $id]);
+
+    $coupon = Coupon::where('id', $id)->first();
+        $coupon->status = 0;
+        $coupon->update();
+    
+        if($coupon)
+        {
+            return response()->json([
+                // "code" => 1,
+                "status"    => true,
+                'message' => "coupon Deleted Successfully"
+            ], 201);
+        }
+        else
+        {
+            return response()->json([
+                // "code"      => 0,
+                "status"    => false,
+                'message'   => "coupon Not Updated"
+            ], 200);
+        }
+    }
+
+    // MAAZ
+    //Get Badges
+public function get_badges(Request $request)
+    {
+        try {
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            $categories = Badge::where('restaurant_id', $restaurant->id)->get();
+
+            $foods = Food::where('category_id', $categories[0]->id)->get();
+
+            if(!$categories->isEmpty()){
+                foreach ($categories as $category) {
+                $category->image =  asset('public/images/'.$category->image);
+                }
+            
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Categoriess",
+                    "body" => $categories
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Categories Not Found"
+                ], 201);
+            }
+            // return response()->json(Helpers::category_data_formatting($categories, true), 200);
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+
+public function delete_badges($id)
+    {
+    // return response()->json(['message' => $id]);
+
+    $badge = Badge::where('id', $id)->first();
+        $badge->status = 0;
+        $badge->update();
+    
+        if($badge)
+        {
+            return response()->json([
+                // "code" => 1,
+                "status"    => true,
+                'message' => "Badge Deleted Successfully"
+            ], 201);
+        }
+        else
+        {
+            return response()->json([
+                // "code"      => 0,
+                "status"    => false,
+                'message'   => "Badge Not Updated"
+            ], 200);
+        }
+    }
+public function delete_units($ids)
+    {
+    $units = Units::where('id', $ids)->first();
+        $units->status = 0;
+        $units->delete();
+    
+        if($units)
+        {
+            return response()->json([
+                // "code" => 1,
+                "status"    => true,
+                'message' => "Units Deleted Successfully"
+            ], 201);
+        }
+        else
+        {
+            return response()->json([
+                // "code"      => 0,
+                "status"    => false,
+                'message'   => "Units Not deleted"
+            ], 200);
+        }
+    }
+public function create_badges(Request $request)
+    {
+        try {
+                
+            $validator = Validator::make($request->all(), [
+                'image' => 'required',
+                'name' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            }
+
+
+            $image = "";
+        if ($request->hasfile("image")) {
+            $file = $request->image;
+            $extension = $file->getClientOriginalExtension();
+            $file_name = time() . rand(00000, 99999) . "." . $extension;
+            $file->move("images/", $file_name);
+            $image  = asset("images/" . $file_name);
+        }
+
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+            
+        $data = badge::insert([
+             'name' => $request->name,
+             'restaurant_id' => $restaurant->id,
+             'image' => $request->image
+         // add more columns as needed
+        ]);
+
+            if ($data) {
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Badges created successfully"
+                ], 201);
+            } else {
+                return response()->json([
+                    // "code" => 0,
+                    "status" => false,
+                    "message" => "Badges not created"
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => Helpers::error_processor($e)], 403);
+        }
+    }
+
+
+    public function create_units(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            }
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+
+            $data = Units::insert([
+             'unit_name' => $request->name,
+             'restaurant_id' => $restaurant->id,
+         // add more columns as needed
+      ]);
+            if ($data) {
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Unit created successfully"
+                ], 201);
+            } else {
+                return response()->json([
+                    // "code" => 0,
+                    "status" => false,
+                    "message" => "Unit not created"
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => Helpers::error_processor($e)], 403);
+        }
+    }
+
+
+    //MAAZ
+    public function get_Units(Request $request)
+    {
+        try {
+            $name = $request->query('name');
+
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            $categories = Units::where('restaurant_id', $restaurant->id)->get();
+
+            $foods = Food::where('category_id', $categories[0]->id)->get();
+
+            if(!$categories->isEmpty()){
+                foreach ($categories as $category) {
+                $category->image =  asset('public/images/'.$category->image);
+                }
+            
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Categoriess",
                     "body" => $categories
                 ], 201);
             }

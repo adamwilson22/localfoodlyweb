@@ -117,6 +117,7 @@
 
                             <div class="card-body">
                                 <div class="product-img">
+                                   
                                     {{-- <img src="{{ asset('public/assets/admin/img/pizza.png') }}" alt=""> --}}
                                     @if (!empty($product->feature_video))
                                         <video src="{{ $product->feature_video }}" controls></video>

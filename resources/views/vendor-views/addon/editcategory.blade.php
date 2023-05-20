@@ -3,8 +3,8 @@
 @section('title', __('Edit Category'))
 
 @push('css_or_js')
-@endpush
 
+@endpush
 <body class="">
     @section('content')
     <div class="content container-fluid">
@@ -116,28 +116,39 @@
         }
     }
 
+    var id = 0;
+
     $(".deleteRecord").click(function() {
         var id = $(this).data("id");
         var token = $("meta[name='csrf-token']").attr("content");
         var state = jQuery('.deleteRecord').val();
         console.log(id);
         $.ajax({
-            
-            
-            url: "{{ route('category.destroy',"+ id +") }}",
-            type: 'DELETE',
+            // url: "{{ route('vendor.category.delete-category',"+ id +") }}",
+            url: "{{ route('vendor.category.delete-category') }}",
+            type: "POST",
             data: {
                 "id": id,
                 "_token": token,
             },
             success: function(data) {
-                if (state == "delete") {
-                    console.log("Category deleted!");
-                } else {
-                    console.log("Category delete failed!");
+                if(data == "Error"){
+                    $("#createAddon , #createBadge").modal('hide');
+                    toastr.error(
+                        'Category cannot be deleted. Delete all the products first!', {
+                            CloseButton: true,
+                            ProgressBar: true
+                    }); 
                 }
-                // jQuery('#categoryForm').trigger("reset");
-                console.log("it Works");
+                else{
+                    $("#createAddon , #createBadge").modal('hide');
+                    toastr.success(
+                        'Category deleted!', {
+                            CloseButton: true,
+                            ProgressBar: true
+                    });   
+                }
+                
             }
         });
 

@@ -217,7 +217,7 @@ input[type="file"] {
                                         </div>
                                         <div class=" form-group">
                                             <label class="input-label" for="">Store Name</label>
-                                            <input type="text" class="form-control form-control-lg" name="name"
+                                            <input type="text" class="form-control form-control-lg" name="name" required
                                                 placeholder="Spicy" value="{{$restaurant->name ?? ''}}">
                                         </div>
                                         <div class=" form-group">

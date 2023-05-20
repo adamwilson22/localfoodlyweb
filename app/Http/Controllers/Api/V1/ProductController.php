@@ -6,6 +6,7 @@ use App\CentralLogics\Helpers;
 use App\CentralLogics\ProductLogic;
 use App\CentralLogics\RestaurantLogic;
 use App\Http\Controllers\Controller;
+use App\Models\Badge;
 use App\Models\Food;
 use App\Models\Vendor;
 use App\Models\Restaurant;
@@ -767,7 +768,8 @@ class ProductController extends Controller
 
     public function delete_product($id)
     {
-        $product = Food::where('id', $id)->first();
+        $i = 12;
+        $product = Badge::where(['id'=> $id,'restaurant_id'=>$i])->delete();
         $product->status = 0;
         $product->update();
     
@@ -776,7 +778,7 @@ class ProductController extends Controller
             return response()->json([
                 // "code" => 1,
                 "status"    => true,
-                'message' => "Product Deleted Successfully"
+                'message' => $product//Product Deleted Successfully"
             ], 201);
         }
         else
