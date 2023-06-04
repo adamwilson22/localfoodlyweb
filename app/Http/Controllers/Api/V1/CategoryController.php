@@ -14,12 +14,34 @@ use App\Models\Units;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use App\Models\Reviews;
+use App\Models\Order;
+
+// use App\Models\reviews;
+
 
 class CategoryController extends Controller
 {
     public function get_categories(Request $request)
     {
         try {
+            // $data = [
+            //     'title' => "Welcome",
+            //     'description' => "Your Order Will be delivered in",
+            //     'order_id' => '',
+            //     'image' => '',
+            //     'type'=> 'block'
+            // ];
+            // $token = "dVdFcK3SRSWG4HEaSJQmtl:APA91bGZB06OrsFKk4ARhYZCDcBX2bkfNzJfRk43Kd3plt7i8Q7UQo-6oZdtKps-UxOu_kMgweTonGgaYYW-ci669hDSF65hw-3IZuLGqo_offA1R-HRbcb-yMPP1INjX2bFcxmSuNwF";
+            // Helpers::send_push_notif_to_device($token, $data);
+            // return response()->json([
+            //     // "code" => 1,
+            //     "status" => true,
+            //     "message" => "Categoriess",
+            //     "body" => $data
+            // ], 201);
+
             $name = $request->query('name');
             // $categories = Category::withCount('products')->with(['childes' => function ($query) {
             //     $query->withCount('products');
@@ -66,12 +88,190 @@ class CategoryController extends Controller
             return response()->json([$e->getMessage()], 200);
         }
     }
+//MAAZ
+//GET ORDERS STATUS
+public function get_orders(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'orderStatus' => 'required',
+            ]);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            if($request->orderStatus == ""){
+            $orders = Order::where('restaurant_id', $restaurant->id)->get();
+            }else{
+           $orders = Order::where('restaurant_id', $restaurant->id)
+            ->where('order_status',$request->orderStatus)
+            ->get();
+            }
+            if(!$orders->isEmpty()){
+                return response()->json([
+                    "status" => true,
+                    "message" => "Orders",
+                    "body" => $orders
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Orders Not Found"
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+    //Get payment status orders
+public function get_paymentStatus_orders(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'paymentStatus' => 'required',
+            ]);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            if($request->paymentStatus == ""){
+            $ordersPayment = Order::where('restaurant_id', $restaurant->id)->get();
+            // return response()->json(['errors' => "if"], 403);
+
+            }else{
+           $ordersPayment = Order::where('restaurant_id', $restaurant->id)
+            ->where('payment_status',$request->paymentStatus)
+            ->get();
+            }
+            if(!$ordersPayment->isEmpty()){
+                return response()->json([
+                    "status" => true,
+                    "message" => "Orders",
+                    "body" => $ordersPayment
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Orders Not Found"
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+//GET MAYMENT METHOD
+public function get_paymentMethod_orders(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'paymentMethod' => 'required',
+            ]);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            if($request->paymentMethod == ""){
+            $orders = Order::where('restaurant_id', $restaurant->id)->get();
+            }else{
+           $orders = Order::where('restaurant_id', $restaurant->id)
+            ->where('payment_method',$request->paymentMethod)
+            ->get();
+            }
+            if(!$orders->isEmpty()){
+                return response()->json([
+                    "status" => true,
+                    "message" => "Orders",
+                    "body" => $orders
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Orders Not Found"
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+
+    //ORDER TYPE
+    public function get_orderType_orders(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'orderType' => 'required',
+            ]);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+            if($request->orderType == ""){
+            $orderType = Order::where('restaurant_id', $restaurant->id)->get();
+            }else{
+           $orderType = Order::where('restaurant_id', $restaurant->id)
+            ->where('order_type',$request->orderType)
+            ->get();
+            }
+            if(!$orderType->isEmpty()){
+                return response()->json([
+                    "status" => true,
+                    "message" => "Orders",
+                    "body" => $orderType
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Orders Not Found"
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
+    //SEARCH ORDER
+public function get_search_orders(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'orderName' => 'required',
+            ]);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+
+
+                $results = Coupon::where('title', 'like', "%$request->orderName%")
+                        ->Where('restaurant_id', 'like', $restaurant->id)
+                        ->get();
+            if(!$results->isEmpty()){
+                return response()->json([
+                    "status" => true,
+                    "message" => "Orders",
+                    "body" => $results
+                ], 201);
+            }
+            else{
+                return response()->json([
+                    // "code" => 1,
+                    "status" => false,
+                    "message" => "Orders Not Found"
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
 
 //MAAZ
 //GET coupons
-
-
-
 public function get_coupons(Request $request)
     {
         try {
@@ -109,24 +309,12 @@ public function get_coupons(Request $request)
     public function create_coupon(Request $request)
     {
         try {
-
-
-            // return response()->json([
-            //     'title' => $request->title,
-            //     'code' => $request->code,
-            //     'limit' => $request->limit,
-            //     'startDate' => $request->startDate,
-            //     'endDate' => $request->endDate,
-            //     'discountType' => $request->discountType,
-            //     'discount' => $request->discount,
-            // ], 201);
-                
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
                 'code' => 'required',
                 'limit' => 'required',
                 'startDate' => 'required',
-                'endDate' => 'required',
+                'expiryDate' => 'required',
                 'discountType' => 'required',
                 'discount' => 'required',
             ]);
@@ -136,26 +324,57 @@ public function get_coupons(Request $request)
             }
 
 
-            $image = "";
-        if ($request->hasfile("image")) {
-            $file = $request->image;
-            $extension = $file->getClientOriginalExtension();
-            $file_name = time() . rand(00000, 99999) . "." . $extension;
-            $file->move("images/", $file_name);
-            $image  = asset("images/" . $file_name);
-        }
+        //     $image = "";
+        // if ($request->hasfile("image")) {
+        //     $file = $request->image;
+        //     $extension = $file->getClientOriginalExtension();
+        //     $file_name = time() . rand(00000, 99999) . "." . $extension;
+        //     $file->move("images/", $file_name);
+        //     $image  = asset("images/" . $file_name);
+        // }
+        $string = '2023-05-21'; // Replace this with your string
+
+        $startingDate = Carbon::parse($string);//->toDateString();
+
+        $expDate = Carbon::parse($string);//->toDateString();
+
+
+        $limit = (int)$request->limit;
+        $disc = (float)$request->discount; // Using (float) casting
 
             $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
             $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
-            
+            // return response()->json([
+            //     'title' => $request->title,
+            //     'code' => $request->code,
+            //     'limit' => $request->limit,//Int
+            //     'startDate' => $request->startDate,//datetime
+            //     'expiryDate' => $request->expiryDate,//dateTime
+            //     'discountType' => $request->discountType,
+            //     'discount' => $request->discount,//decimal
+            //     'restaurant_id'=>$restaurant->id,
+
+            // ], 201);
+            // return response()->json([
+            //     'title' => $request->title,
+            //     'code' => $request->code,
+            //     'limit' => $limit,//Int
+            //     'startDate' => $startingDate,//datetime
+            //     'expiryDate' => $expDate,//dateTime
+            //     'discountType' => $request->discountType,
+            //     'discount' => $disc,//decimal
+            //     'restaurant_id'=>$restaurant->id,
+
+            // ], 201);
         $data = Coupon::insert([
              'title' => $request->title,
-             'code' => $restaurant->code,
-             'limit' => $request->limit,
-             'startDate' => $request->startDate,
-             'endDate' => $request->endDate,
-             'discountType' => $request->discountType,
-             'discount' => $request->discount,
+             'code' => $request->code,
+             'restaurant_id'=>$restaurant->id,
+             'limit' => $limit,
+             'start_date' => $startingDate,//1,
+            'expiry_date'=>$expDate,
+             'discount_type' => $request->discountType,//1
+             'discount' => $disc,
          // add more columns as needed
         ]);
 
@@ -176,52 +395,106 @@ public function get_coupons(Request $request)
             return response()->json(['errors' => Helpers::error_processor($e)], 403);
         }
     }
-    public function search_coupon(Request $search)
+
+
+    public function update_coupon(Request $request)
     {
         try {
-            return Response()->json($search); 
-            // $validator = Validator::make($search->all(), [
-            //     'search' => 'required',
-            // ]);
+            $validator = Validator::make($request->all(), [
+                'couponId'=>'required',
+                'title' => 'required',
+                'code' => 'required',
+                'limit' => 'required',
+                'startDate' => 'required',
+                'expiryDate' => 'required',
+                'discountType' => 'required',
+                'discount' => 'required',
+            ]);
 
-
-            $result = coupon::where('code', 'LIKE', '%'. 'c6123'. '%')->get();
-            if(count($result)){
-             return Response()->json($result);
+            if ($validator->fails()) {
+                return response()->json(['errors' => Helpers::error_processor($validator)], 403);
             }
-            else
-            {
-            return response()->json(['Result' => 'No Data not found'], 404);
-          }
-        
-        //     if ($validator->fails()) {
-        //         return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-        //     }
+        $string = '2023-05-21'; // Replace this with your string
+
+        // $startingDate = Carbon::parse($string);//->toDateString();
+
+        // $expDate = Carbon::parse($string);//->toDateString();
 
 
-        //     $vendor = Vendor::where('auth_token', $search->bearerToken())->first();
-        //     $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
-            
-        // $data = Coupon::search([
-        //      'title' => $search->search,
-        //  // add more columns as needed
-        // ]);
+        $limit = (int)$request->limit;
+        $disc = (float)$request->discount; // Using (float) casting
 
-        //     if ($data) {
-        //         return response()->json([
-        //             // "code" => 1,
-        //             "status" => true,
-        //             "Coupons" => $data
-        //         ], 201);
-        //     } else {
-        //         return response()->json([
-        //             // "code" => 0,
-        //             "status" => false,
-        //             "message" => "nothing found"
-        //         ], 200);
-        //     }
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+            $record = Coupon::find(11);
+
+// Update the specific fields
+    $record->title = $request->title;
+    $record->code = $request->code;
+    // $record->restaurant_id = $restaurant->id;
+    $record->limit = $limit;
+    // $record->start_date = 'changes';
+    // $record->expiry_date = 'changes';
+    $record->discount_type = $request->discountType;
+    // $record->$discount = 34.4;
+    // $record->field2 = $newValue2;
+
+// Save the changes
+    $record->save();
+            if ($record) {
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Coupon updated successfully"
+                ], 201);
+            } else {
+                return response()->json([
+                    // "code" => 0,
+                    "status" => false,
+                    "message" => "Coupon not updated"
+                ], 200);
+            }
         } catch (\Exception $e) {
             return response()->json(['errors' => Helpers::error_processor($e)], 403);
+        }
+    }
+
+    //Search Coupons
+    public function search_coupon(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'keyword' => 'required',
+                'restaurant_Id'=> 'required'
+            ]);
+            $keyword = $request->input('keyword');
+            $resId = $request->input('restaurant_Id');
+            // return response()->json($request->keyword);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+        $results = Coupon::where('title', 'like', "%$keyword%")
+                        ->Where('restaurant_id', 'like', $resId)
+                        ->get();
+
+
+        if($results->isEmpty()){
+        // return response()->json($results);
+        return response()->json([
+            // "code" => 1,
+            "status" => false,
+            "message" => "Coupons Not Found"
+        ], 201);
+        }else{
+            return response()->json([
+                // "code" => 1,
+                "status" => true,
+                "message" => $results
+            ], 201);
+        }
+
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
         }
     }
     public function delete_coupon($id)
@@ -271,7 +544,7 @@ public function get_badges(Request $request)
                 return response()->json([
                     // "code" => 1,
                     "status" => true,
-                    "message" => "Categoriess",
+                    "message" => "Badges",
                     "body" => $categories
                 ], 201);
             }
@@ -279,7 +552,7 @@ public function get_badges(Request $request)
                 return response()->json([
                     // "code" => 1,
                     "status" => false,
-                    "message" => "Categories Not Found"
+                    "message" => "Badges Not Found"
                 ], 201);
             }
             // return response()->json(Helpers::category_data_formatting($categories, true), 200);
@@ -387,6 +660,53 @@ public function create_badges(Request $request)
         }
     }
 
+    public function update_badges(Request $request)
+    {
+        try {
+                
+            $validator = Validator::make($request->all(), [
+                'image' => 'required',
+                'name' => 'required',
+                'badgeId' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+            }
+            $image = "";
+        if ($request->hasfile("image")) {
+            $file = $request->image;
+            $extension = $file->getClientOriginalExtension();
+            $file_name = time() . rand(00000, 99999) . "." . $extension;
+            $file->move("images/", $file_name);
+            $image  = asset("images/" . $file_name);
+        }
+
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+        $record = Badge::find($request->badgeId);
+
+        $record->image = $image;
+        $record->name = $request->name;
+        
+        $record->save();
+            if ($record) {
+                return response()->json([
+                    // "code" => 1,
+                    "status" => true,
+                    "message" => "Badge updated successfully"
+                ], 201);
+            } else {
+                return response()->json([
+                    // "code" => 0,
+                    "status" => false,
+                    "message" => "Badge not updated"
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => Helpers::error_processor($e)], 403);
+        }
+    }
 
     public function create_units(Request $request)
     {
@@ -463,7 +783,64 @@ public function create_badges(Request $request)
             return response()->json([$e->getMessage()], 200);
         }
     }
+    //Reviews
+    public function get_reviews(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'isReview' => 'required',
+                'restaurant_Id'=>'required'
+            ]);
+            $isReview = $request->input('isReview');
+            $resId = $request->input('restaurant_Id');
+            // return response()->json([
+            //     // "code" => 1,
+            //     "status" => $resId,
+            //     "message" => $isReview
+            // ], 201);
 
+            // return response()->json($request->keyword);
+            $name = $request->query('name');
+            $vendor = Vendor::where('auth_token', $request->bearerToken())->first();
+            $restaurant = Restaurant::where('vendor_id', $vendor->id)->first();
+            //       return response()->json([
+            //     // "code" => 1,
+            //     "status" => $resId,
+            //     "message" => $isReview
+            // ], 201);
+
+            if ($isReview){
+                $results = Reviews::where('replied', 1)
+                ->Where('restaurant_id', $resId)
+                ->get();
+            }else{
+                $results = Reviews::where('replied', 0)
+                // ->Where('restaurant_id', $resId)
+                ->get();
+            }
+        $results = reviews::where('replied', 1)
+                        // ->Where('restaurant_id', $resId)
+                        ->get();
+
+        if($results->isEmpty()){
+        // return response()->json($results);
+        return response()->json([
+            // "code" => 1,
+            "status" => false,
+            "message" => "Coupons Not Found"
+        ], 201);
+        }else{
+            return response()->json([
+                // "code" => 1,
+                "status" => true,
+                "message" => $results
+            ], 201);
+        }
+
+        } catch (\Exception $e) {
+            return response()->json([$e->getMessage()], 200);
+        }
+    }
     public function get_childes($id)
     {
         try {

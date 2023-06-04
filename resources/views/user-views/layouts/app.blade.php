@@ -30,8 +30,9 @@
 
     <nav class="navbar navbar-expand-lg homehead">
         <div class="container test">
+            {{-- <h1>{{ asset('public/images') . '/' .  session('logoData') }}   asset('public/customer/assets/images/logo.png') </h1> --}}
             <a class="navbar-brand" href="{{route('restaurant.list')}}">
-                <img src="{{ asset('public/customer/assets/images/logo.png') }}" alt="">
+                <img src="{{ (session('logoData') == "" || session('logoData') == null) ?  asset('public/customer/assets/images/logo.png') :  asset('public/images') . '/' .  session('logoData') }}" alt="">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -164,6 +165,7 @@
                 </ul>
             </div>
         </div>
+        <div class="text-center mt-3">Powered by Local Foodly</div>
     </footer>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -176,26 +178,6 @@
     @yield('script')
 </body>
 <script>
-    $(document).ready(function () {
-        // Get the current URL
-        var currentUrl = window.location.href;
-        var logoPath;
-        console.log("osama1");
-        console.log(currentUrl);
-        console.log("osama2");
-        // Check the URL and set the logo path accordingly
-        if (currentUrl.includes("bronze")) {
-            logoPath = "{{ asset('public/customer/assets/images/bronze_logo.png') }}";
-        } else if (currentUrl.includes("silver")) {
-            logoPath = "{{ asset('public/customer/assets/images/silver_logo.png') }}";
-        } else if (currentUrl.includes("gold")) {
-            logoPath = "{{ asset('public/customer/assets/images/gold_logo.png') }}";
-        } else {
-            logoPath = "{{ asset('public/customer/assets/images/default_logo.png') }}";
-        }
-
-        // Update the logo source attribute
-        $(".navbar-brand img").attr("src", logoPath);
-    });
+   
 </script>
 </html>

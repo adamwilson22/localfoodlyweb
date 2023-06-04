@@ -84,12 +84,28 @@
                 <div class="product-cards">
                     <div class="row">
                         @foreach ($products as $product)
-                            
+                        @php
+                        $images = unserialize($product->image);
+                        @endphp
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="product-img">
-                                        <img src="{{ $product->image }}" alt="">
+                                        <a href="{{ route('food.view', $product->id) }}">
+                                            @if (!empty($product->feature_video))
+                                                <video src="{{$product->feature_video}}" controls></video>
+                                            @elseif (!empty($product->feature_image))
+                                                <img src="{{ $product->feature_image }}" alt="">
+                                            @else
+                                                @foreach ($images as $image)
+                                                    {{-- {{ dd($image) }} --}}
+                                                    <img src="{{ !empty(asset('public/images') .'/'. $image) ? asset('public/images') .'/'. $image  : asset('customer/assets/images/news_image2-min-1.png') }}"
+                                                        class="card-img-top" alt="...">
+                                                        @break
+                                                @endforeach
+                                    
+                                            @endif
+                                        </a>
                                     </div>
                                     <div class="content">
                                         <div class="name-price">

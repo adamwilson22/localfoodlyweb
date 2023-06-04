@@ -260,7 +260,7 @@ input[type="file"] {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class=" form-group">
+                                        {{-- <div class=" form-group">
                                             <label class="input-label" for="">Choose Color For Store</label>
 
                                             <input type="radio" id="red" name="color_for_store" value="Red"
@@ -271,7 +271,7 @@ input[type="file"] {
                                             <label for="blue">Blue</label><br>
                                             <input type="radio" id="green" name="color_for_store" value="Green"
                                                 {{ !empty($restaurant->color_for_store) ? ($restaurant->color_for_store == 'Green' ? 'checked' : '' ) : ''}}>
-                                            <label for="green">Green</label>
+                                            <label for="green">Green</label> --}}
 
                                             <!-- <div class="choose-color">
                                                 <span class="red"></span>
@@ -280,7 +280,7 @@ input[type="file"] {
                                                 <span class="yellow"></span>
                                                 <a href="#">More Colors...</a>
                                             </div> -->
-                                        </div>
+                                        {{-- </div> --}}
                                         <div class=" form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" name="is_deactivated"

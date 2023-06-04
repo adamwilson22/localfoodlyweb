@@ -110,23 +110,23 @@
                             </div>
                         </div> --}}
                     </div>
-                    <div class="btn--container justify-content-end">
-                        <button id="reset_btn" type="button" class="btn btn--reset">{{translate('messages.reset')}}</button>
-                        <button type="submit" class="btn btn--primary">{{translate('messages.submit')}}</button>
+                    <div class="btn--container"style="text-align:right;">
+                        <button id="reset_btn" type="button" class="btn btn--reset btn-secondary select-products btn-lg bulk-action mt-2">{{translate('messages.reset')}}</button>
+                        <button type="submit" class="btn btn-primary btn-lg ml-sm-2 mt-2">{{translate('messages.submit')}}</button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="card">
             <div class="card-header py-2">
-                <div class="search--button-wrapper">
+                <div class="search--button-wrapper" style="display: contents;">
                     <h5 class="card-title">{{translate('messages.coupon')}} {{translate('messages.list')}}<span class="badge badge-soft-dark ml-2" id="itemCount">{{$coupons->total()}}</span></h5>
                     <form method="get">
 
                         <!-- Search -->
                         <div class="input--group input-group input-group-merge input-group-flush">
-                            <input id="datatableSearch" type="search" name="search" class="form-control" placeholder="{{ translate('messages.Ex :') }} {{ translate('Search by title or code') }}" aria-label="{{translate('messages.search_here')}}">
-                            <button type="submit" class="btn btn--secondary"><i class="tio-search"></i></button>
+                            <input id="datatableSearch" type="search" name="search" class="form-control bg-light"style="padding-left: 15px;border-radius: 5px;" placeholder="{{ translate('messages.Ex :') }} {{ translate('Search by title or code') }}" aria-label="{{translate('messages.search_here')}}">
+                            <button type="submit" class="btn btn btn-secondary"><i class="tio-search"></i></button>
                         </div>
                         <!-- End Search -->
                     </form>
@@ -250,8 +250,8 @@
                     </tbody>
                 </table>
                 @if(count($coupons) === 0)
-                <div class="empty--data">
-                    <img src="{{asset('/public/assets/admin/img/empty.png')}}" alt="public">
+                <div class="empty--data text-center p-4">
+                    <img style="width: 7rem;" src="{{asset('/public/assets/admin/svg/illustrations/sorry.svg')}}" alt="public">
                     <h5>
                         {{translate('no_data_found')}}
                     </h5>

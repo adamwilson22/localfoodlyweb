@@ -66,7 +66,7 @@
                                             <td data-th="Quantity">
                                                 <div class="number">
                                                     <span class="minus update-cart" data-id="{{ $id }}">-</span>
-                                                    <input type="text" class="quantity" value="{{ $details['quantity'] }}" />
+                                                    <input type="text" class="quantity" value="{{ $details['quantity'] }}" readonly/>
                                                     <span class="plus update-cart" data-id="{{ $id }}">+</span>
                                                 </div>
                                             </td>
@@ -255,46 +255,124 @@
         $('#r12').on('click', function() {
             $(this).parent().find('a').trigger('click')
         });
-        $(".update-cart").click(function(e) {
-            e.preventDefault();
+
+ 
+     
+       
+        plusBtn = $('.plus');
+            minusBtn = $('.minus');
+
+       
+        plusBtn.on('click', function(e) {
             var ele = $(this);
-
             var parent_row = ele.parents("tr");
+              var quantity = parent_row.find(".quantity").val();
+                console.log("minus");
+                quantity = parseInt(quantity);
+                quantity++;
+                // currentPrice.value(currentValue.toFixed(2));
 
-            var quantity = parent_row.find(".quantity").val();
+                e.preventDefault();
+        
 
-            var product_subtotal = parent_row.find("span.product-subtotal");
+        var product_subtotal = parent_row.find("span.product-subtotal");
 
-            var cart_total = $(".cart-total");
+        var cart_total = $(".cart-total");
 
-            var loading = parent_row.find(".btn-loading");
+        var loading = parent_row.find(".btn-loading");
 
-            loading.show();
+        console.log("Cart Changes" +
+         quantity);
 
-            $.ajax({
-                url: '{{ url('customer/update-cart') }}',
-                method: "patch",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    id: ele.attr("data-id"),
-                    quantity: quantity
-                },
-                dataType: "json",
-                success: function(response) {
+        loading.show();
 
-                    loading.hide();
 
-                    $("span#status").html('<div class="alert alert-success">' + response.msg +
-                        '</div>');
+        $.ajax({
+            url: '{{ url('customer/update-cart') }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: ele.attr("data-id"),
+                quantity: quantity
+            },
+            dataType: "json",
+            success: function(response) {
+                console.log("Cart Changes Done");
+                console.log(response.msg);
+                loading.hide();
+                console.log("Cart Changes Done2");
 
-                    $("#header-bar").html(response.data);
-                    $(".cart-count").html(response.countlist);
-                    product_subtotal.text(response.subTotal);
+                $("span#status").html('<div class="alert alert-success">' + response.msg +
+                    '</div>');
 
-                    cart_total.text(response.total);
-                }
-            });
+                $("#header-bar").html(response.data);
+                $(".cart-count").html(response.countlist);
+                product_subtotal.text(response.subTotal);
+
+                cart_total.text(response.total);
+            }
         });
+              
+            });
+
+            minusBtn.on('click', function(e) {
+                var ele = $(this);
+                var parent_row = ele.parents("tr");
+        var quantity = parent_row.find(".quantity").val();
+                console.log("minus");
+                quantity = parseInt(quantity);
+                quantity--;
+
+                e.preventDefault();
+        
+
+           
+        
+
+
+
+
+        var product_subtotal = parent_row.find("span.product-subtotal");
+
+        var cart_total = $(".cart-total");
+
+        var loading = parent_row.find(".btn-loading");
+
+        console.log("Cart Changes" +
+         quantity);
+
+        loading.show();
+
+
+        $.ajax({
+            url: '{{ url('customer/update-cart') }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: ele.attr("data-id"),
+                quantity: quantity
+            },
+            dataType: "json",
+            success: function(response) {
+                console.log("Cart Changes Done");
+                console.log(response.msg);
+                loading.hide();
+                console.log("Cart Changes Done2");
+
+                $("span#status").html('<div class="alert alert-success">' + response.msg +
+                    '</div>');
+
+                $("#header-bar").html(response.data);
+                $(".cart-count").html(response.countlist);
+                product_subtotal.text(response.subTotal);
+
+                cart_total.text(response.total);
+            }
+        });
+               
+            });
+
+
 
         $(".remove-from-cart").click(function(e) {
             e.preventDefault();

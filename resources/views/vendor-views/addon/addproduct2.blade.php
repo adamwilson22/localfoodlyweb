@@ -350,33 +350,37 @@
                 transform: scale(50, 50);
             }
         }
+
         /* Mohsin COde */
         /* Upload Images */
         .uploadimgs .form {
             width: 500px;
             margin: 5% auto;
-            }
-            .uploadimgs .form__container {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                width: 100%;
-                border: 2px dashed silver;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 18px;
-                color: silver;
-                margin-bottom: 0;
-                border-radius: 6px;
-                /* z-index: 1; */
-            }
-            .uploadimgs .form__container.active {
+        }
+
+        .uploadimgs .form__container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            border: 2px dashed silver;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: silver;
+            margin-bottom: 0;
+            border-radius: 6px;
+            /* z-index: 1; */
+        }
+
+        .uploadimgs .form__container.active {
             background-color: rgba(192, 192, 192, 0.2);
-            }
-            .uploadimgs .form__file {
+        }
+
+        .uploadimgs .form__file {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -384,69 +388,75 @@
             left: 0;
             cursor: pointer;
             opacity: 0;
-            }
-            .uploadimgs .form__files-container {
+        }
+
+        .uploadimgs .form__files-container {
             display: block;
             width: 100%;
             font-size: 0;
             margin-top: 20px;
-            }
-            .uploadimgs .form__image-container {
+        }
+
+        .uploadimgs .form__image-container {
             display: inline-block;
             width: 120px;
             height: 120px;
             margin-bottom: 6px;
             position: relative;
             margin-right: 6px;
-            }
+        }
 
-            .uploadimgs .form__image-container:before {
-                position: absolute;
-                line-height: 1;
-                font-size: 30px;
-                margin: auto;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                text-align: center;
-                font-weight: bold;
-                color: #fff;
-                background-color: rgba(27, 109, 216, 0.6);
-                opacity: 0;
-                border-radius: 6px;
-                transition: opacity 0.2s ease-in-out;
-                content: ''
-            }
-            .uploadimgs .form__image-container:after {
-                position: absolute;
-                font-size: 25px;
-                width: 42px;
-                height: 42px;
-                margin: auto;
-                top: 50%;
-                transform: translate(0px, -50%);
-                font-family: "icomoon";
-                content: "\e912";
-                right: 0;
-                left: 0;
-                border-radius: 50%;
-                color: red;
-                text-align: center;
-                background: #fff;
-                opacity: 0;
-                transition: opacity 0.2s ease-in-out;
-            }
-            .uploadimgs .form__image-container:hover:after,.uploadimgs .form__image-container:hover:before {
+        .uploadimgs .form__image-container:before {
+            position: absolute;
+            line-height: 1;
+            font-size: 30px;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(27, 109, 216, 0.6);
+            opacity: 0;
+            border-radius: 6px;
+            transition: opacity 0.2s ease-in-out;
+            content: ''
+        }
+
+        .uploadimgs .form__image-container:after {
+            position: absolute;
+            font-size: 25px;
+            width: 42px;
+            height: 42px;
+            margin: auto;
+            top: 50%;
+            transform: translate(0px, -50%);
+            font-family: "icomoon";
+            content: "\e912";
+            right: 0;
+            left: 0;
+            border-radius: 50%;
+            color: red;
+            text-align: center;
+            background: #fff;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .uploadimgs .form__image-container:hover:after,
+        .uploadimgs .form__image-container:hover:before {
             opacity: 1;
             cursor: pointer;
-            }
-            .uploadimgs .form__image {
+        }
+
+        .uploadimgs .form__image {
             -o-object-fit: cover;
-                object-fit: cover;
+            object-fit: cover;
             width: 100%;
             height: 100%;
-            }
+        }
     </style>
 @endpush
 
@@ -508,7 +518,9 @@
                                         <select name="category_id" id="category_id" class="custom-select custom-select-lg">
                                             <option value="">Please select category</option>
                                             @foreach ($category as $value)
-                                                <option value="{{ $value->id }}" @if(old('category_id') == $value->id) selected @endif>{{ $value->name }} </option>
+                                                <option value="{{ $value->id }}"
+                                                    @if (old('category_id') == $value->id) selected @endif>{{ $value->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -552,14 +564,17 @@
                                         <select name="fulfillment_type" id=""
                                             class="custom-select custom-select-lg">
                                             <option value="">Please select a delivery option</option>
-                                            <option value="delivery" @if(old('unit_serve') == 'delivery') selected @endif>Delivery</option>
-                                            <option value="pickup" @if(old('unit_serve') == 'pickup') selected @endif>Pickup</option>
+                                            <option value="delivery" @if (old('unit_serve') == 'delivery') selected @endif>
+                                                Delivery</option>
+                                            <option value="pickup" @if (old('unit_serve') == 'pickup') selected @endif>Pickup
+                                            </option>
                                         </select>
                                     </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="">Pre-Order Quantity Limit</label>
                                         <input type="number" class="form-control form-control-lg"
-                                            name="pre_order_quantity_limit" placeholder="10 Purchases" value="{{ old('pre_order_quantity_limit') }}">
+                                            name="pre_order_quantity_limit" placeholder="10 Purchases"
+                                            value="{{ old('pre_order_quantity_limit') }}">
                                     </div>
                                     {{-- PreOrders --}}
 
@@ -683,97 +698,97 @@
                                     </div>
                                 </div> --}}
 
-                                <div class=" form-group">
-                                    <label class="input-label" for="addons">Serving Unit</label>
-                                    {{-- Modal for adding new Units for Food --}}
-                                    <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
-                                        data-target="#unitsModal">
-                                        Add Units
-                                    </button>
+                                    <div class=" form-group">
+                                        <label class="input-label" for="addons">Serving Unit</label>
+                                        {{-- Modal for adding new Units for Food --}}
+                                        <button type="button" class="btn btn-primary mb-3" data-toggle="modal"
+                                            data-target="#unitsModal">
+                                            Add Units
+                                        </button>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="unitsModal" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            {{-- <form method="POST" action="{{ route('vendor.addon.add-unit') }}">
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="unitsModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                {{-- <form method="POST" action="{{ route('vendor.addon.add-unit') }}">
                                                 @csrf --}}
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Add a Unit</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-
-                                                    <!-- Form fields go here -->
-                                                    <div class="form-group">
-                                                        <input id="unitnametextbox" type="text" name="unitname"
-                                                            class="form-control form-control-lg"
-                                                            placeholder="Unit name">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Add a Unit</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
+                                                    <div class="modal-body">
+
+                                                        <!-- Form fields go here -->
+                                                        <div class="form-group">
+                                                            <input id="unitnametextbox" type="text" name="unitname"
+                                                                class="form-control form-control-lg"
+                                                                placeholder="Unit name">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button id="unitnamesubmit" type="submit"
+                                                            class="btn btn-primary">Save </button>
+                                                    </div>
+                                                    {{-- </form> --}}
 
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                    <button id="unitnamesubmit" type="submit"
-                                                        class="btn btn-primary">Save </button>
-                                                </div>
-                                                {{-- </form> --}}
-
                                             </div>
                                         </div>
-                                    </div>
-                                    {{-- Modal for adding new Units for Food --}}
-                                    <select id="unitsdropdown" name="unit_serve"
-                                        class="custom-select custom-select-lg" data-placeholder="Select Unit Serve">
-                                        @foreach ($units as $item)
-                                            <option value="{{ $item->unit_name }}">{{ $item->unit_name }}
-                                            </option>
-                                        @endforeach
-                                        {{-- <option value="Kg" @if (old('unit_serve') == 'KG') selected @endif>Kg
+                                        {{-- Modal for adding new Units for Food --}}
+                                        <select id="unitsdropdown" name="unit_serve"
+                                            class="custom-select custom-select-lg" data-placeholder="Select Unit Serve">
+                                            @foreach ($units as $item)
+                                                <option value="{{ $item->unit_name }}">{{ $item->unit_name }}
+                                                </option>
+                                            @endforeach
+                                            {{-- <option value="Kg" @if (old('unit_serve') == 'KG') selected @endif>Kg
                                         </option>
                                         <option value="Dozen" @if (old('unit_serve') == 'DAZAN') selected @endif>Dozen
                                         </option>
                                         <option value="Length" @if (old('unit_serve') == 'LENGTH') selected @endif>Length
                                         </option> --}}
-                                    </select>
-                                    <label class="input-label" for="">Unit</label>
-                                    <input type="number" class="form-control form-control-lg" name="unit"
-                                        placeholder="Please enter the quantity or size" value="{{ old('unit') }}">
-                                </div>
+                                        </select>
+                                        <label class="input-label" for="">Unit</label>
+                                        <input type="number" class="form-control form-control-lg" name="unit"
+                                            placeholder="Please enter the quantity or size" value="{{ old('unit') }}">
+                                    </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Add-On</label>
-                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple" id="addonDropdown">
+                                        <select class="addonDropdown" name="add_ons[]" multiple="multiple"
+                                            id="addonDropdown">
                                             @foreach ($addon as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <a href="#" data-toggle="modal"
-                                       data-target="#createAddon" >Create More
-                                           Add-Ons</a>
-                                       {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
+                                        <a href="#" data-toggle="modal" data-target="#createAddon">Create More
+                                            Add-Ons</a>
+                                        {{-- <a href="{{ route('vendor.addon.add-new') }}" target="_blank">Create More
                                            Add-On</a> --}}
-                                   </div>
+                                    </div>
                                     <div class=" form-group">
                                         <label class="input-label" for="addons">Badge</label>
-                                        <select class="badgesDropdown" name="Badge[]" multiple="multiple" id="badgesDropdown">
+                                        <select class="badgesDropdown" name="Badge[]" multiple="multiple"
+                                            id="badgesDropdown">
                                             @foreach ($badges as $badge)
                                                 <option value="{{ $badge->id }}">{{ $badge->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class=" form-group">
-                                        <a href="#" data-toggle="modal"
-                                        data-target="#createBadge" >Create More
+                                        <a href="#" data-toggle="modal" data-target="#createBadge">Create More
                                             Badges</a>
                                         {{-- <a href="{{ route('vendor.badge.add-new') }}">Create More Badge</a> --}}
                                     </div>
-                                    
+
                                     <div class=" form-group">
                                         <label class="input-label" for="">Serves</label>
                                         <select name="serves" id="serves" class="custom-select custom-select-lg">
@@ -808,8 +823,8 @@
                                             <option value="3">Item 3</option>
                                         </select>
                                     </div>
-                                    
-                                    
+
+
                                     <div class="form-group">
                                         <div class="card">
                                             <div class="card-header">
@@ -874,8 +889,8 @@
                                                         </div>
                                                     </button>
                                                 </div>
-                                                <input id="price" type="number" name="price" class="form-control" step="0.1"
-                                                    placeholder="00" value="{{ old('price') }}">
+                                                <input id="price" type="number" name="price" class="form-control"
+                                                    step=any placeholder="00" value="{{ old('price') }}">
                                             </div>
                                             <!-- End Search -->
                                         </div>
@@ -967,22 +982,22 @@
                     <div class="col-lg-5">
                         <div class="uploadimgs insert-img">
                             <div class="card">
-                                <div class="card-body" id = "file-input1">
-                                    <div class="form-row images-preview-div" >
+                                <div class="card-body" id="file-input1">
+                                    <div class="form-row images-preview-div">
 
-                                       
 
                                     </div>
-                                    <div class="inputgroup" >
+                                    <div class="inputgroup">
                                         <div class="input-group-prepend">
-                                            <i class="icon-plus_round_icon"></i>
+                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                            {{-- <i class="icon-plus_round_icon"></i> --}}
                                         </div>
                                         <div class="custom-file">
                                             <input type="hidden" name="fimg" id="fimg" value="">
-                                                <input type="file" name="images[]" class="custom-file-input"
-                                                    id="images" multiple required>
-                                            <label class="custom-file-label" for="inputGroupFile01">Uploads
-                                                Images/Video <p>Select file</p></label>
+                                            <input type="file" name="images[]" class="custom-file-input"
+                                                id="images" multiple required>
+                                            <label class="custom-file-label" for="inputGroupFile01">Upload
+                                                Images/Videos <p>Select file</p></label>
                                         </div>
                                     </div>
                                 </div>
@@ -991,17 +1006,19 @@
                         <br>
                         <div class="uploadimgs insert-img">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="file-input2">
                                     <div class="form-row featureImage-preview-div">
                                     </div>
                                     <div class="inputgroup">
                                         <div class="input-group-prepend">
-                                            <i class="icon-plus_round_icon"></i>
+                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                            {{-- <i class="icon-plus_round_icon"></i> --}}
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" name="featureImage" class="custom-file-input"
                                                 id="featureImage" required>
-                                            <label class="custom-file-label" for="inputGroupFile01">Upload Feature Images
+                                            <label class="custom-file-label" for="inputGroupFile01">Upload Feature
+                                                Images
                                                 Optional
                                                 <p>Select file</p>
                                             </label>
@@ -1039,81 +1056,88 @@
                 </form>
             </div>
         </div>
-        <div class="modal fade" id="createAddon" tabindex="-1" role="dialog"
-        aria-labelledby="createAddonTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form action="{{ route('vendor.addon.store') }}" id="addon_form" method="post" enctype="multipart/form-data">
-                    <div class="modal-header">
+        <div class="modal fade" id="createAddon" tabindex="-1" role="dialog" aria-labelledby="createAddonTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form action="{{ route('vendor.addon.store') }}" id="addon_form" method="post"
+                            enctype="multipart/form-data">
+                            <div class="modal-header">
 
-                            @csrf
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add Addon</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                                @csrf
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add Addon</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label"
+                                    for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                                <input type="file" name="addon_image" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label"
+                                    for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="{{ __('messages.new_addon') }}" value="{{ old('name') }}" required
+                                    maxlength="191">
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label"
+                                    for="exampleFormControlInput1">{{ __('messages.price') }}</label>
+                                <input type="number" min="0" max="999999999999.99" name="price" step=any
+                                    class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
-                        <input type="file" name="addon_image" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
-                        <input type="text" name="name" class="form-control"
-                            placeholder="{{ __('messages.new_addon') }}" value="{{ old('name') }}" required
-                            maxlength="191">
-                    </div>
-                    <div class="form-group">
-                        <label class="input-label" for="exampleFormControlInput1">{{ __('messages.price') }}</label>
-                        <input type="number" min="0" max="999999999999.99" name="price" step="0.01"
-                            class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg">Create</button>
-                </form>
+
                 </div>
-
             </div>
         </div>
-    </div>
-<div class="modal fade" id="createBadge" tabindex="-1" role="dialog"
-        aria-labelledby="createBadgeTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form action="{{ route('vendor.badge.store') }}" id="badge_form" method="post" enctype="multipart/form-data">
-                        <div class="modal-header">
+        <div class="modal fade" id="createBadge" tabindex="-1" role="dialog" aria-labelledby="createBadgeTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form action="{{ route('vendor.badge.store') }}" id="badge_form" method="post"
+                            enctype="multipart/form-data">
+                            <div class="modal-header">
 
-                            @csrf
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add Badge</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                         </div>
-                        <div class="form-group">
-                            <label class="input-label" for="exampleFormControlInput1">{{ __('messages.image') }}</label>
-                            <input type="file" name="badge_image" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
-                            <input type="text" name="name" class="form-control"
-                                placeholder="{{ __('messages.new_badge') }}" value="{{ old('name') }}" required
-                                maxlength="191">
-                        </div>
-    
-                        <button type="submit" class="btn btn-primary btn-lg">Create</button>
-                    </form>
+                                @csrf
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add Badge</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label"
+                                    for="exampleFormControlInput1">{{ __('messages.image') }}</label>
+                                <input type="file" name="badge_image" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label"
+                                    for="exampleFormControlInput1">{{ __('messages.name') }}</label>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="{{ __('messages.new_badge') }}" value="{{ old('name') }}" required
+                                    maxlength="191">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                        </form>
+                    </div>
+
                 </div>
-
             </div>
         </div>
-    </div>
     @endsection
 </body>
 
 @push('custom_js')
-{{-- Upload Images --}}
-{{-- MOhsin Code --}}
-{{-- <script>
+    {{-- Upload Images --}}
+    {{-- MOhsin Code --}}
+    {{-- <script>
     const INPUT_FILE = document.querySelector("#upload-files");
     const INPUT_CONTAINER = document.querySelector("#upload-container");
     const FILES_LIST_CONTAINER = document.querySelector("#files-list-container");
@@ -1213,11 +1237,14 @@
 </script> --}}
     <script>
         $(function() {
-            
+
             document.getElementById('file-input1').addEventListener('click', function() {
-        document.getElementById('images').click();
-      
-    });
+                document.getElementById('images').click()
+            });
+            document.getElementById('file-input2').addEventListener('click', function() {
+                document.getElementById('featureImage').click()
+            });
+
             $('.addonDropdown').select2();
             $('.badgesDropdown').select2();
             // Multiple images preview with JavaScript
@@ -1262,6 +1289,9 @@
                     }
                     reader.readAsDataURL(input.files[i]);
                 }
+                $(".uploadimgs .card .card-body .inputgroup").addClass("active")
+            }else{
+                $(".uploadimgs .card .card-body .inputgroup").removeClass("active")
             }
 
             // var tag = `
@@ -1275,7 +1305,7 @@
         //     `;
             // return tag;
         }
-         $('#featureImage').on('change', function() {
+        $('#featureImage').on('change', function() {
             render_featureImage(this);
         });
 
@@ -1314,35 +1344,35 @@
         const video = document.getElementById('feature-video');
         const videoSource = document.createElement('source');
 
-        input.addEventListener('change', function() {
-            const files = this.files || [];
+        // input.addEventListener('change', function() {
+        //     const files = this.files || [];
 
-            if (!files.length) return;
+        //     if (!files.length) return;
 
-            const reader = new FileReader();
+        //     const reader = new FileReader();
 
-            reader.onload = function(e) {
-                $('.featureVideo-preview-div').append(`
-                    <div class="img">
-                        <video src="${event.target.result}" id="feature-video" width="300" height="300" controls></video>
-                        <div class="action-btn">
-                            <button><i class="icon-trash"></i></button>
-                        </div>
-                    </div>
-                `);
-                // videoSource.setAttribute('src', e.target.result);
-                // video.appendChild(videoSource);
-                video.load();
-                video.play();
-            };
+        //     reader.onload = function(e) {
+        //         $('.featureVideo-preview-div').append(`
+    //             <div class="img">
+    //                 <video src="${event.target.result}" id="feature-video" width="300" height="300" controls></video>
+    //                 <div class="action-btn">
+    //                     <button><i class="icon-trash"></i></button>
+    //                 </div>
+    //             </div>
+    //         `);
+        //         // videoSource.setAttribute('src', e.target.result);
+        //         // video.appendChild(videoSource);
+        //         video.load();
+        //         video.play();
+        //     };
 
-            reader.onprogress = function(e) {
-                console.log('progress: ', Math.round((e.loaded * 100) / e.total));
-            };
+        //     reader.onprogress = function(e) {
+        //         console.log('progress: ', Math.round((e.loaded * 100) / e.total));
+        //     };
 
-            reader.readAsDataURL(files[0]);
-        });
-// Create Addon and Badge
+        //     reader.readAsDataURL(files[0]);
+        // });
+        // Create Addon and Badge
         $("#addon_form , #badge_form").submit(function(e) {
 
             e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -1354,57 +1384,51 @@
                 type: "POST",
                 url: actionUrl,
                 data: form.serialize(), // serializes the form's elements.
-                success: function(data)
-                {
+                success: function(data) {
                     $("#createAddon , #createBadge").modal('hide');
                     toastr.success(
                         'Added successfully', {
                             CloseButton: true,
                             ProgressBar: true
-                        });// show response from the php script.
+                        }); // show response from the php script.
+                    form.find('input').val('');
+                    $.ajax({
+                        url: '{{ route('vendor.addon.getAddons') }}',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                $('#addDropdown').append('<option value="' + value
+                                    .id + '">' + value.name + '</option>');
 
-                        $.ajax({
-                            url: '{{ route('vendor.addon.getAddons') }}',
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                console.log(data);
-                                $('#addDropdown').empty();
-                                $.each(data, function(key, value) {
-                                    // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                    $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                    
 
-                                });
-                                
-                            }
-                                 });
+                            });
 
-                             $.ajax({
-                            url: '{{ route('vendor.addon.getBadges') }}',
-                            type: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                console.log(data);
-                               
-                                $('#badgesDropdown').empty();
-                                $.each(data, function(key, value) {
-                                    // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                    $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
-                                    
-                                    
-                                });
-                                
-                            }
-                              });
+                        }
+                    });
+
+                    $.ajax({
+                        url: '{{ route('vendor.addon.getBadges') }}',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $.each(data, function(key, value) {
+                                // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                $('#badgesDropdown').append('<option value="' +
+                                    value.id + '">' + value.name + '</option>');
+
+
+                            });
+
+                        }
+                    });
                 }
             });
 
-            });
+        });
     </script>
     <script>
-       
-
         $('#related_tags, #ingredients, #allergens').on('change', function() {
             $('.' + $(this).attr('id')).append(render_tag((this).value, (this).id));
             (this).value = "";
@@ -1423,13 +1447,13 @@
             return tag;
         }
     </script>
-        <script>
-            var count = 0;
-            // var countRow=0;
-            $(document).ready(function() {
-                $("#add_new_option_button").click(function(e) {
-                    count++;
-                    var add_option_view = `
+    <script>
+        var count = 0;
+        // var countRow=0;
+        $(document).ready(function() {
+            $("#add_new_option_button").click(function(e) {
+                count++;
+                var add_option_view = `
         <div class="card view_new_option mb-2" >
             <div class="card-header">
                 <label for="" id=new_option_name_` + count + `> {{ translate('add_new') }}</label>
@@ -1439,8 +1463,8 @@
                     <div class="col-lg-6 col-md-6">
                         <label for="">{{ translate('name') }}</label>
                         <input required name=options[` + count +
-                        `][name] class="form-control" type="text" onkeyup="new_option_name(this.value,` +
-                        count + `)">
+                    `][name] class="form-control" type="text" onkeyup="new_option_name(this.value,` +
+                    count + `)">
                     </div>
     
                     
@@ -1474,95 +1498,95 @@
                                 <div class="col-md-4 col-sm-6">
                                     <label for="">{{ translate('Option_name') }}</label>
                                     <input class="form-control" required type="text" name="options[` + count +
-                        `][values][0][label]" id="">
+                    `][values][0][label]" id="">
                                 </div>
                                 <div class="col-md-4 col-sm-6">
                                     <label for="">{{ translate('Additional_price') }}</label>
-                                    <input class="form-control" required type="number" min="0" step="0.01" name="options[` +
-                        count + `][values][0][optionPrice]" id="">
+                                    <input class="form-control" required type="number" min="0" step=any name="options[` +
+                    count + `][values][0][optionPrice]" id="">
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-3 p-3 mr-1 d-flex "  id="add_new_button_` + count + `">
                             <button type="button" class="btn btn-outline-primary" onclick="add_new_row_button(` +
-                        count + `)" >{{ translate('Add_New_Option') }}</button>
+                    count + `)" >{{ translate('Add_New_Option') }}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>`;
-    
-                    $("#add_new_option").append(add_option_view);
-                });
+
+                $("#add_new_option").append(add_option_view);
             });
-            $('#choice_attributes').on('change', function() {
-                $('#customer_choice_options').html(null);
-                $.each($("#choice_attributes option:selected"), function() {
-                    if ($(this).val().length > 50) {
-                        toastr.error(
-                            '{{ translate('validation.max.string', ['attribute' => translate('messages.variation'), 'max' => '50']) }}', {
-                                CloseButton: true,
-                                ProgressBar: true
-                            });
-                        return false;
-                    }
-                    add_more_customer_choice_option($(this).val(), $(this).text());
-                });
+        });
+        $('#choice_attributes').on('change', function() {
+            $('#customer_choice_options').html(null);
+            $.each($("#choice_attributes option:selected"), function() {
+                if ($(this).val().length > 50) {
+                    toastr.error(
+                        '{{ translate('validation.max.string', ['attribute' => translate('messages.variation'), 'max' => '50']) }}', {
+                            CloseButton: true,
+                            ProgressBar: true
+                        });
+                    return false;
+                }
+                add_more_customer_choice_option($(this).val(), $(this).text());
             });
-    
-            function add_more_customer_choice_option(i, name) {
-                let n = name;
-                $('#customer_choice_options').append(
-                    '<div class="row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i +
-                    '"><input type="text" class="form-control" name="choice[]" value="' + n +
-                    '" placeholder="{{ translate('messages.choice_title') }}" readonly></div><div class="col-md-9"><input type="text" class="form-control" name="choice_options_' +
-                    i +
-                    '[]" placeholder="{{ translate('messages.enter_choice_values') }}" data-role="tagsinput" onchange="combination_update()"></div></div>'
-                );
-                $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
-            }
-    
-            function combination_update() {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        });
+
+        function add_more_customer_choice_option(i, name) {
+            let n = name;
+            $('#customer_choice_options').append(
+                '<div class="row"><div class="col-md-3"><input type="hidden" name="choice_no[]" value="' + i +
+                '"><input type="text" class="form-control" name="choice[]" value="' + n +
+                '" placeholder="{{ translate('messages.choice_title') }}" readonly></div><div class="col-md-9"><input type="text" class="form-control" name="choice_options_' +
+                i +
+                '[]" placeholder="{{ translate('messages.enter_choice_values') }}" data-role="tagsinput" onchange="combination_update()"></div></div>'
+            );
+            $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput();
+        }
+
+        function combination_update() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '{{ route('admin.food.variant-combination') }}',
+                data: $('#food_form').serialize(),
+                beforeSend: function() {
+                    $('#loading').show();
+                },
+                success: function(data) {
+                    $('#loading').hide();
+                    $('#variant_combination').html(data.view);
+                    if (data.length > 1) {
+                        $('#quantity').hide();
+                    } else {
+                        $('#quantity').show();
                     }
-                });
-    
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route('admin.food.variant-combination') }}',
-                    data: $('#food_form').serialize(),
-                    beforeSend: function() {
-                        $('#loading').show();
-                    },
-                    success: function(data) {
-                        $('#loading').hide();
-                        $('#variant_combination').html(data.view);
-                        if (data.length > 1) {
-                            $('#quantity').hide();
-                        } else {
-                            $('#quantity').show();
-                        }
-                    }
-                });
-            }
-    
-            function add_new_row_button(data) {
-                count = data;
-                countRow = 1 + $('#option_price_view_' + data).children('.add_new_view_row_class').length;
-                var add_new_row_view = `
+                }
+            });
+        }
+
+        function add_new_row_button(data) {
+            count = data;
+            countRow = 1 + $('#option_price_view_' + data).children('.add_new_view_row_class').length;
+            var add_new_row_view = `
                 <div class="row add_new_view_row_class mb-3 position-relative pt-3 pt-sm-0">
                     <div class="col-md-4 col-sm-5">
                             <label for="">{{ translate('Option_name') }}</label>
                             <input class="form-control" required type="text" name="options[` + count + `][values][` +
-                    countRow + `][label]" id="">
+                countRow + `][label]" id="">
                         </div>
                         <div class="col-md-4 col-sm-5">
                             <label for="">{{ translate('Additional_price') }}</label>
-                            <input class="form-control"  required type="number" min="0" step="0.01" name="options[` +
-                    count +
-                    `][values][` + countRow + `][optionPrice]" id="">
+                            <input class="form-control"  required type="number" min="0" step=any name="options[` +
+                count +
+                `][values][` + countRow + `][optionPrice]" id="">
                         </div>
                         <div class="col-sm-2 max-sm-absolute">
                             <label class="d-none d-sm-block">&nbsp;</label>
@@ -1574,30 +1598,30 @@
                             </div>
                     </div>
                 </div>`;
-                $('#option_price_view_' + data).append(add_new_row_view);
-    
-            }
-    
-            function deleteRow(e) {
-                element = $(e);
-                element.parents('.add_new_view_row_class').remove();
-            }
-    
-            function removeOption(e) {
-                element = $(e);
-                element.parents('.view_new_option').remove();
-            }
-        </script>
-        
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script>
-            function closeModal() {
+            $('#option_price_view_' + data).append(add_new_row_view);
+
+        }
+
+        function deleteRow(e) {
+            element = $(e);
+            element.parents('.add_new_view_row_class').remove();
+        }
+
+        function removeOption(e) {
+            element = $(e);
+            element.parents('.view_new_option').remove();
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function closeModal() {
             let modal = document.getElementById("unitsModal").style.display = "none";
             // modal.classList.remove(".modal-backdrop.show");
             $(".modal-backdrop").remove();
             $('body').removeClass('modal-open');
         }
-            document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('unitnamesubmit').addEventListener('click', function() {
                 let unitNameValue = document.getElementById('unitnametextbox').value;
                 console.log(unitNameValue);
@@ -1625,7 +1649,7 @@
 
             });
         });
-        </script>
+    </script>
     {{-- <script>
         var count = 0;
         // var countRow=0;

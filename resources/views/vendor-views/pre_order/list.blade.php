@@ -12,8 +12,9 @@
         <div class="page-header">
             <div class="row align-items-center mb-3">
                 <div class="col-sm">
-                    <h1 class="page-header-title text-capitalize">{{ str_replace('_', ' ', 'Pre Order Pending') }}
-                        {{ __('messages.orders') }} <span class="badge badge-soft-dark ml-2">{{ $ordeDetails->count() }}</span>
+                    <h1 class="page-header-title text-capitalize">{{ str_replace('_', ' ', '(Pre Order)-Pending ') }}
+                        {{ __('messages.orders') }} <span
+                            class="badge badge-soft-dark ml-2">{{ $ordeDetails->count() }}</span>
                     </h1>
                 </div>
             </div>
@@ -46,6 +47,63 @@
 
                     <div class="col-lg-6">
                         <div class="d-sm-flex justify-content-sm-end align-items-sm-center">
+
+                            <!-- Unfold -->
+                            <div class="hs-unfold mr-2">
+                                <a class="js-hs-unfold-invoker btn btn-sm btn-white dropdown-toggle" href="javascript:;"
+                                    data-hs-unfold-options='{
+                                     "target": "#usersExportDropdown",
+                                     "type": "css-animation"
+                                   }'>
+                                    {{ __('Over All Order Status') }}
+                                </a>
+
+                                <div id="usersExportDropdown"
+                                    class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right">
+                                    <a class="orderStatus" id="orderStatus" data-status="pending" class="dropdown-item"
+                                        href="javascript:;">
+
+                                        {{ __('messages.pending') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="accepted" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.accepted') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="confirmed" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.confirmed') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="processing" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.processing') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="handover" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.handover') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="picked_up" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('Picked Up') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="delivered" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.delivered') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="canceled" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.canceled') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="refund_requested"
+                                        class="dropdown-item" href="javascript:;">
+                                        {{ __('messages.refund_requested') }}
+                                    </a>
+                                    <a class="orderStatus" id="orderStatus" data-status="refunded" class="dropdown-item"
+                                        href="javascript:;">
+                                        {{ __('messages.refunded') }}
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- End Unfold -->
 
                             <!-- Unfold -->
                             <div class="hs-unfold mr-2">
@@ -239,121 +297,126 @@
             </div>
             <!-- End Header -->
             <div class="card-body">
-            <!-- Table -->
-            <div class="table-responsive datatable-custom">
-                <table id="datatable"
-                    class="table table-hover table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
-                    style="width: 100%"
-                    data-hs-datatables-options='{
+                <!-- Table -->
+                <div class="table-responsive datatable-custom">
+                    <table id="datatable"
+                        class="table table-hover table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+                        style="width: 100%"
+                        data-hs-datatables-options='{
                                  "order": [],
                                  "orderCellsTop": true,
                                  "paging":false
                                }'>
-                    <thead class="thead-light">
-                        <tr>
-                            <th class="">
-                                {{ __('messages.#') }}
-                            </th>
-                            <th class="table-column-pl-0">{{ __('messages.order') }}</th>
-                            <th>{{ __('messages.date') }}</th>
-                            <th>{{ __('messages.customer') }}</th>
-                            <th>{{ __('messages.payment') }} {{ __('messages.status') }}</th>
-                            <th>{{ __('messages.total') }}</th>
-                            <th>{{ __('messages.order') }} {{ __('messages.status') }}</th>
-                            <th>{{ __('messages.order') }} {{ __('messages.type') }}</th>
-                            <th>{{ __('messages.actions') }}</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="set-rows">
-                        @foreach ($ordeDetails as $key => $order)
-                            {{-- @dd( $order->order->customer['f_name'] . ' ' . $order->order->customer['l_name']) --}}
-                            <tr class="status-{{ $order['order_status'] }} class-all">
-                                <td class="" style="text-align: center;">
-                                    {{ ++$key }}
-                                </td>
-                                <td class="table-column-pl-0">
-                                    <a
-                                        href="{{ route('vendor.order.details', ['id' => $order['order']['id']]) }}">{{ $order['order']['id'] }}</a>
-                                </td>
-                                <td>{{ date('d M Y', strtotime($order['order']['created_at'])) }}</td>
-                                <td>
-                                    @if ($order->order->customer)
-                                        <a class="text-body text-capitalize"
-                                            href="{{ route('vendor.order.details', ['id' => $order['order']['id']]) }}">{{ $order->order->customer['f_name'] . ' ' . $order->order->customer['l_name'] }}</a>
-                                    @else
-                                        <label class="badge badge-danger">{{ __('messages.invalid') }}
-                                            {{ __('messages.customer') }} {{ __('messages.data') }}</label>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($order->order->payment_status == 'paid')
-                                        <span class="badge badge-soft-success">
-                                            <span class="legend-indicator bg-success"></span>{{ __('messages.paid') }}
-                                        </span>
-                                    @else
-                                        <span class="badge badge-soft-danger">
-                                            <span class="legend-indicator bg-danger"></span>{{ __('messages.unpaid') }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>{{ \App\CentralLogics\Helpers::format_currency($order['order']['order_amount']) }}</td>
-                                <td class="text-capitalize">
-                                    @if ($order['order']['order_status'] == 'pending')
-                                        <span class="badge badge-soft-info ml-2 ml-sm-3">
-                                            <span class="legend-indicator bg-info"></span>{{ __('messages.pending') }}
-                                        </span>
-                                    @elseif($order['order']['order_status'] == 'confirmed')
-                                        <span class="badge badge-soft-info ml-2 ml-sm-3">
-                                            <span class="legend-indicator bg-info"></span>{{ __('messages.confirmed') }}
-                                        </span>
-                                    @elseif($order['order']['order_status'] == 'processing')
-                                        <span class="badge badge-soft-warning ml-2 ml-sm-3">
-                                            <span
-                                                class="legend-indicator bg-warning"></span>{{ __('messages.processing') }}
-                                        </span>
-                                    @elseif($order['order']['order_status'] == 'picked_up')
-                                        <span class="badge badge-soft-warning ml-2 ml-sm-3">
-                                            <span
-                                                class="legend-indicator bg-warning"></span>{{ __('messages.out_for_delivery') }}
-                                        </span>
-                                    @elseif($order['order']['order_status'] == 'delivered')
-                                        <span class="badge badge-soft-success ml-2 ml-sm-3">
-                                            <span
-                                                class="legend-indicator bg-success"></span>{{ __('messages.delivered') }}
-                                        </span>
-                                    @else
-                                        <span class="badge badge-soft-danger ml-2 ml-sm-3">
-                                            <span
-                                                class="legend-indicator bg-danger"></span>{{ str_replace('_', ' ', $order['order']['order_status']) }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="text-capitalize">
-                                    @if ($order['order']['order_type'] == 'take_away')
-                                        <span class="badge badge-soft-info ml-2 ml-sm-3">
-                                            <span class="legend-indicator bg-info"></span>{{ __('messages.take_away') }}
-                                        </span>
-                                    @else
-                                        <span class="badge badge-soft-success ml-2 ml-sm-3">
-                                            <span class="legend-indicator bg-success"></span>{{ __('messages.delivery') }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a class="btn btn-sm btn-white"
-                                        href="{{ route('vendor.order.details', ['id' => $order['order']['id']]) }}"><i
-                                            class="tio-visible"></i> {{ __('messages.view') }}</a>
-                                    <a class="btn btn-sm btn-white" target="_blank"
-                                        href="{{ route('vendor.order.generate-invoice', [$order['order']['id']]) }}"><i
-                                            class="tio-download"></i> {{ __('messages.invoice') }}</a>
-                                </td>
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="">
+                                    {{ __('messages.#') }}
+                                </th>
+                                <th class="table-column-pl-0">{{ __('messages.order') }}</th>
+                                <th>{{ __('messages.date') }}</th>
+                                <th>{{ __('messages.customer') }}</th>
+                                <th>{{ __('messages.payment') }} {{ __('messages.status') }}</th>
+                                <th>{{ __('messages.total') }}</th>
+                                <th>{{ __('messages.order') }} {{ __('messages.status') }}</th>
+                                <th>{{ __('messages.order') }} {{ __('messages.type') }}</th>
+                                <th>{{ __('messages.actions') }}</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <!-- End Table -->
+                        </thead>
+
+                        <tbody id="set-rows">
+                            @foreach ($ordeDetails as $key => $order)
+                                {{-- @dd( $order->order->customer['f_name'] . ' ' . $order->order->customer['l_name']) --}}
+                                <tr class="status-{{ $order['order_status'] }} class-all">
+                                    <td class="" style="text-align: center;">
+                                        {{ ++$key }}
+                                    </td>
+                                    <td class="table-column-pl-0">
+                                        <a
+                                            href="{{ route('vendor.order.details', ['id' => $order['order']['id']]) }}">{{ $order['order']['id'] }}</a>
+                                    </td>
+                                    <td>{{ date('d M Y', strtotime($order['order']['created_at'])) }}</td>
+                                    <td>
+                                        @if ($order->order->customer)
+                                            <a class="text-body text-capitalize"
+                                                href="{{ route('vendor.order.details', ['id' => $order['order']['id']]) }}">{{ $order->order->customer['f_name'] . ' ' . $order->order->customer['l_name'] }}</a>
+                                        @else
+                                            <label class="badge badge-danger">{{ __('messages.invalid') }}
+                                                {{ __('messages.customer') }} {{ __('messages.data') }}</label>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($order->order->payment_status == 'paid')
+                                            <span class="badge badge-soft-success">
+                                                <span class="legend-indicator bg-success"></span>{{ __('messages.paid') }}
+                                            </span>
+                                        @else
+                                            <span class="badge badge-soft-danger">
+                                                <span
+                                                    class="legend-indicator bg-danger"></span>{{ __('messages.unpaid') }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>{{ \App\CentralLogics\Helpers::format_currency($order['order']['order_amount']) }}
+                                    </td>
+                                    <td class="text-capitalize">
+                                        @if ($order['order']['order_status'] == 'pending')
+                                            <span class="badge badge-soft-info ml-2 ml-sm-3">
+                                                <span class="legend-indicator bg-info"></span>{{ __('messages.pending') }}
+                                            </span>
+                                        @elseif($order['order']['order_status'] == 'confirmed')
+                                            <span class="badge badge-soft-info ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-info"></span>{{ __('messages.confirmed') }}
+                                            </span>
+                                        @elseif($order['order']['order_status'] == 'processing')
+                                            <span class="badge badge-soft-warning ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-warning"></span>{{ __('messages.processing') }}
+                                            </span>
+                                        @elseif($order['order']['order_status'] == 'picked_up')
+                                            <span class="badge badge-soft-warning ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-warning"></span>{{ __('messages.out_for_delivery') }}
+                                            </span>
+                                        @elseif($order['order']['order_status'] == 'delivered')
+                                            <span class="badge badge-soft-success ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-success"></span>{{ __('messages.delivered') }}
+                                            </span>
+                                        @else
+                                            <span class="badge badge-soft-danger ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-danger"></span>{{ str_replace('_', ' ', $order['order']['order_status']) }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="text-capitalize">
+                                        @if ($order['order']['order_type'] == 'take_away')
+                                            <span class="badge badge-soft-info ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-info"></span>{{ __('messages.take_away') }}
+                                            </span>
+                                        @else
+                                            <span class="badge badge-soft-success ml-2 ml-sm-3">
+                                                <span
+                                                    class="legend-indicator bg-success"></span>{{ __('messages.delivery') }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-white"
+                                            href="{{ route('vendor.order.details', ['id' => $order['order']['id']]) }}"><i
+                                                class="tio-visible"></i> {{ __('messages.view') }}</a>
+                                        <a class="btn btn-sm btn-white" target="_blank"
+                                            href="{{ route('vendor.order.generate-invoice', [$order['order']['id']]) }}"><i
+                                                class="tio-download"></i> {{ __('messages.invoice') }}</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End Table -->
             </div>
             <!-- Footer -->
             <div class="card-footer">
@@ -522,6 +585,34 @@
             // =======================================================
             $('.js-tagify').each(function() {
                 var tagify = $.HSCore.components.HSTagify.init($(this));
+            });
+
+            $('.orderStatus').click(function(e) {
+                var order_status = $(this).data("status");
+                var food_id = "{{ $id }}"
+                var order_status_url = "{{ route('vendor.order.PreOrderStatus',':id') }}".replace(':id',food_id)
+                // alert(order_status + ' ' + food_id +' '+ order_status_url);
+                $.ajax({
+                    url: order_status_url,
+                    method: "get",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        food_id: food_id,
+                        order_status: order_status
+                    },
+                    dataType: "json",
+                    success: function(response) {
+
+                //         ele.siblings('.btn-loading').hide();
+                //         $(".cart-count").html(response.countlist);
+                //         $("span#status").html('<div class="alert alert-success">' + response
+                //             .msg +
+                //             '</div>');
+                //         $("#header-bar").html(response.data);
+                        toastr.success(response.msg);
+                        location.reload();
+                    }
+                });
             });
         });
     </script>

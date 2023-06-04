@@ -72,7 +72,7 @@
                                                     <i class="icon-star"></i>
                                                     (20)
                                                 </div>
-                                                <h5 class="card-title">Attribute Variation</h5>
+                                                <h5 class="card-title">Attribute Variationss</h5>
                                                 <p class="card-text">Chicken, tommato, green salad, pita, ketchup,….</p>
                                                 <a href="#" class="btn btn-primary">View Restaurant</a>
                                             </div>
@@ -371,7 +371,7 @@
                             @forelse ($listRestaurants as $listRestaurant)
                                 <div class="col-lg-4 col-6">
                                     <div class="card items-card" style="">
-                                        <img src="{{ asset('public/customer/assets/images/restaurent/images.jpg') }}"
+                                        <img src="{{ $listRestaurant->cover_photo ==null ?  asset('public/customer/assets/images/restaurent/images.jpg') : asset( 'public/images/' . $listRestaurant->cover_photo ) }}"
                                             class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <div class="stars">

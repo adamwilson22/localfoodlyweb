@@ -438,8 +438,35 @@
 // Add a new class to the body class list
 // bodyClass.add('dark-theme');
 
+// $(window).on('load',function () {
+//     var logoPath;
+//             logoPath =  "<?php echo asset('public/images') . '/' . $restaurant->logo ?>"
+ 
+//             $(".navbar-brand img").attr("src", logoPath);
+
+// });
+
     $(document).ready(function() {
-        console.log("selectedIdss");
+        // console.log("selectedIdss");
+        
+        // var currentUrl = window.location.href;
+         
+
+
+    //     setTimeout(() => {
+    //     var logoPath;
+    //     var logoChecker = 0;
+    //     if(logoChecker == 1)
+    //     {
+    //         logoPath = "<?php echo $restaurant->logo ?> ";
+    //         console.log(logoPath);
+    //         // Update the logo source attribute
+    //         $(".navbar-brand img").attr("src", logoPath);
+    //     }
+           
+           
+    //         console.log("window load");
+    // }, 500);
 
 var bodyClass = document.body.classList;
 console.log("bodyClass "  + bodyClass);

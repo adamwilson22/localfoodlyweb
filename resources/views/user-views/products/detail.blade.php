@@ -232,9 +232,7 @@
                             @endif
                         </div>
                         @if ($food->product_type != 'MealKits')
-                        <div class="container">
-                            <h4 class="heading pb-0">Variants</h4>
-                        </div>
+                        
                         @endif
                         @if ($food->allow_subscription == 1)
                         <div class="container">
@@ -242,8 +240,11 @@
                         </div>
                         @endif
                         <hr>
-                        <div class="container" id="variants">
-                            @if (!empty($variations))
+                        @if (!empty($variations))
+                        <div class="info mb-2">
+                            <p>Variants</p>
+                        </div>
+                        <div class="" id="variants">
                                 @foreach ($variations as $key => $option)
                                     <p class="mb-2 font-weight-bold">
                                         {{ $option->name }}
@@ -254,7 +255,7 @@
                                             <input class="mr-1" type="radio" id="variantss"
                                                 data-name="{{ $option->name }},{{ $value->optionPrice }}"
                                                 name="variants[{{ $option->name }}]" value="{{ $value->optionPrice }}">
-                                            <label class="mr-2"
+                                            <label class="mr-2 mb-0"
                                                 for="variants">{{ $value->label . ' (+$' . $value->optionPrice . ')' }}
                                             </label>
                                             {{-- </form> --}}
@@ -263,9 +264,9 @@
                                         @endforeach
                                     </div>
                                 @endforeach
-                            @endif
-
-                        </div>
+                                
+                            </div>
+                        @endif
                         <div class="number">
                             <span class="minus">-</span>
                             <input type="text" id="addMoreQuantity" value="1" />
@@ -384,33 +385,29 @@
     </section>
 
 
+    {{-- @if (!empty($variations))
     <section class="section-padding product pb-0">
         <div class="container">
             <h2 class="heading pb-0">Variants</h2>
         </div>
         <hr>
         <div class="container">
-            @if (!empty($variations))
                 @foreach ($variations as $key => $option)
                     <h4 class="mb-2">
                         {{ $option->name }}
                     </h4>
                     <div class="d-flex align-items-center mb-3">
                         @foreach ($option->values as $value)
-                            {{-- <form id="options-form" class="mr-2"> --}}
                             <input class="mr-2" type="radio" id="variants" name="variants"
                                 value="{{ $value->optionPrice }}">
                             <label for="variants">{{ $value->label . ' (+$' . $value->optionPrice . ')' }} </label>
-                            {{-- </form> --}}
-                            <!--<p class="mparagraph">-->
-                            <!--</p>-->
                         @endforeach
                     </div>
                 @endforeach
-            @endif
-
-        </div>
+                
+            </div>
     </section>
+    @endif --}}
 
     <section class="section-padding product pb-0">
         <div class="container">
@@ -451,6 +448,7 @@
             </div>
         </div>
     </section>
+    @if(!empty($addonsData))
     <section class="section-padding product pb-0">
         <div class="container">
             <h2 class="heading">Items that goes well with this purchase (Add Ons)</h2>
@@ -494,6 +492,7 @@
         </div>
 
     </section>
+    @endif
     <section class="section-padding product pb-0">
         <div class="container">
             <h2 class="heading pb-0">Reviews</h2>
@@ -855,7 +854,8 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-
+                
+                
                 toastr.options = {
                     "closeButton": false,
                     "debug": false,
@@ -903,7 +903,7 @@
                         },
                         dataType: "json",
                         success: function(response) {
-
+                            console.log(response);
                             ele.siblings('.btn-loading').hide();
                             $(".cart-count").html(response.countlist);
                             $("span#status").html('<div class="alert alert-success">' + response

@@ -1388,4 +1388,5 @@
   'no_data_found' => 'no data found',
   'No data to show' => 'No data to show',
   'Want to delete this coupon ?' => 'Want to delete this coupon  ',
+  'Change status to ready for handover ?' => 'Change status to ready for handover  ',
 );

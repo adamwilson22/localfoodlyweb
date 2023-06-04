@@ -855,7 +855,7 @@
                                                     </div>
                                                 </button>
                                             </div>
-                                            <input id="price" type="number" name="price" value="{{$product->price}}" class="form-control" step="0.1"
+                                            <input id="price" type="number" name="price" value="{{$product->price}}" class="form-control" step=any
                                                 placeholder="67.00">
                                         </div>
                                         <!-- End Search -->
@@ -976,7 +976,8 @@
                                     </div>
                                     <div class="inputgroup">
                                         <div class="input-group-prepend">
-                                            <i class="icon-plus_round_icon"></i>
+                                            <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                            {{-- <i class="icon-plus_round_icon"></i> --}}
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" name="images[]" class="custom-file-input" id="images" multiple>
@@ -989,13 +990,14 @@
                          <br>
                             <div class="uploadimgs insert-img">
                                 <div class="card">
-                                    <div class="card-body">
+                                    <div class="card-body" id="file-input2">
                                         <div class="form-row featureImage-preview-div">
                                             
                                         </div>
                                         <div class="inputgroup">
                                             <div class="input-group-prepend">
-                                                <i class="icon-plus_round_icon"></i>
+                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                                {{-- <i class="icon-plus_round_icon"></i> --}}
                                             </div>
                                             <div class="custom-file">
                                                 <input type="file" name="featureImage" class="custom-file-input"
@@ -1010,59 +1012,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <br>
-                            {{-- Mohsin Code --}}
-                        <div class="uploadimgs insert-img">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form class="form">
-                                        <label class="form__container" id="upload-container">
-                                          <input class="form__file" id="upload-files" type="file" accept="image/*" multiple="multiple"/>
-                                          <div class="inputgroup" >
-                                              <div class="input-group-prepend">
-                                                  <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
-                                              </div>
-                                              <div class="custom-file">
-                                                  {{-- <input type="hidden" name="fimg" id="fimg" value="">
-                                                      <input type="file" name="images[]" class="custom-file-input"
-                                                          id="images" multiple required> --}}
-                                                  <label class="custom-file-label" for="inputGroupFile01">Uploads
-                                                      Images/Video <p>Select file</p></label>
-                                              </div>
-                                          </div>
-                                        </label>
-                                        <div class="form__files-container" id="files-list-container"></div>
-                                      </form>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="uploadimgs insert-img">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form class="form">
-                                        <label class="form__container" id="upload-container">
-                                          <input class="form__file" id="upload-files" type="file" accept="image/*" multiple="multiple"/>
-                                          <div class="inputgroup" >
-                                              <div class="input-group-prepend">
-                                                  <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
-                                              </div>
-                                              <div class="custom-file">
-                                             
-                                                  <label class="custom-file-label" for="inputGroupFile01">Upload Feature
-                                                    Images
-                                                    Optional <p>Select file</p></label>
-                                              </div>
-                                          </div>
-                                        </label>
-                                        <div class="form__files-container" id="files-list-container"></div>
-                                      </form>
-                                   
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </form>
@@ -1094,7 +1043,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="input-label" for="exampleFormControlInput1">{{ __('messages.price') }}</label>
-                                <input type="number" min="0" max="999999999999.99" name="price" step="0.01"
+                                <input type="number" min="0" max="999999999999.99" name="price" step=any
                                     class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg">Create</button>
@@ -1243,9 +1192,14 @@
 <script >
     $(function() {
         document.getElementById('file-input1').addEventListener('click', function() {
-        document.getElementById('images').click();
+            document.getElementById('images').click();
       
-    });
+        });
+        
+        document.getElementById('file-input2').addEventListener('click', function() {
+            document.getElementById('featureImage').click()
+        });
+
         $('.addonDropdown').select2();
             $('.badgesDropdown').select2();
     // Multiple images preview with JavaScript
@@ -1299,8 +1253,11 @@ function render_img(input) {
         `);
     }
     reader.readAsDataURL(input.files[i]);
-    }
-    }
+}
+$(".uploadimgs .card .card-body .inputgroup").addClass("active")
+    }else{
+                $(".uploadimgs .card .card-body .inputgroup").removeClass("active")
+            }
 
     // var tag = `
     //         <div class="img images-preview-div">
@@ -1333,13 +1290,12 @@ function render_img(input) {
                             CloseButton: true,
                             ProgressBar: true
                         });// show response from the php script.
+                        form.find('input').val('');
                         $.ajax({
                             url: '{{ route('vendor.addon.getAddons') }}',
                             type: 'GET',
                             dataType: 'json',
                             success: function(data) {
-                                console.log(data);
-                                $('#addDropdown').empty();
                                 $.each(data, function(key, value) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
@@ -1355,9 +1311,6 @@ function render_img(input) {
                             type: 'GET',
                             dataType: 'json',
                             success: function(data) {
-                                console.log(data);
-                              
-                                $('#badgesDropdown').empty();
                                 $.each(data, function(key, value) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
@@ -1469,7 +1422,7 @@ function render_tag(value, id) {
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 <label for="">{{ translate('Additional_price') }}</label>
-                                <input class="form-control" required type="number" min="0" step="0.01" name="options[` + count + `][values][0][optionPrice]" id="">
+                                <input class="form-control" required type="number" min="0" step=any name="options[` + count + `][values][0][optionPrice]" id="">
                             </div>
                         </div>
                     </div>
@@ -1517,7 +1470,7 @@ function render_tag(value, id) {
                     </div>
                     <div class="col-md-4 col-sm-5">
                         <label for="">{{translate('Additional_price')}}</label>
-                        <input class="form-control"  required type="number" min="0" step="0.01" name="options[`+count+`][values][`+countRow+`][optionPrice]" id="">
+                        <input class="form-control"  required type="number" min="0" step=any name="options[`+count+`][values][`+countRow+`][optionPrice]" id="">
                     </div>
                     <div class="col-sm-2 max-sm-absolute">
                         <label class="d-none d-md-block">&nbsp;</label>

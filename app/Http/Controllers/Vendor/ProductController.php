@@ -35,6 +35,20 @@ class ProductController extends Controller
                 //     $images[] = asset('images/'.$img);
                 // }
                 $product->image =  asset('public/images/' . $product->image[0]);
+                $badgeImages = json_decode($product->badges);
+                $badge=[];
+                if(!empty($badgeImages)){
+
+                    foreach ($badgeImages as $items){
+                        $dt = Badge::find($items);
+                        $badge[] = $dt->image;
+                    }
+                    $product->badgeimages = $badge;
+                    // dd($product->badges);
+                    $badge = [];
+                }
+
+
             }
 
             $categories = Category::where('restaurant_id', $restaurant->id)->orderBy('position', 'asc')->orderBy('id', 'asc')->get();

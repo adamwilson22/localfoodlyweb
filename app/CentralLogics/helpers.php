@@ -622,7 +622,9 @@ class Helpers
     }
     public static function send_push_notif_to_device($fcm_token, $data)
     {
-        $key = BusinessSetting::where(['key' => 'push_notification_key'])->first()->value;
+        // $key = BusinessSetting::where(['key' => 'push_notification_key'])->first()->value;
+        $key = "AAAAqexHZ34:APA91bEps7IFbbdlB-r7pjY7M2Xlm3qwwIXvFaq1rbFpsT_jNbjxc0ywNErd-f8h6cXJbVSnWJszsFdonS08aukEkkMAAnSHGYXht43WK-F83z0BUErxnNxy8M-hpyaavz1z2VlVKn4C";
+
         $url = "https://fcm.googleapis.com/fcm/send";
         $header = array(
             "authorization: key=" . $key . "",

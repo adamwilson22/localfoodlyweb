@@ -2674,6 +2674,8 @@ input[type=number] {
 
 .navbar-brand img {
     width: 160px;
+    height: 100px;
+    object-fit: contain;
 }
 .user-drop img {
     width: 50px;

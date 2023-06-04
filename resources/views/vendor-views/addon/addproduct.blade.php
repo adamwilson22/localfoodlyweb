@@ -859,7 +859,8 @@
                                                         </div>
                                                     </button>
                                                 </div>
-                                                <input id="price" type="number" name="price" class="form-control" step="0.1"
+                                                <input id="price" type="number" name="price" class="form-control" step=any
+
                                                     placeholder="00" value="{{ old('price') }}">
                                             </div>
                                             <!-- End Search -->
@@ -940,7 +941,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-5">
+                        {{-- <div class="col-lg-5" id="file-input1">
                             <div class="uploadimgs">
                                 <div class="card">
                                     <div class="card-body">
@@ -958,18 +959,91 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-5">
+                        
                            
-                            <div class="uploadimgs insert-img">
+                            <div class="uploadimgs insert-img" id="file-input2">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="form-row featureImage-preview-div">
                                         </div>
                                         <div class="inputgroup">
                                             <div class="input-group-prepend">
-                                                {{-- <i class="icon-plus_round_icon"></i> --}}
+                                                <i class="icon-plus_round_icon"></i>
                                                 <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="featureImage" class="custom-file-input" id ="inputGroupFile02"
+                                                    id="featureImage" required>
+                                                <label class="custom-file-label" for="inputGroupFile02">Upload Feature
+                                                    Images
+                                                    Optional
+                                                    <p>Select file</p>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br> --}}
+                            {{-- <div class="uploadimgs insert-img" id="file-input3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-row featureVideo-preview-div">
+
+                                        </div>
+                                        <div class="inputgroup">
+                                            <div class="input-group-prepend">
+                                                <i class="icon-plus_round_icon"></i>
+                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="featureVideo" class="custom-file-input"
+                                                    id="file-input-video">
+                                                <label class="custom-file-label" for="inputGroupFile03">Upload Feature
+                                                    Video
+                                                    Optional
+                                                    <p>Select file</p>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
+                        {{-- </div> --}}
+                        <div class="col-lg-5">
+                            <div class="uploadimgs insert-img">
+                                <div class="card">
+                                    <div class="card-body" id ="file-input1">
+                                        <div class="form-row images-preview-div">
+
+                                
+                                        </div>
+                                        <div class="inputgroup" >
+                                            <div class="input-group-prepend">
+                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                                {{-- <i class="icon-plus_round_icon"></i> --}}
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="hidden" name="fimg" id="fimg" value="">
+                                                <input type="file" name="images[]" class="custom-file-input"
+                                                    id="images" multiple required>
+                                                <label class="custom-file-label" for="inputGroupFile01">Upload
+                                                    Images/Videos <p>Select file</p></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="uploadimgs insert-img">
+                                <div class="card">
+                                    <div class="card-body" id="file-input2">
+                                        <div class="form-row featureImage-preview-div">
+                                        </div>
+                                        <div class="inputgroup">
+                                            <div class="input-group-prepend">
+                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
+                                                {{-- <i class="icon-plus_round_icon"></i> --}}
                                             </div>
                                             <div class="custom-file">
                                                 <input type="file" name="featureImage" class="custom-file-input"
@@ -985,30 +1059,29 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="uploadimgs insert-img">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="form-row featureVideo-preview-div">
+                            <!--<div class="uploadimgs insert-img">-->
+                            <!--    <div class="card">-->
+                            <!--        <div class="card-body">-->
+                            <!--            <div class="form-row featureVideo-preview-div">-->
 
-                                        </div>
-                                        <div class="inputgroup">
-                                            <div class="input-group-prepend">
-                                                {{-- <i class="icon-plus_round_icon"></i> --}}
-                                                <img class="img-fluid" src="{{ asset('public/assets/admin/img/pluss.png') }}" alt="">
-                                            </div>
-                                            <div class="custom-file">
-                                                <input type="file" name="featureVideo" class="custom-file-input"
-                                                    id="file-input-video">
-                                                <label class="custom-file-label" for="inputGroupFile01">Upload Feature
-                                                    Video
-                                                    Optional
-                                                    <p>Select file</p>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!--            </div>-->
+                            <!--            <div class="inputgroup">-->
+                            <!--                <div class="input-group-prepend">-->
+                            <!--                    <i class="icon-plus_round_icon"></i>-->
+                            <!--                </div>-->
+                            <!--                <div class="custom-file">-->
+                            <!--                    <input type="file" name="featureVideo" class="custom-file-input"-->
+                            <!--                        id="file-input-video">-->
+                            <!--                    <label class="custom-file-label" for="inputGroupFile01">Upload Feature-->
+                            <!--                        Video-->
+                            <!--                        Optional-->
+                            <!--                        <p>Select file</p>-->
+                            <!--                    </label>-->
+                            <!--                </div>-->
+                            <!--            </div>-->
+                            <!--        </div>-->
+                            <!--    </div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </form>
@@ -1035,13 +1108,13 @@
                             <div class="form-group">
                                 <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
                                 <input type="text" name="name" class="form-control"
-                                    placeholder="{{ __('messages.new_addon') }}" value="{{ old('name') }}" required
+                                    placeholder="{{ __('messages.new_addon') }}" value="" required
                                     maxlength="191">
                             </div>
                             <div class="form-group">
                                 <label class="input-label" for="exampleFormControlInput1">{{ __('messages.price') }}</label>
-                                <input type="number" min="0" max="999999999999.99" name="price" step="0.01"
-                                    class="form-control" placeholder="100.00" value="{{ old('price') }}" required>
+                                <input type="number" min="0" max="999999999999.99" name="price" step=any
+                                    class="form-control" placeholder="100.00" value="" required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg">Create</button>
                         </form>
@@ -1071,7 +1144,7 @@
                                 <div class="form-group">
                                     <label class="input-label" for="exampleFormControlInput1">{{ __('messages.name') }}</label>
                                     <input type="text" name="name" class="form-control"
-                                        placeholder="Name" value="{{ old('name') }}" required
+                                        placeholder="Name" value="" required
                                         maxlength="191">
                                 </div>
             
@@ -1189,21 +1262,17 @@
     </script> --}}
 
     <script>
-          $('.addonDropdown').select2();
-            $('.badgesDropdown').select2();
+        $('.addonDropdown').select2();
+        $('.badgesDropdown').select2();
         var isAvailable = true;
         $(document).ready(function() {
+
             document.getElementById('file-input1').addEventListener('click', function() {
-        document.getElementById('images').click();
-      
-    });
-
-            console.log("Dropdown Event Triggered 1");
-         
-            
-          
-
-      
+              document.getElementById('images').click()
+            });
+            document.getElementById('file-input2').addEventListener('click', function() {
+              document.getElementById('featureImage').click()
+            });
 
             $(window).keydown(function(event) {
                 if (event.keyCode == 13) {
@@ -1231,14 +1300,14 @@
                             CloseButton: true,
                             ProgressBar: true
                         });// show response from the php script.
-                       
+                        form.find('input').val('');
                         $.ajax({
                             url: '{{ route('vendor.addon.getAddons') }}',
                             type: 'GET',
                             dataType: 'json',
                             success: function(data) {
                                 console.log(data);
-                                $('#addDropdown').empty();
+                                // $('#addDropdown').empty();
                                 $.each(data, function(key, value) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#addDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
@@ -1256,7 +1325,7 @@
                             success: function(data) {
                                 console.log(data);
                              
-                                $('#badgesDropdown').empty();
+                                // $('#badgesDropdown').empty();
                                 $.each(data, function(key, value) {
                                     // $('#my-dropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
                                     $('#badgesDropdown').append('<option value="' + value.id + '">' + value.name + '</option>');
@@ -1364,7 +1433,7 @@
                 <img src="${event.target.result}" alt="">
                 <div class="action-btn">
                 <button type="button"><i class="icon-trash"></i></button>
-                    <button type="button" onclick="selectFeaturedImage(` + i + `)"><i class="icon-Pin"></i></button>
+                    
 
                 </div>
             </div>
@@ -1372,6 +1441,9 @@
                     }
                     reader.readAsDataURL(input.files[i]);
                 }
+                $(".uploadimgs .card .card-body .inputgroup").addClass("active")
+            }else{
+                $(".uploadimgs .card .card-body .inputgroup").removeClass("active")
             }
 
             // var tag = `
@@ -1401,7 +1473,7 @@
                             <div class="img">
                                 <img src="${event.target.result}" alt="">
                                 <div class="action-btn">
-                                    <button><i class="icon-trash"></i></button>
+                                    <button type="button" ><i class="icon-trash"></i></button>
                                 </div>
                             </div>
                         `);
@@ -1426,32 +1498,32 @@
         const video = document.getElementById('feature-video');
         const videoSource = document.createElement('source');
 
-        input.addEventListener('change', function() {
-            const files = this.files || [];
+        // input.addEventListener('change', function() {
+        //     const files = this.files || [];
 
-            if (!files.length) return;
+        //     if (!files.length) return;
 
-            const reader = new FileReader();
+        //     const reader = new FileReader();
 
-            reader.onload = function(e) {
-                $('.featureVideo-preview-div').append(`
-                    <div class="video">
-                        <video src="${event.target.result}" id="feature-video" width="300" height="300" controls></video>
-                    </div>
-                `);
-                // videoSource.setAttribute('src', e.target.result);
-                // video.appendChild(videoSource);
+        //     reader.onload = function(e) {
+        //         $('.featureVideo-preview-div').append(`
+        //             <div class="video">
+        //                 <video src="${event.target.result}" id="feature-video" width="300" height="300" controls></video>
+        //             </div>
+        //         `);
+        //         // videoSource.setAttribute('src', e.target.result);
+        //         // video.appendChild(videoSource);
 
-                video.load();
-                video.play();
-            };
+        //         video.load();
+        //         video.play();
+        //     };
 
-            reader.onprogress = function(e) {
-                console.log('progress: ', Math.round((e.loaded * 100) / e.total));
-            };
+        //     reader.onprogress = function(e) {
+        //         console.log('progress: ', Math.round((e.loaded * 100) / e.total));
+        //     };
 
-            reader.readAsDataURL(files[0]);
-        });
+        //     reader.readAsDataURL(files[0]);
+        // });
 
         function selectFeaturedImage(index) {
             var images = document.getElementById('images');
@@ -1649,7 +1721,7 @@
                             </div>
                             <div class="col-md-4 col-sm-6">
                                 <label for="">{{ translate('Additional_price') }}</label>
-                                <input class="form-control" required type="number" min="0" step="0.01" name="options[` +
+                                <input class="form-control" required type="number" min="0" step=any name="options[` +
                     count + `][values][0][optionPrice]" id="">
                             </div>
                         </div>
@@ -1731,7 +1803,7 @@
                     </div>
                     <div class="col-md-4 col-sm-5">
                         <label for="">{{ translate('Additional_price') }}</label>
-                        <input class="form-control"  required type="number" min="0" step="0.01" name="options[` +
+                        <input class="form-control"  required type="number" min="0" step=any name="options[` +
                 count +
                 `][values][` + countRow + `][optionPrice]" id="">
                     </div>

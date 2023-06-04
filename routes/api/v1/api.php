@@ -94,6 +94,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         //BADGES Routes
         Route::get('/get_all_badges', [CategoryController::class, "get_badges"]);
         Route::post('/create_all_badges', [CategoryController::class, "create_badges"]);
+        Route::post('/update_all_badges', [CategoryController::class, "update_badges"]);
         Route::delete('/delete_all_badges/{id}', [CategoryController::class, "delete_badges"]);
         //Maaz
         //Units Routes
@@ -105,7 +106,21 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('/get_all_coupons', [CategoryController::class, "get_coupons"]);
         Route::delete('/delete_all_coupons/{id}', [CategoryController::class, "delete_coupon"]);
         Route::post('/create_all_coupons', [CategoryController::class, "create_coupon"]);
-        Route::get('/search_all_coupons/{name}', [CategoryController::class, "search_coupon"]);
+        Route::get('/search_all_coupon', [CategoryController::class, "search_coupon"]);
+        Route::post('/update_all_coupon', [CategoryController::class, "update_coupon"]);
+
+        //MAAZ
+        //Reviews
+        Route::get('/get_all_reviews', [CategoryController::class, "get_reviews"]);
+        // Route::get('/search_all_coupons', [CategoryController::class, "search_coupon"]);
+        //MAAZ
+        //Orders
+        Route::post('/get_all_orderStatus', [CategoryController::class, "get_orders"]);
+        Route::post('/get_all_paymentStatus', [CategoryController::class, "get_paymentStatus_orders"]);
+        Route::post('/get_all_paymentMethod', [CategoryController::class, "get_paymentMethod_orders"]);
+        Route::post('/get_all_ordertype', [CategoryController::class, "get_orderType_orders"]);
+        Route::post('/search_all_paymentMethod', [CategoryController::class, "get_search_orders"]);
+
 
         // Category Routes Start
         Route::get('/get_all_categories', [CategoryController::class, "get_categories"]);

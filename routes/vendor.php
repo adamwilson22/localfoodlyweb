@@ -160,9 +160,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::post('/sendCouponCodeToCustomers', 'CouponController@sendCouponCodeToCustomers');
         });
 
-        Route::group(['prefix' => 'loyalty', 'as' => 'loyalty.', 'middleware' => ['module:loyalty']], function () {
-            Route::get('/', 'LoyaltyController@index')->name('index');
-        });
+       
 
         Route::group(['prefix' => 'addon', 'as' => 'addon.', 'middleware' => ['module:addon']], function () {
             Route::get('add-new', 'AddOnController@index')->name('add-new');
@@ -224,6 +222,13 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
 
         });
 
+        Route::group(['prefix' => 'loyalty', 'as' => 'loyalty.', 'middleware' => ['module:loyalty']], function () {
+            Route::get('/fetch-data', 'LoyaltyController@get_products')->name('fetch-data');
+            Route::get('/get-selected-product-data', 'LoyaltyController@get_selected_products')->name('get-selected-product-data');
+            Route::post('save-products', 'LoyaltyController@save_products_data')->name('save-product-data');
+            Route::get('/index', 'LoyaltyController@index')->name('index');
+        });
+
         Route::get('get_all_products', [ProductController::class, "get_all_products"]);
         Route::get('edit_product/{product_id}', [ProductController::class, "get_product_for_edit"]);
         Route::post('update_product/{product_id}', [ProductController::class, "update_product"]);
@@ -243,6 +248,7 @@ Route::group(['namespace' => 'Vendor', 'as' => 'vendor.'], function () {
             Route::get('list/{status}', 'OrderController@list')->name('list');
             Route::get('all/{status}/lists', 'OrderController@PreOrderlist')->name('PreOrderlist');
             Route::get('single/{id}/detail', 'OrderController@PreOrderDetail')->name('PreOrderDetail');
+            Route::get('{id}/status', 'OrderController@PreOrderStatus')->name('PreOrderStatus');
             Route::put('status-update/{id}', 'OrderController@status')->name('status-update');
             Route::post('search', 'OrderController@search')->name('search');
             Route::post('add-to-cart', 'OrderController@add_to_cart')->name('add-to-cart');

@@ -89,21 +89,21 @@ class AddOnController extends Controller
             $products = '';
         } else {
             $products = Food::where('restaurant_id', $restaurant->id)->get();
-            foreach ($products as $product) {
-                $product->image = unserialize($product->image);
-                $images = [];
-                // foreach ($product->image as $img) {
-                //     # code...
-                //     $images[] = asset('images/'.$img);
-                // }
+            // foreach ($products as $product) {
+            //     $product->image = unserialize($product->image);
+            //     $images = [];
+            //     // foreach ($product->image as $img) {
+            //     //     # code...
+            //     //     $images[] = asset('images/'.$img);
+            //     // }
                 
-                // 
-                $product->image =  asset('public/images/' . $product->image[0]);               
+            //     // 
+            //     $product->image =  asset('public/images/' . $product->image[0]);               
                 
-                // $product->image = asset('images/' . $product->image[0]);
-                // 
+            //     // $product->image = asset('images/' . $product->image[0]);
+            //     // 
 
-            }
+            // }
         }
         return view('vendor-views.addon.profile', compact('restaurant', 'products'));
     }

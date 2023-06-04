@@ -149,7 +149,69 @@ class OrderController extends Controller
         ])->paginate(config('default_pagination'));;
 
         // dd($ordeDetails->toArray());
-        return view('vendor-views.pre_order.list', compact('ordeDetails'));
+        return view('vendor-views.pre_order.list', compact('ordeDetails','id'));
+    }
+    
+    public function PreOrderStatus($id,Request $request)
+    {
+        $ordeDetails = OrderDetail::with('order.customer')->where([
+            ['restaurant_id', Helpers::get_restaurant_id()],
+            ['food_id', $id],
+        ])->get();
+
+
+        foreach ($ordeDetails as $key => $ordeDetail) {
+            $order = Order::select('id','order_status','pending','canceled','refunded',
+            'accepted','confirmed','processing','handover','picked_up','delivered','refund_requested')
+            ->where('id',$ordeDetail->order->id)->first();
+            $order->order_status = $request->order_status;
+            if($order->pending == $request->order_status)
+            {
+                $order->pending = now();
+            }
+            if($order->processing == $request->order_status)
+            {
+                $order->processing = now();
+            }
+            if($order->canceled == $request->order_status)
+            {
+                $order->canceled = now();
+            }
+            if($order->accepted == $request->order_status)
+            {
+                $order->accepted = now();
+            }
+            if($order->confirmed == $request->order_status)
+            {
+                $order->confirmed = now();
+            }
+            if($order->processing == $request->order_status)
+            {
+                $order->processing = now();
+            }
+            if($order->handover == $request->order_status)
+            {
+                $order->handover = now();
+            }
+            if($order->picked_up == $request->order_status)
+            {
+                $order->picked_up = now();
+            }
+            if($order->delivered == $request->order_status)
+            {
+                $order->delivered = now();
+            }
+            if($order->refund_requested == $request->order_status)
+            {
+                $order->refund_requested = now();
+            }
+            $order->save();
+        }
+
+        return [
+            'status' => true,
+            'msg' => 'status change successfully'
+        ];
     }
 
     public function list($status)

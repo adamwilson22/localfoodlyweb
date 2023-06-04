@@ -21,14 +21,14 @@ class CartController extends Controller
         } else {
             $addMoreQuantity = "1";
         }
-        // if($request->has('variants'))
-        // {
-        //     foreach ($request->variants as $key => $value) {
-        //         # code...
-        //         $food_variants[] = explode(",",$value);
-        //     }
-        //     // dd($food_variants);
-        // }
+        if($request->has('variants'))
+        {
+            foreach ($request->variants as $key => $value) {
+                # code...
+                $food_variants[] = explode(",",$value);
+            }
+            dd($food_variants);
+        }
         $food = Food::find($id);
         if (!$food) {
             $food = AddOn::find($id);
@@ -68,8 +68,8 @@ class CartController extends Controller
                         "product_type" => $food->product_type,
                         "qty" =>$food->unit,
                         "price" => $food->price,
-                        "photo" => $food->image
-                        // "variants" => $food_variants
+                        "photo" => $food->image,
+                        "variants" => $food_variants
                     ]
                 ];
             }

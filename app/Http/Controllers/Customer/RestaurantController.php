@@ -184,7 +184,8 @@ class RestaurantController extends Controller
         }
         $kitchengallery = KitchenGallery::where('restaurant_id', $id)->get();
         $categories = Category::where('restaurant_id', $id)->get();
-        
+        session(['logoData' => $restaurant->logo]);
+
         // $badges = Badge::where('restaurant_id', $restaurant->id)->orderBy('name')->get();
         $badges = Badge::where('restaurant_id', $id)->get();
         // dd($foods);
@@ -229,8 +230,13 @@ class RestaurantController extends Controller
 
         $reviews = Review::where('food_id', $id)->get();
         // dd($food);
+        $addons = json_decode($food->add_ons);
+        if(!empty($addons)){
+            $addonsData = AddOn::whereIn('id',$addons)->get();
+        }else{
+            $addonsData = [];
 
-        $addonsData = AddOn::where('restaurant_id',$food->restaurant_id)->get();
+        }
         // dd(json_decode($food->variations));
 
         $variations = json_decode($food->variations);

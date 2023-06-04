@@ -3788,7 +3788,8 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     flex-wrap: wrap;
     -ms-flex-align: stretch;
     align-items: stretch;
-    width: 100%
+    width: 100%;
+    margin-right: 45px;
 }
 
 .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control, .input-group > .form-control-plaintext {
@@ -19570,7 +19571,6 @@ label.btn {
 }
 
 .card-title {
-    display: block;
     color: #1e2022;
     margin-bottom: 0
 }
@@ -21046,6 +21046,7 @@ label.btn {
     border-radius: 0
 }
 
+
 .input-group-flush .custom-select.is-invalid, .input-group-flush .custom-select.is-invalid:focus, .input-group-flush .custom-select.is-valid, .input-group-flush .custom-select.is-valid:focus, .input-group-flush .form-control.is-invalid, .input-group-flush .form-control.is-invalid:focus, .input-group-flush .form-control.is-valid, .input-group-flush .form-control.is-valid:focus {
     box-shadow: none
 }
@@ -21074,7 +21075,7 @@ label.btn {
 }
 
 .input-group-flush.input-group-merge .custom-select:not(:last-child), .input-group-flush.input-group-merge .form-control:not(:last-child) {
-    padding-right: 1.75rem
+        padding-right: 1.5rem;
 }
 
 .input-group-flush.input-group .custom-select:not(:first-child), .input-group-flush.input-group .custom-select:not(:last-child), .input-group-flush.input-group .form-control:not(:first-child), .input-group-flush.input-group .form-control:not(:last-child), .input-group-flush.input-group .input-group-append .input-group-text:first-child, .input-group-flush.input-group .input-group-append .input-group-text:last-child, .input-group-flush.input-group-merge .input-group-append .input-group-text, .input-group-flush.input-group-merge .input-group-prepend .input-group-text {
@@ -21085,9 +21086,7 @@ label.btn {
     border-radius: 6.1875rem
 }
 
-.input-group-pill {
-    border-radius: 6.1875rem
-}
+
 
 .input-group-pill > .custom-select:first-child, .input-group-pill > .form-control:first-child {
     border-top-left-radius: 6.1875rem;

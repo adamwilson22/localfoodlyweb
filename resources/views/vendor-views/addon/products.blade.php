@@ -147,13 +147,13 @@
                                         <!--<img src="{{ asset('public/assets/admin/img/madetoorder.png') }}" alt="">-->
                                         <!--<img src="{{ asset('public/assets/admin/img/nutfree.png') }}" alt="">-->
                                         @php
-                                            $badgeImages = json_decode($product?->badges);
+                                        $badgeImages = json_decode($product->badges);
                                         @endphp
-                                        @if (!empty($badgeImages))
-                                            @foreach ($badgeImages as $items)
-                                                {{ $items }}
-                                            @endforeach
-                                        @endif
+                                    @if (!empty($badgeImages))
+                                        @foreach ($product->badgeimages as $items)
+                                        <img src="{{ $items }}" alt="">
+                                        @endforeach
+                                    @endif
                                     </div>
 
                                 </div>
@@ -215,11 +215,11 @@
                                                 <!--<img src="{{ asset('public/assets/admin/img/madetoorder.png') }}" alt="">-->
                                                 <!--<img src="{{ asset('public/assets/admin/img/nutfree.png') }}" alt="">-->
                                                 @php
-                                                    $badgeImages = json_decode($product?->badges);
+                                                    $badgeImages = json_decode($product->badges);
                                                 @endphp
                                                 @if (!empty($badgeImages))
-                                                    @foreach ($badgeImages as $items)
-                                                        {{ $items }}
+                                                    @foreach ($product->badgeimages as $items)
+                                                    <img src="{{ $items }}" alt="">
                                                     @endforeach
                                                 @endif
                                             </div>
